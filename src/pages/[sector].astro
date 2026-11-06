@@ -1,0 +1,916 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Marquee from '../components/Marquee.astro';
+import { sectors, LAB_BRANDS_CARDS } from '../data/sectors';
+import { img } from '../lib/images';
+
+export function getStaticPaths() {
+  return sectors.map((s) => ({ params: { sector: s.slug }, props: { s } }));
+}
+
+const { s } = Astro.props;
+
+// Section numbering shifts by one when the page opens with a disciplines block.
+const base = s.disciplines ? 1 : 0;
+const n = (i: number) => String(base + i).padStart(2, '0');
+
+const navLinks = [
+  { label: 'The maths', href: '#problem' },
+  { label: 'The build', href: '#build' },
+  { label: 'Our lab', href: '#lab' },
+  { label: 'FAQ', href: '#faq' },
+];
+
+const schema = [
+  {
+    '@type': 'Service',
+    name: `${s.short} marketing and lead generation`,
+    description: s.description,
+    provider: { '@id': new URL('/#organisation', Astro.site).href },
+    areaServed: { '@type': 'Country', name: 'United Kingdom' },
+  },
+  {
+    '@type': 'FAQPage',
+    mainEntity: s.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: Astro.site!.href },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: s.short,
+        item: new URL(`/${s.slug}`, Astro.site).href,
+      },
+    ],
+  },
+];
+---
+
+<Base title={s.title} description={s.description} path={`/${s.slug}`} schema={schema}>
+  <Nav sublabel={s.short} links={navLinks} />
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero-pad sector-hero">
+      <div class="wrap">
+        <nav aria-label="Breadcrumb" class="label crumbs">
+          <a href="/">Home</a>
+          <span aria-hidden="true">/</span>
+          <a href="/#sectors">Sectors</a>
+          <span aria-hidden="true">/</span>
+          <span class="crumb-now">{s.crumb}</span>
+        </nav>
+        <h1 class="disp sector-h1">{s.h1a} <span class="hl">{s.h1b}</span></h1>
+        <div class="row-between" style="margin-top:40px">
+          <p class="lede" style="max-width:620px;color:var(--on-ink-2)">{s.lede}</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <a class="btn" href="/start-a-project">{s.heroCta} <i aria-hidden="true">→</i></a>
+            <a class="btn-line" href="#problem">Do the maths</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <Marquee items={s.marq} />
+
+    {s.disciplines && (
+      <section id="disciplines" class="scene ink">
+        <div class="wrap">
+          <div class="tag"><b>01</b><span>{s.disciplines.tag}</span></div>
+          <div class="row-between">
+            <h2 class="h2" data-rise style="max-width:900px">{s.disciplines.head}</h2>
+            <p class="lede" style="max-width:420px;color:var(--on-ink-2)">{s.disciplines.lede}</p>
+          </div>
+          <div class="disc">
+            <div class="disc-list" role="tablist" aria-label={s.disciplines.tag}>
+              {s.disciplines.items.map((d, i) => (
+                <button
+                  type="button" role="tab" id={`dtab-${i}`}
+                  class:list={['dbtn', { on: i === 0 }]}
+                  aria-selected={i === 0 ? 'true' : 'false'}
+                  aria-controls={`dpanel-${i}`}
+                  tabindex={i === 0 ? 0 : -1}
+                  data-dbtn={i}
+                >
+                  <span class="dn">{String(i + 1).padStart(2, '0')}</span>{d.name}
+                </button>
+              ))}
+            </div>
+            {s.disciplines.items.map((d, i) => (
+              <div
+                class="disc-panel" role="tabpanel" id={`dpanel-${i}`}
+                aria-labelledby={`dtab-${i}`} data-dpanel={i} hidden={i !== 0}
+              >
+                <h3 class="h3" style="font-size:clamp(28px,3vw,44px);text-transform:uppercase">{d.name}</h3>
+                <div class="dgrid">
+                  <div>
+                    <div class="label" style="color:var(--acc)">Who buys</div>
+                    <p>{d.who}</p>
+                  </div>
+                  <div>
+                    <div class="label" style="color:var(--acc)">What triggers it</div>
+                    <p>{d.trigger}</p>
+                  </div>
+                </div>
+                <div style="padding-top:20px;border-top:2px solid var(--ink-5)">
+                  <div class="label" style="color:var(--acc)">How we play it</div>
+                  <p style="margin-top:8px;font-size:19px;line-height:1.5;font-weight:700">{d.play}</p>
+                </div>
+                <a class="btn sm" href="/start-a-project" style="align-self:flex-start">
+                  Start a project <i aria-hidden="true">→</i>
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- THE MATHS -->
+    <section id="problem" class="scene paper">
+      <div class="wrap">
+        <div class="tag"><b>{n(1)}</b><span>The maths</span></div>
+        <h2 class="h2" data-rise style="max-width:1180px">{s.problemA} <span class="hl">{s.problemB}</span></h2>
+        <p class="lede" data-rise style="margin-top:26px;max-width:640px;color:var(--on-paper-2)">{s.problemLede}</p>
+
+        {s.calc.kind === 'shared' ? (
+          <div class="calc" style="margin-top:52px" data-calc="shared">
+            <div class="calc-in">
+              <div class="crow">
+                <label for="c-firms" class="label" style="color:var(--on-ink-2)">Firms sent each lead</label>
+                <span class="cval" id="out-firms">{s.calc.firms}</span>
+              </div>
+              <input id="c-firms" class="range" type="range" min="1" max="6" step="1" value={s.calc.firms} />
+
+              <div class="crow" style="margin-top:26px">
+                <label for="c-cpl" class="label" style="color:var(--on-ink-2)">You pay per lead</label>
+                <span class="cval">£<span id="out-cpl">{s.calc.cpl}</span></span>
+              </div>
+              <input id="c-cpl" class="range" type="range" min="5" max="60" step="1" value={s.calc.cpl} />
+
+              <div class="firm-grid" aria-hidden="true" id="firm-dots">
+                {[0, 1, 2, 3, 4, 5].map((i) => (
+                  <span class:list={['firm', i === 0 ? 'you' : i < s.calc.firms ? 'rival' : 'off']}>
+                    {i === 0 ? 'You' : i < s.calc.firms ? 'Rival' : ''}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div class="calc-out" aria-live="polite">
+              <div>
+                <div class="label">Your odds on each lead</div>
+                <div class="big-n" style="margin-top:10px">1 in <span id="out-odds">{s.calc.firms}</span></div>
+              </div>
+              <div style="padding-top:22px;border-top:3px solid var(--ink)">
+                <div class="label">Lead spend per job you could win</div>
+                <div class="mid-n" style="margin-top:8px">£<span id="out-perwin">{s.calc.cpl * s.calc.firms}</span></div>
+                <p style="margin-top:16px;font-size:17px;font-weight:600;line-height:1.45">
+                  An enquiry from your own campaign goes to one firm. Yours.
+                </p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div
+            class="calc" style="margin-top:52px" data-calc="pipeline"
+            data-jobs={s.calc.jobs} data-win={s.calc.win} data-val={s.calc.val}
+          >
+            <div class="calc-in">
+              <div class="crow">
+                <label for="c-jobs" class="label" style="color:var(--on-ink-2)">{s.calc.jobsLabel}</label>
+                <span class="cval" id="out-jobs">{s.calc.jobs}</span>
+              </div>
+              <input id="c-jobs" class="range" type="range" min={s.calc.jobsMin} max={s.calc.jobsMax} step="1" value={s.calc.jobs} />
+
+              <div class="crow" style="margin-top:22px">
+                <label for="c-win" class="label" style="color:var(--on-ink-2)">{s.calc.winLabel}</label>
+                <span class="cval"><span id="out-win">{s.calc.win}</span>%</span>
+              </div>
+              <input id="c-win" class="range" type="range" min="5" max="60" step="1" value={s.calc.win} />
+
+              <div class="crow" style="margin-top:22px">
+                <label for="c-val" class="label" style="color:var(--on-ink-2)">{s.calc.valLabel}</label>
+                <span class="cval" id="out-val"></span>
+              </div>
+              <input id="c-val" class="range" type="range" min={s.calc.valMin} max={s.calc.valMax} step={s.calc.valStep} value={s.calc.val} />
+
+              <div style="margin-top:26px">
+                <div class="label" style="color:var(--on-ink-2);margin-bottom:12px">
+                  Out of every 10 enquiries, you win <span id="out-of10"></span>
+                </div>
+                <div class="dots" aria-hidden="true" id="win-dots">
+                  {Array.from({ length: 10 }, (_, i) => <span class="dot" data-dot={i}></span>)}
+                </div>
+              </div>
+            </div>
+
+            <div class="calc-out" aria-live="polite">
+              <div>
+                <div class="label">{s.calc.needLabel}</div>
+                <div class="big-n" style="margin-top:12px" id="out-need"></div>
+              </div>
+              <div>
+                <div class="label">{s.calc.yearLabel}</div>
+                <div class="mid-n" style="margin-top:10px" id="out-year"></div>
+                <div class="label" style="margin-top:12px;opacity:.75" id="out-math"></div>
+                <p style="margin-top:16px;font-size:17px;font-weight:600;line-height:1.45">
+                  That's the pipeline we build to. Not a guess at clicks.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+
+    <!-- THE BUILD -->
+    <section id="build" class="scene ink">
+      <div class="wrap">
+        <div class="tag"><b>{n(2)}</b><span>The build</span></div>
+        <h2 class="h2" data-rise style="max-width:1180px">
+          Powered by <span style="color:var(--acc)">{s.buildHead}</span>
+        </h2>
+        <div class="two-col" style="margin-top:26px">
+          <p class="h3" data-rise style="font-size:clamp(22px,2.2vw,30px)">{s.buildLede1}</p>
+          <p class="lede" data-rise style="color:var(--on-ink-2)">{s.buildLede2}</p>
+        </div>
+
+        <div class="tabbar" data-nudge role="tablist" aria-label="The ADVRTISE framework" style="margin-top:52px">
+          {s.tabs.map((t, i) => (
+            <button
+              type="button" role="tab" id={`tab-${i}`}
+              class:list={['tab', { on: i === 0 }]}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls={`tabpanel-${i}`}
+              tabindex={i === 0 ? 0 : -1}
+              data-tab={i}
+            >
+              <b>{t.no}</b>{t.name}
+            </button>
+          ))}
+        </div>
+
+        {s.tabs.map((t, i) => (
+          <div
+            class="tabpanel" role="tabpanel" id={`tabpanel-${i}`}
+            aria-labelledby={`tab-${i}`} data-tabpanel={i} hidden={i !== 0}
+          >
+            <div>
+              <div class="label" style="color:var(--acc)">{t.tag}</div>
+              <h3 class="h3" style="margin-top:14px;font-size:clamp(30px,3.2vw,46px);text-transform:uppercase">{t.head}</h3>
+              <p class="lede" style="margin-top:20px;color:var(--on-ink-2)">{t.body}</p>
+            </div>
+            <div>
+              {t.points.map((p) => (
+                <div class="point">
+                  <span aria-hidden="true" class="point-tick">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#0b0b0c" stroke-width="2.6"><path d="M2.5 8.5l3.5 3.5 7.5-8"></path></svg>
+                  </span>
+                  <span>{p}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- PLUGS INTO YOUR STACK -->
+    <section class="scene paper">
+      <div class="wrap">
+        <div class="tag"><b>{n(3)}</b><span>Plugs into your stack</span></div>
+        <h2 class="h2" data-rise style="max-width:1100px">
+          Works with what you've got. <span class="hl">Ready for what's next.</span>
+        </h2>
+        <div class="stack" style="margin-top:52px">
+          <div>
+            <div role="group" data-nudge aria-label="Show setup" class="stack-toggle">
+              <button type="button" class="sbtn on" aria-pressed="true" data-stack="today">Today</button>
+              <button type="button" class="sbtn" aria-pressed="false" data-stack="grow">Ready to grow</button>
+            </div>
+            <h3 class="h3" id="stack-head" style="margin-top:30px;font-size:clamp(26px,2.8vw,40px);text-transform:uppercase">
+              Leads land where you already work.
+            </h3>
+            <p class="lede" id="stack-body" style="margin-top:16px;color:var(--on-paper-2);max-width:520px">
+              ADVRTISE integrates with your current tech stack, even if that's just an email inbox.
+              No new software to learn on day one.
+            </p>
+          </div>
+          <div class="stack-map" aria-live="polite">
+            <div class="stack-src">
+              <span class="label" style="color:var(--acc)">ADVRTISE</span>
+              <span class="h3" style="font-size:22px;text-transform:uppercase;margin-top:6px">Qualified enquiry</span>
+            </div>
+            <div class="stack-line" aria-hidden="true"><span></span></div>
+            <div class="stack-grid" id="stack-grid"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OUR OWN LAB -->
+    <section id="lab" class="scene sig">
+      <div class="wrap">
+        <div class="tag"><b>{n(4)}</b><span>Our own lab</span></div>
+        {s.lab.kind === 'named' ? (
+          <>
+            <h2 class="h2" data-rise style="max-width:1200px">{s.lab.head}</h2>
+            <p class="lede" data-rise style="margin-top:24px;max-width:680px;font-weight:600">{s.lab.lede}</p>
+            <div class="stats" style="margin-top:64px;border-top-width:4px">
+              {s.lab.stats.map((st) => (
+                <div class="stat-cell">
+                  <div class="lab-n">{st.n}</div>
+                  <div class="label" style="margin-top:14px">{st.label}</div>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            <h2 class="h2" data-rise style="max-width:1200px">We test on our own brands first.</h2>
+            <p class="lede" data-rise style="margin-top:24px;max-width:700px;font-weight:600">{s.lab.lede}</p>
+            <div class="stats" style="margin-top:60px;border-top-width:4px">
+              {LAB_BRANDS_CARDS.map((c) => (
+                <div class="stat-cell">
+                  <div class="lab-n">{c.n}</div>
+                  <p style="margin-top:12px;font-size:16px;font-weight:600;line-height:1.45">{c.p}</p>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </section>
+
+    <!-- HOW IT LANDS -->
+    <section class="scene paper">
+      <div class="wrap">
+        <div class="row-between">
+          <div>
+            <div class="tag"><b>{n(5)}</b><span>How it lands</span></div>
+            <h2 class="h2" data-rise>{s.stepsHeadA} <span class="hl">{s.stepsHeadB}</span></h2>
+          </div>
+          <a class="btn dark sm" href="/#process">The full process <i aria-hidden="true">→</i></a>
+        </div>
+
+        <div class="steps" data-nudge style="margin-top:52px" role="tablist" aria-label="Build stages">
+          {s.steps.map((st, i) => (
+            <button
+              type="button" role="tab" id={`step-${i}`}
+              class:list={['step', { on: i === 0 }]}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls="step-desc"
+              tabindex={i === 0 ? 0 : -1}
+              data-stepbtn={i} data-desc={st.desc}
+            >
+              <span class="n">{st.no}</span>
+              <span class="h3" style="font-size:20px;text-transform:uppercase">{st.name}</span>
+            </button>
+          ))}
+        </div>
+        <div aria-live="polite" id="step-desc" class="step-out">
+          <p class="h3" style="font-size:clamp(20px,2vw,28px);max-width:960px">{s.steps[0].desc}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CASE STUDY -->
+    <section class="scene ink">
+      <div class="wrap case-wrap">
+        <div class="case-shot">
+          <Image
+            src={img(s.caseStudy.img)} alt={s.caseStudy.alt}
+            width={700} height={438} widths={[500, 700, 1000]}
+            sizes="(max-width:900px) 92vw, 600px" loading="lazy"
+          />
+          <span class="label case-tag">Case study</span>
+        </div>
+        <div class="case-copy">
+          <div class="label" style="color:var(--on-ink-3)">{s.caseStudy.client}</div>
+          <h3 class="disp" style="font-size:clamp(34px,4vw,60px)">
+            {s.caseStudy.statA} <span class="hl">{s.caseStudy.statRest}</span>
+          </h3>
+          <p class="lede" style="color:var(--on-ink-2)">{s.caseStudy.lede}</p>
+          <div class="case-stats">
+            {s.caseStudy.stats.map((st) => (
+              <div>
+                <div class="case-stat-n">{st.n}</div>
+                <div style="margin-top:8px;font-size:14px;font-weight:700;color:var(--on-ink-3)">{st.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="scene paper">
+      <div class="wrap" style="max-width:1040px">
+        <div class="tag"><b>{n(6)}</b><span>Straight answers</span></div>
+        <h2 class="h2" data-rise>{s.faqHead}</h2>
+        <div style="margin-top:48px">
+          {s.faqs.map((f, i) => (
+            <div class:list={['faq', { open: i === 0 }]} data-faq>
+              <button type="button" class="faq-q" aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`faq-a-${i}`} data-faqbtn>
+                <span>{f.q}</span>
+                <span class="faq-plus" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 0v14M0 7h14"></path></svg>
+                </span>
+              </button>
+              <div class:list={['acc', { open: i === 0 }]} id={`faq-a-${i}`} data-faqacc>
+                <div class="acc-in">
+                  <p class="lede" style="padding:0 72px 24px 0;color:var(--on-paper-2)">{f.a}</p>
+                  {f.link && (
+                    <a class="faq-link" href="/start-a-project">Start an enquiry <i aria-hidden="true">→</i></a>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="scene sig" style="padding-bottom:136px">
+      <div class="wrap">
+        <div class="tag"><b>{n(7)}</b><span>{s.ctaTag}</span></div>
+        <h2 class="disp" data-rise style="font-size:clamp(40px,9vw,150px)">{s.ctaHead}</h2>
+        <div class="row-between" style="margin-top:44px">
+          <p class="h3" style="max-width:540px;font-size:clamp(20px,2vw,28px)">{s.ctaBody}</p>
+          <a class="btn dark" href="/start-a-project" style="min-height:68px;font-size:17px">
+            {s.ctaBtn} <i aria-hidden="true">→</i>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer
+    slimLinks={[
+      { label: 'Home', href: '/' },
+      { label: 'Start a project', href: '/start-a-project' },
+      { label: 'Contact us', href: '/contact' },
+    ]}
+  />
+</Base>
+
+<style>
+  /* ---- Hero ---- */
+  .sector-hero {
+    position: relative;
+    min-height: min(100svh, 860px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: var(--ink);
+  }
+  .hero-pad { padding: 140px var(--gutter) 110px; }
+  .sector-h1 { font-size: clamp(42px, 8vw, 132px); max-width: 1280px; }
+  .crumbs {
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    margin-bottom: 30px; color: var(--on-ink-3);
+  }
+  .crumbs a { min-height: 44px; display: inline-flex; align-items: center; }
+  .crumb-now { background: var(--acc); color: var(--ink); padding: 6px 10px; border-radius: 6px; }
+  @media (max-width: 760px) {
+    .hero-pad { padding: 120px var(--gutter-sm) 90px; }
+    .sector-h1 { font-size: clamp(31px, 9.4vw, 132px); }
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+    gap: 24px 64px;
+  }
+
+  /* ---- Disciplines ---- */
+  .disc {
+    display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+    gap: 16px; margin-top: 44px; align-items: start;
+  }
+  .disc-list { display: flex; flex-direction: column; }
+  .dbtn {
+    display: flex; align-items: center; gap: 16px; width: 100%; text-align: left;
+    min-height: 64px; padding: 14px 18px; border-top: 2px solid rgba(242, 240, 234, .18);
+    font-weight: 900; font-stretch: 108%; text-transform: uppercase;
+    font-size: clamp(20px, 1.9vw, 28px); letter-spacing: -.01em; line-height: 1;
+    transition: background .25s, color .25s, border-radius .25s;
+  }
+  .dbtn:hover { background: var(--ink-2); }
+  .dbtn .dn { font-size: 14px; font-weight: 900; opacity: .7; flex: 0 0 26px; }
+  .dbtn.on { background: var(--acc); color: var(--ink); border-color: var(--acc); border-radius: 14px; }
+  .dbtn.on + .dbtn { border-top-color: transparent; }
+  .disc-panel {
+    background: var(--ink-2); border-radius: var(--r-lg); padding: 36px;
+    display: flex; flex-direction: column; gap: 22px;
+    animation: panelin .45s var(--ease) both;
+  }
+  .disc-panel[hidden] { display: none; }
+  .dgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 22px; }
+  .dgrid p { margin-top: 8px; font-size: 16px; line-height: 1.5; font-weight: 600; color: #e6e4de; }
+  @media (max-width: 900px) { .disc { grid-template-columns: 1fr; } }
+  @media (max-width: 760px) { .disc-panel { padding: 26px 20px; border-radius: 18px; } }
+
+  /* ---- Calculator ---- */
+  .calc { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 16px; }
+  .calc-in { background: var(--ink); color: var(--on-ink); border-radius: var(--r-lg); padding: 40px 38px; }
+  .calc-out {
+    background: var(--acc); color: var(--ink); border-radius: var(--r-lg); padding: 40px 38px;
+    display: flex; flex-direction: column; justify-content: space-between; gap: 30px;
+  }
+  .crow { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+  .cval { font-weight: 900; font-stretch: 115%; font-size: 40px; line-height: 1; white-space: nowrap; }
+  .range { -webkit-appearance: none; appearance: none; width: 100%; height: 48px; background: transparent; cursor: pointer; }
+  .range::-webkit-slider-runnable-track { height: 8px; border-radius: 8px; background: var(--ink-5); }
+  .range::-moz-range-track { height: 8px; border-radius: 8px; background: var(--ink-5); }
+  .range::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 30px; height: 30px; margin-top: -11px;
+    border-radius: 8px; background: var(--acc); border: 3px solid var(--ink);
+  }
+  .range::-moz-range-thumb { width: 28px; height: 28px; border-radius: 8px; background: var(--acc); border: 3px solid var(--ink); }
+  .big-n {
+    font-weight: 900; font-stretch: 115%; font-size: clamp(64px, 7.4vw, 120px);
+    line-height: .85; letter-spacing: -.04em; white-space: nowrap;
+  }
+  .mid-n {
+    font-weight: 900; font-stretch: 112%; font-size: clamp(40px, 4.4vw, 64px);
+    line-height: .9; letter-spacing: -.03em; white-space: nowrap;
+  }
+  .firm-grid { margin-top: 30px; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+  .firm {
+    aspect-ratio: 1; border-radius: var(--r-xs); display: flex; align-items: center;
+    justify-content: center; font-weight: 900; font-size: 14px; letter-spacing: .04em;
+    text-transform: uppercase; transition: all .35s var(--ease);
+  }
+  .firm.you { background: var(--acc); color: var(--ink); }
+  .firm.rival { background: var(--paper); color: var(--ink); animation: pop .4s var(--ease); }
+  .firm.off { background: var(--ink-3); color: var(--ink-3); }
+  .dots { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; }
+  .dot { aspect-ratio: 1; border-radius: 8px; background: var(--ink-3); transition: background .3s; }
+  .dot.on { background: var(--acc); }
+  @media (max-width: 900px) { .calc { grid-template-columns: 1fr; } }
+  @media (max-width: 440px) { .firm { font-size: 11px; letter-spacing: 0; } }
+  @media (max-width: 760px) { .calc-in, .calc-out { padding: 28px 22px; border-radius: 18px; } }
+
+  /* ---- Tabs ---- */
+  .tabbar { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tab {
+    display: inline-flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 22px;
+    border-radius: var(--r-xs); border: 2px solid rgba(242, 240, 234, .25);
+    font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: .02em;
+    transition: background .2s, color .2s, border-color .2s;
+  }
+  .tab:hover { border-color: var(--paper); }
+  .tab.on { background: var(--acc); border-color: var(--acc); color: var(--ink); }
+  .tab b { font-weight: 900; }
+  .tabpanel {
+    margin-top: 16px; background: var(--ink-2); border-radius: var(--r-lg); padding: 48px 46px;
+    display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 48px;
+    animation: panelin .45s var(--ease) both;
+  }
+  .tabpanel[hidden] { display: none; }
+  .point {
+    display: flex; gap: 14px; align-items: flex-start; padding: 18px 0;
+    border-top: 2px solid var(--ink-5); font-size: 17px; line-height: 1.45; font-weight: 600;
+  }
+  .point-tick {
+    flex: 0 0 30px; width: 30px; height: 30px; border-radius: 8px; background: var(--acc);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  @media (max-width: 900px) {
+    .tabpanel { grid-template-columns: 1fr; gap: 28px; padding: 30px 22px; border-radius: 18px; }
+    .tab { flex: 1 1 calc(50% - 8px); justify-content: flex-start; padding: 0 14px; font-size: 14px; }
+  }
+
+  /* ---- Stack ---- */
+  .stack { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 56px; align-items: center; }
+  .stack-toggle { display: inline-flex; gap: 6px; padding: 6px; border-radius: 14px; background: var(--ink); }
+  .sbtn {
+    display: inline-flex; align-items: center; min-height: 48px; padding: 0 18px;
+    border-radius: 9px; font-size: 14px; font-weight: 800; letter-spacing: .03em;
+    text-transform: uppercase; color: var(--on-ink); transition: background .2s, color .2s;
+  }
+  .sbtn.on { background: var(--acc); color: var(--ink); }
+  .nudge { animation: nudge 1.05s ease-out .25s 2 both; }
+  .stack-map {
+    background: var(--ink); color: var(--on-ink); border-radius: var(--r-lg); padding: 30px;
+    display: grid; grid-template-columns: minmax(0, .8fr) 56px minmax(0, 1.2fr); align-items: center;
+  }
+  .stack-src { display: flex; flex-direction: column; padding: 22px 20px; border-radius: var(--r-sm); border: 3px solid var(--acc); }
+  .stack-line { height: 4px; display: flex; align-items: center; }
+  .stack-line span {
+    display: block; width: 100%; height: 4px;
+    background: repeating-linear-gradient(90deg, var(--acc) 0 10px, transparent 10px 18px);
+    background-size: 36px 4px; animation: flow 1s linear infinite;
+  }
+  .stack-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  @media (max-width: 900px) { .stack { grid-template-columns: 1fr; gap: 32px; } }
+  @media (max-width: 760px) {
+    .stack-map { grid-template-columns: 1fr; padding: 22px; border-radius: 18px; }
+    .stack-line { height: 40px !important; width: 100%; }
+    .stack-line span { width: 4px !important; height: 100% !important; margin: 0 auto; }
+  }
+
+  /* ---- Lab ---- */
+  .lab-n {
+    font-weight: 900; font-stretch: 112%; font-size: clamp(34px, 3.6vw, 54px);
+    line-height: .95; letter-spacing: -.02em; text-transform: uppercase; white-space: nowrap;
+  }
+
+  /* ---- Stepper ---- */
+  .steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+  .step {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 14px; text-align: left;
+    padding: 22px 20px; min-height: 150px; border-radius: var(--r-sm); background: var(--paper-4);
+    transition: background .3s, color .3s, transform .3s;
+  }
+  .step:hover { transform: translateY(-4px); }
+  .step.on { background: var(--ink); color: var(--on-ink); }
+  .step .n { font-weight: 900; font-stretch: 118%; font-size: 44px; line-height: .85; letter-spacing: -.03em; }
+  .step.on .n { color: var(--acc); }
+  .step-out {
+    margin-top: 8px; background: var(--ink); color: var(--on-ink);
+    border-radius: var(--r-sm); padding: 30px;
+  }
+  @media (max-width: 900px) {
+    .steps { grid-template-columns: 1fr; }
+    .step { min-height: 0; flex-direction: row; align-items: center; gap: 18px; padding: 16px 18px; }
+    .step .n { font-size: 32px; }
+  }
+
+  /* ---- Case study ---- */
+  .case-wrap { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(460px, 100%), 1fr)); }
+  .case-shot {
+    min-height: 420px; border-radius: var(--r-lg); background: var(--ink-3);
+    position: relative; overflow: clip;
+  }
+  .case-shot :global(img) {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: 50% 0%;
+  }
+  .case-tag {
+    position: absolute; top: 18px; left: 18px; background: var(--acc);
+    color: var(--ink); padding: 7px 11px; border-radius: 7px;
+  }
+  .case-copy { padding: 20px 10px; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+  .case-stats {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px;
+    padding-top: 22px; border-top: 2px solid var(--ink-5);
+  }
+  .case-stat-n { font-weight: 900; font-stretch: 115%; font-size: 44px; line-height: 1; color: var(--acc); }
+
+  /* ---- FAQ ---- */
+  .faq { border-top: 3px solid var(--ink); }
+  .faq:last-child { border-bottom: 3px solid var(--ink); }
+  .faq-q {
+    display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 20px;
+    text-align: left; padding: 26px 0; font-weight: 800; font-stretch: 108%;
+    font-size: clamp(20px, 2.2vw, 30px); letter-spacing: -.01em; line-height: 1.15;
+  }
+  .faq-plus {
+    flex: 0 0 52px; width: 52px; height: 52px; border-radius: var(--r-xs);
+    background: var(--ink); color: var(--acc); display: inline-flex;
+    align-items: center; justify-content: center;
+    transition: transform .45s var(--ease), background .3s;
+  }
+  .faq.open .faq-plus { transform: rotate(45deg); background: var(--acc); color: var(--ink); }
+  .faq-link {
+    display: inline-flex; align-items: center; gap: 10px; margin: 0 0 30px; padding: 14px 22px;
+    border-radius: var(--r-xs); background: var(--ink); color: var(--paper);
+    font-weight: 800; font-size: 15px; letter-spacing: .04em; text-transform: uppercase;
+  }
+  .faq-link i { color: var(--acc); font-style: normal; }
+  @media (max-width: 760px) { .faq-q { padding: 20px 0; } .faq .lede { padding-right: 0 !important; } }
+</style>
+
+<script>
+  // ---- Generic tablist: roving tabindex + arrow keys ---------------
+  function wireTabs(btnSel: string, panelSel: string, onPick?: (i: number) => void) {
+    const btns = Array.from(document.querySelectorAll<HTMLButtonElement>(btnSel));
+    const panels = Array.from(document.querySelectorAll<HTMLElement>(panelSel));
+    if (!btns.length) return;
+
+    const pick = (i: number) => {
+      btns.forEach((b, n) => {
+        const on = n === i;
+        b.classList.toggle('on', on);
+        b.setAttribute('aria-selected', String(on));
+        b.tabIndex = on ? 0 : -1;
+      });
+      panels.forEach((p, n) => { p.hidden = n !== i; });
+      onPick?.(i);
+    };
+
+    btns.forEach((b, i) => {
+      b.addEventListener('click', () => pick(i));
+      b.addEventListener('keydown', (e) => {
+        const map: Record<string, number> = {
+          ArrowRight: i + 1, ArrowDown: i + 1,
+          ArrowLeft: i - 1, ArrowUp: i - 1,
+          Home: 0, End: btns.length - 1,
+        };
+        const next = map[e.key];
+        if (next === undefined) return;
+        e.preventDefault();
+        const t = (next + btns.length) % btns.length;
+        pick(t);
+        btns[t].focus();
+      });
+    });
+  }
+
+  wireTabs('[data-dbtn]', '[data-dpanel]');
+  wireTabs('[data-tab]', '[data-tabpanel]');
+
+  // ---- Stepper (one shared description panel) ----------------------
+  const stepBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-stepbtn]'));
+  const stepOut = document.querySelector<HTMLElement>('#step-desc p');
+  stepBtns.forEach((b, i) => {
+    const activate = () => {
+      stepBtns.forEach((o, n) => {
+        const on = n === i;
+        o.classList.toggle('on', on);
+        o.setAttribute('aria-selected', String(on));
+        o.tabIndex = on ? 0 : -1;
+      });
+      if (stepOut) stepOut.textContent = b.dataset.desc ?? '';
+    };
+    b.addEventListener('click', activate);
+    b.addEventListener('keydown', (e) => {
+      const d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1
+        : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+      if (!d) return;
+      e.preventDefault();
+      const t = (i + d + stepBtns.length) % stepBtns.length;
+      stepBtns[t].click();
+      stepBtns[t].focus();
+    });
+  });
+
+  // ---- FAQ accordion -----------------------------------------------
+  const faqs = Array.from(document.querySelectorAll<HTMLElement>('[data-faq]'));
+  faqs.forEach((row, idx) => {
+    row.querySelector<HTMLButtonElement>('[data-faqbtn]')?.addEventListener('click', () => {
+      const wasOpen = row.classList.contains('open');
+      faqs.forEach((r, i) => {
+        const open = !wasOpen && i === idx;
+        r.classList.toggle('open', open);
+        r.querySelector('[data-faqacc]')?.classList.toggle('open', open);
+        r.querySelector('[data-faqbtn]')?.setAttribute('aria-expanded', String(open));
+      });
+    });
+  });
+
+  // ---- Stack toggle ------------------------------------------------
+  const STACK = {
+    today: {
+      head: 'Leads land where you already work.',
+      body: "ADVRTISE integrates with your current tech stack, even if that's just an email inbox. No new software to learn on day one.",
+      items: [
+        ['Simplest', 'Your email inbox'], ['Shared', 'A spreadsheet'],
+        ['Existing', 'Your current CRM'], ['Diary', 'Booking software'],
+      ],
+    },
+    grow: {
+      head: "Better tools when you're ready.",
+      body: 'When volume grows, we can deploy a CRM for contact management, instant replies and automated follow-up, so no enquiry goes cold.',
+      items: [
+        ['CRM', 'Contact management'], ['Speed', 'Instant replies'],
+        ['Nurture', 'Automated follow-up'], ['Visibility', 'Pipeline tracking'],
+      ],
+    },
+  } as const;
+
+  const stackGrid = document.getElementById('stack-grid');
+  const stackHead = document.getElementById('stack-head');
+  const stackBody = document.getElementById('stack-body');
+  const stackBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-stack]'));
+
+  function renderStack(key: 'today' | 'grow') {
+    const set = STACK[key];
+    if (stackHead) stackHead.textContent = set.head;
+    if (stackBody) stackBody.textContent = set.body;
+    if (stackGrid) {
+      stackGrid.replaceChildren(
+        ...set.items.map(([k, v]) => {
+          const el = document.createElement('div');
+          el.className = 'stack-item';
+          const a = document.createElement('span');
+          a.className = 'label';
+          a.style.cssText = 'font-size:11px;opacity:.7';
+          a.textContent = k;
+          const b = document.createElement('span');
+          b.style.cssText = 'font-size:17px;font-weight:800;margin-top:4px';
+          b.textContent = v;
+          el.append(a, b);
+          return el;
+        }),
+      );
+    }
+    stackBtns.forEach((b) => {
+      const on = b.dataset.stack === key;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+  }
+
+  stackBtns.forEach((b) =>
+    b.addEventListener('click', () => renderStack(b.dataset.stack as 'today' | 'grow')),
+  );
+  renderStack('today');
+
+  // ---- Calculators -------------------------------------------------
+  const money = (n: number) => {
+    if (n >= 1_000_000) return '£' + (n / 1_000_000).toFixed(n >= 10_000_000 ? 0 : 1).replace(/\.0$/, '') + 'm';
+    if (n >= 1000) return '£' + Math.round(n / 1000) + 'k';
+    return '£' + n;
+  };
+  const txt = (id: string, v: string) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = v;
+  };
+
+  const shared = document.querySelector('[data-calc="shared"]');
+  if (shared) {
+    const firmsEl = document.getElementById('c-firms') as HTMLInputElement;
+    const cplEl = document.getElementById('c-cpl') as HTMLInputElement;
+    const dots = Array.from(document.querySelectorAll<HTMLElement>('#firm-dots .firm'));
+
+    const render = () => {
+      const firms = parseInt(firmsEl.value, 10) || 1;
+      const cpl = parseInt(cplEl.value, 10) || 5;
+      txt('out-firms', String(firms));
+      txt('out-cpl', String(cpl));
+      txt('out-odds', String(firms));
+      txt('out-perwin', String(cpl * firms));
+      dots.forEach((d, i) => {
+        d.className = 'firm ' + (i === 0 ? 'you' : i < firms ? 'rival' : 'off');
+        d.textContent = i === 0 ? 'You' : i < firms ? 'Rival' : '';
+      });
+    };
+    firmsEl?.addEventListener('input', render);
+    cplEl?.addEventListener('input', render);
+    render();
+  }
+
+  const pipeline = document.querySelector<HTMLElement>('[data-calc="pipeline"]');
+  if (pipeline) {
+    const jobsEl = document.getElementById('c-jobs') as HTMLInputElement;
+    const winEl = document.getElementById('c-win') as HTMLInputElement;
+    const valEl = document.getElementById('c-val') as HTMLInputElement;
+    const dots = Array.from(document.querySelectorAll<HTMLElement>('#win-dots .dot'));
+
+    const render = () => {
+      const jobs = parseInt(jobsEl.value, 10) || 1;
+      const win = parseInt(winEl.value, 10) || 5;
+      const val = parseInt(valEl.value, 10) || 0;
+      const need = Math.ceil(jobs / (win / 100));
+      const of10 = Math.round(win / 10);
+
+      txt('out-jobs', String(jobs));
+      txt('out-win', String(win));
+      txt('out-val', money(val));
+      txt('out-of10', String(of10));
+      txt('out-need', String(need));
+      txt('out-year', money(jobs * val * 12));
+      txt('out-math', `${jobs} ${jobs === 1 ? 'job' : 'jobs'} a month × ${money(val)} × 12 months`);
+      dots.forEach((d, i) => d.classList.toggle('on', i < of10));
+    };
+    jobsEl?.addEventListener('input', render);
+    winEl?.addEventListener('input', render);
+    valEl?.addEventListener('input', render);
+    render();
+  }
+
+  // ---- One-shot "nudge" glow when a control scrolls into view -------
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const en of entries) {
+          if (!en.isIntersecting) continue;
+          io.unobserve(en.target);
+          const target =
+            en.target.querySelectorAll('button')[1] ?? en.target.querySelector('button');
+          if (!target) continue;
+          target.classList.add('nudge');
+          setTimeout(() => target.classList.remove('nudge'), 2700);
+        }
+      },
+      { threshold: 0.5 },
+    );
+    setTimeout(() => {
+      document.querySelectorAll('[data-nudge]').forEach((el) => io.observe(el));
+    }, 350);
+  }
+</script>

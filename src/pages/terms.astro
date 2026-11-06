@@ -1,0 +1,103 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { site } from '../data/site';
+
+// NOTE FOR ADVRT: these are terms of use for the website only — they are not
+// terms of business for client engagements, which should be a separate
+// document. Items in [SQUARE BRACKETS] need your input. Have this checked
+// before the domain goes live.
+---
+
+<Legal
+  title="Terms of use · ADVRT"
+  description="The terms on which you may use the ADVRT website."
+  path="/terms"
+  heading="Terms of use"
+  updated="6 November 2026"
+>
+  <h2>About these terms</h2>
+  <p>
+    These terms cover your use of this website. They are not our terms of business: work we do for
+    clients is governed by a separate written agreement, and nothing on this website forms part of
+    that agreement or constitutes an offer.
+  </p>
+  <p>
+    This website is operated by ADVRT, [COMPANY NUMBER], registered at {site.address.line1},
+    {' '}{site.address.line2}, {site.address.city} {site.address.postcode}. By using the site you
+    accept these terms.
+  </p>
+
+  <h2>Using this website</h2>
+  <p>You may view, download and print pages for your own use or for use within your organisation. You may not:</p>
+  <ul>
+    <li>Republish, sell or sub-licence material from this site without our written permission</li>
+    <li>Use it in a way that damages, disables or overloads the site, or interferes with anyone else's use of it</li>
+    <li>Attempt to gain unauthorised access to the site, its server or any connected system</li>
+    <li>Submit anything through our forms that is unlawful, misleading, abusive, or not yours to send</li>
+  </ul>
+
+  <h2>Intellectual property</h2>
+  <p>
+    Unless stated otherwise, the content, design, text, graphics and code on this site belong to us
+    or are licensed to us, and are protected by copyright. The ADVRT and ADVRTISE names and logos are
+    our trade marks. Screenshots of client websites are used with permission and remain the property
+    of their owners.
+  </p>
+
+  <h2>Accuracy and performance figures</h2>
+  <p>
+    We keep this site accurate and current, but we give no warranty that it is complete or
+    error-free, and we may change it at any time without notice.
+  </p>
+  <p>
+    <strong>Any results, statistics or case study figures shown are historical and specific to the
+    client and period described.</strong> They are not a forecast or a guarantee of what your firm
+    would achieve. Marketing results depend on your market, pricing, capacity, competition and how
+    enquiries are handled, none of which we control.
+  </p>
+  <p>
+    Nothing on this site is professional, financial or legal advice, and it should not be relied on
+    as a substitute for advice specific to your circumstances.
+  </p>
+
+  <h2>Our liability</h2>
+  <p>
+    Nothing in these terms excludes or limits our liability for death or personal injury caused by
+    our negligence, for fraud or fraudulent misrepresentation, or for anything else that cannot
+    lawfully be excluded.
+  </p>
+  <p>
+    Subject to that, we are not liable for any loss of profit, loss of business, business
+    interruption or loss of anticipated savings arising from your use of, or inability to use, this
+    website, or from reliance on anything published on it. We do not guarantee the site will always
+    be available or uninterrupted.
+  </p>
+
+  <h2>Links to other sites</h2>
+  <p>
+    Where we link to third-party websites, those links are provided for information only. We have no
+    control over their content and accept no responsibility for it.
+  </p>
+  <p>
+    You may link to our home page provided you do so fairly, legally, and in a way that does not
+    suggest any association or endorsement that does not exist.
+  </p>
+
+  <h2>Privacy</h2>
+  <p>
+    How we handle personal data submitted through this site is set out in our
+    {' '}<a href="/privacy">privacy notice</a>.
+  </p>
+
+  <h2>Governing law</h2>
+  <p>
+    These terms are governed by the law of England and Wales, and the courts of England and Wales
+    have exclusive jurisdiction over any dispute arising from them.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Questions about these terms: <a href={`mailto:${site.email}`}>{site.email}</a> or
+    {' '}<a href={site.phoneHref}>{site.phone}</a>.
+  </p>
+</Legal>

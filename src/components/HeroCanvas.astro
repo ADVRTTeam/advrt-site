@@ -1,0 +1,337 @@
+---
+/**
+ * The assembling-building hero.
+ *
+ * The design canvas drove this with Three.js (~608KB). This is a hand-rolled
+ * perspective projector on a 2D canvas: same camera orbit, same floor-by-floor
+ * assembly, same orange cap and rising neighbours, in a couple of KB.
+ *
+ * Faces are drawn with a painter's algorithm (sorted back to front) and shaded
+ * by their normal against a key light, with an accent rim light from behind
+ * left — matching the lighting rig in the canvas.
+ *
+ * The hero copy is the LCP element and renders immediately; this paints over
+ * the flat ink background once the module arrives, so it never blocks.
+ */
+---
+
+<canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
+
+<style>
+  .hero-canvas {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 46%;
+    height: 100%;
+    z-index: 0;
+  }
+  @media (max-width: 900px) {
+    .hero-canvas {
+      width: 100%;
+      height: 44%;
+    }
+  }
+</style>
+
+<script>
+  type Vec = [number, number, number];
+
+  const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement | null;
+  const ctx = canvas?.getContext('2d');
+
+  if (canvas && ctx) {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const saveData =
+      (navigator as unknown as { connection?: { saveData?: boolean } }).connection?.saveData === true;
+    const still = reduce || saveData;
+
+    // ---- Scene constants (from the design canvas) ----------------
+    const FLOORS = 14;
+    const FH = 2.6;
+    const CONCRETE: Vec = [233, 230, 222]; // #e9e6de
+    const ACCENT: Vec = [255, 90, 31]; // #ff5a1f
+    const EDGE = '#0b0b0c';
+    const NEIGHBOURS: [number, number, number, number][] = [
+      [22, 14, 8, 10], [-20, 18, 9, 18], [26, -14, 7, 7], [-24, -16, 8, 24],
+      [8, 26, 7, 13], [-8, -26, 8, 9], [32, 4, 6, 16], [-32, 4, 7, 12],
+    ];
+
+    let w = 1;
+    let h = 1;
+    let dpr = 1;
+    let mobile = innerWidth < 900;
+
+    function resize() {
+      if (!canvas || !ctx) return;
+      mobile = innerWidth < 900;
+      dpr = Math.min(mobile ? 1.5 : 2, devicePixelRatio || 1);
+      w = Math.max(1, canvas.clientWidth);
+      h = Math.max(1, canvas.clientHeight);
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    // ---- Maths helpers -------------------------------------------
+    const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
+    const ease = (x: number) => 1 - Math.pow(1 - x, 3);
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+    const sub = (a: Vec, b: Vec): Vec => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+    const cross = (a: Vec, b: Vec): Vec => [
+      a[1] * b[2] - a[2] * b[1],
+      a[2] * b[0] - a[0] * b[2],
+      a[0] * b[1] - a[1] * b[0],
+    ];
+    const dot = (a: Vec, b: Vec) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+    function norm(v: Vec): Vec {
+      const l = Math.hypot(v[0], v[1], v[2]) || 1;
+      return [v[0] / l, v[1] / l, v[2] / l];
+    }
+
+    const KEY = norm([40, 70, 30]);
+    const RIM = norm([-50, 20, -30]);
+
+    // ---- Camera --------------------------------------------------
+    const FOV = 34;
+    let cam: Vec = [0, 0, 80];
+    let basis = { right: [1, 0, 0] as Vec, up: [0, 1, 0] as Vec, fwd: [0, 0, -1] as Vec };
+
+    function setCamera(pos: Vec, target: Vec) {
+      cam = pos;
+      const fwd = norm(sub(target, pos));
+      const right = norm(cross(fwd, [0, 1, 0]));
+      const up = cross(right, fwd);
+      basis = { right, up, fwd };
+    }
+
+    /** World point -> screen point. Returns null when behind the camera. */
+    function project(p: Vec): [number, number, number] | null {
+      const d = sub(p, cam);
+      const z = dot(d, basis.fwd);
+      if (z <= 0.1) return null;
+      const f = h / (2 * Math.tan((FOV * Math.PI) / 360));
+      return [w / 2 + (dot(d, basis.right) / z) * f, h / 2 - (dot(d, basis.up) / z) * f, z];
+    }
+
+    // ---- Faces ---------------------------------------------------
+    interface Face {
+      pts: [number, number][];
+      depth: number;
+      fill: string;
+      stroke: boolean;
+    }
+
+    function shade(base: Vec, n: Vec, glow: number, ambient = 0.42): string {
+      const k = Math.max(0, dot(n, KEY));
+      const r = Math.max(0, dot(n, RIM));
+      // Ambient + key light, then an accent rim, then the landing glow.
+      // The accent cap gets a higher ambient floor so it still reads as brand
+      // orange on its shaded faces rather than going brown.
+      const lit = ambient + (1 - ambient + 0.1) * k;
+      let [cr, cg, cb] = [base[0] * lit, base[1] * lit, base[2] * lit];
+      cr += ACCENT[0] * r * 0.34;
+      cg += ACCENT[1] * r * 0.34;
+      cb += ACCENT[2] * r * 0.34;
+      if (glow > 0) {
+        cr = lerp(cr, ACCENT[0], glow * 0.85);
+        cg = lerp(cg, ACCENT[1], glow * 0.85);
+        cb = lerp(cb, ACCENT[2], glow * 0.85);
+      }
+      return `rgb(${Math.min(255, cr) | 0},${Math.min(255, cg) | 0},${Math.min(255, cb) | 0})`;
+    }
+
+    /** Push the visible faces of an axis-aligned box into `out`. */
+    function box(
+      out: Face[],
+      cx: number,
+      cy: number,
+      cz: number,
+      sx: number,
+      sy: number,
+      sz: number,
+      base: Vec,
+      glow = 0,
+      stroke = true,
+      ambient = 0.42,
+    ) {
+      const x0 = cx - sx / 2, x1 = cx + sx / 2;
+      const y0 = cy - sy / 2, y1 = cy + sy / 2;
+      const z0 = cz - sz / 2, z1 = cz + sz / 2;
+
+      const v: Vec[] = [
+        [x0, y0, z0], [x1, y0, z0], [x1, y1, z0], [x0, y1, z0],
+        [x0, y0, z1], [x1, y0, z1], [x1, y1, z1], [x0, y1, z1],
+      ];
+      const quads: [number[], Vec][] = [
+        [[4, 5, 6, 7], [0, 0, 1]],
+        [[1, 0, 3, 2], [0, 0, -1]],
+        [[5, 1, 2, 6], [1, 0, 0]],
+        [[0, 4, 7, 3], [-1, 0, 0]],
+        [[3, 7, 6, 2], [0, 1, 0]],
+        [[0, 1, 5, 4], [0, -1, 0]],
+      ];
+
+      for (const [idx, n] of quads) {
+        // Back-face cull: skip quads whose normal points away from the camera.
+        const centre: Vec = [
+          (v[idx[0]][0] + v[idx[2]][0]) / 2,
+          (v[idx[0]][1] + v[idx[2]][1]) / 2,
+          (v[idx[0]][2] + v[idx[2]][2]) / 2,
+        ];
+        if (dot(n, norm(sub(centre, cam))) >= 0) continue;
+
+        const pts: [number, number][] = [];
+        let depth = 0;
+        let ok = true;
+        for (const i of idx) {
+          const p = project(v[i]);
+          if (!p) { ok = false; break; }
+          pts.push([p[0], p[1]]);
+          depth += p[2];
+        }
+        if (!ok) continue;
+        out.push({ pts, depth: depth / idx.length, fill: shade(base, n, glow, ambient), stroke });
+      }
+    }
+
+    function ground(out: Face[]) {
+      // Dark circular slab the tower sits on.
+      const pts: [number, number][] = [];
+      let depth = 0;
+      let n = 0;
+      for (let i = 0; i < 48; i++) {
+        const a = (i / 48) * Math.PI * 2;
+        const p = project([Math.cos(a) * 40, 0, Math.sin(a) * 40]);
+        if (!p) continue;
+        pts.push([p[0], p[1]]);
+        depth += p[2];
+        n++;
+      }
+      if (n > 8) out.push({ pts, depth: depth / n + 1e4, fill: '#131316', stroke: false });
+    }
+
+    // ---- Frame ---------------------------------------------------
+    let t0 = performance.now();
+    let ptx = 0, pty = 0, pmx = 0, pmy = 0;
+    let heroProg = 0;
+    let running = true;
+    let raf = 0;
+
+    function draw(now: number) {
+      if (!ctx || !canvas) return;
+      const t = still ? 6 : (now - t0) / 1000;
+
+      ctx.clearRect(0, 0, w, h);
+
+      const ang = 0.7 + t * 0.06 + heroProg * 1.4;
+      // The tower is ~38 units tall. At a 34° vertical FOV it needs roughly
+      // 95 units of distance to sit in frame with the orange cap slab and the
+      // ground both visible; closer than that and the top crops off.
+      const radius = (mobile ? 112 : 95) - heroProg * 14;
+      pmx = lerp(pmx, ptx, 0.05);
+      pmy = lerp(pmy, pty, 0.05);
+      setCamera(
+        [Math.sin(ang) * radius + pmx * 6, 28 + heroProg * 18 + pmy * 5, Math.cos(ang) * radius],
+        [0, FLOORS * FH * 0.5, 0],
+      );
+
+      const faces: Face[] = [];
+      ground(faces);
+
+      // Neighbours rise as you scroll out of the hero.
+      NEIGHBOURS.forEach((spec, i) => {
+        const [x, z, wd, ht] = spec;
+        const k = clamp01(heroProg * 1.8 - i * 0.08);
+        const sy = Math.max(0.001, ease(k)) * ht;
+        if (sy < 0.05) return;
+        box(faces, x, sy / 2, z, wd, sy, wd * 0.9, i % 3 === 0 ? [58, 58, 63] : [42, 42, 46]);
+      });
+
+      // Floors drop in one after another.
+      for (let i = 0; i < FLOORS; i++) {
+        const k = clamp01((t - 0.25 - i * 0.12) / 0.5);
+        if (k <= 0) continue;
+        const frac = i / FLOORS;
+        const y = i * FH + FH / 2 + (1 - ease(k)) * 14;
+        box(
+          faces, 0, y, 0,
+          14 - frac * 3.2, FH * 0.86, 11 - frac * 2.4,
+          CONCRETE,
+          k < 1 ? 1 - k : 0,
+        );
+      }
+
+      // The orange cap slab.
+      const kc = clamp01((t - 0.25 - FLOORS * 0.12) / 0.5);
+      if (kc > 0) {
+        box(faces, 0, FLOORS * FH + 0.6 + (1 - ease(kc)) * 14, 0, 6, 1.2, 6, ACCENT, 0, true, 0.78);
+      }
+
+      faces.sort((a, b) => b.depth - a.depth);
+
+      ctx.lineJoin = 'round';
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = EDGE;
+      for (const f of faces) {
+        ctx.beginPath();
+        ctx.moveTo(f.pts[0][0], f.pts[0][1]);
+        for (let i = 1; i < f.pts.length; i++) ctx.lineTo(f.pts[i][0], f.pts[i][1]);
+        ctx.closePath();
+        ctx.fillStyle = f.fill;
+        ctx.fill();
+        if (f.stroke) ctx.stroke();
+      }
+
+      if (!still && running) raf = requestAnimationFrame(draw);
+    }
+
+    // ---- Wiring --------------------------------------------------
+    resize();
+    addEventListener('resize', () => {
+      resize();
+      if (still) draw(performance.now());
+    }, { passive: true });
+
+    if (!still) {
+      addEventListener(
+        'pointermove',
+        (e) => {
+          ptx = (e.clientX / innerWidth) * 2 - 1;
+          pty = -((e.clientY / innerHeight) * 2 - 1);
+        },
+        { passive: true },
+      );
+
+      addEventListener(
+        'scroll',
+        () => {
+          heroProg = clamp01((scrollY || 0) / Math.max(1, canvas.clientHeight));
+        },
+        { passive: true },
+      );
+
+      // Stop drawing entirely once the hero is off screen.
+      new IntersectionObserver(
+        (entries) => {
+          for (const en of entries) {
+            if (en.isIntersecting && !running) {
+              running = true;
+              t0 = performance.now() - 6000; // resume assembled, don't replay
+              raf = requestAnimationFrame(draw);
+            } else if (!en.isIntersecting && running) {
+              running = false;
+              cancelAnimationFrame(raf);
+            }
+          }
+        },
+        { threshold: 0 },
+      ).observe(canvas);
+
+      raf = requestAnimationFrame(draw);
+    } else {
+      draw(performance.now());
+    }
+  }
+</script>

@@ -1,0 +1,654 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import logo from '../assets/images/advrt-logo.png';
+import { site } from '../data/site';
+import {
+  sectorOptions, workBySector, sourceOptions, siteOptions,
+  budgetOptions, timingOptions, callTimes, stepLabels,
+} from '../data/brief';
+
+// The brief's step 2 offers a GoHighLevel booking calendar in the design. When
+// a calendar URL is configured it is embedded; otherwise the built-in day/time
+// picker below is used and the chosen slot is submitted with the brief.
+const ghlCalendar = import.meta.env.PUBLIC_GHL_CALENDAR_URL ?? '';
+
+/** The next five weekdays, as the canvas computes them. */
+function nextWeekdays(count = 5): string[] {
+  const out: string[] = [];
+  for (let i = 1; out.length < count && i < 16; i++) {
+    const d = new Date(Date.now() + i * 86_400_000);
+    if (d.getDay() === 0 || d.getDay() === 6) continue;
+    out.push(d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }));
+  }
+  return out;
+}
+const days = nextWeekdays();
+---
+
+<Base
+  title="Start a project · ADVRT"
+  description="Draw up your brief in two minutes and five questions. Tell us about your firm and the work you want more of, and we'll come back with a plan, not a pitch."
+  path="/start-a-project"
+  noindex={false}
+>
+  <header class="outer brief-head">
+    <a href="/" aria-label="ADVRT home" style="display:flex;align-items:center;min-height:44px">
+      <Image src={logo} alt="ADVRT" height={26} densities={[1, 2]} loading="eager" style="height:26px;width:auto" />
+    </a>
+    <a href="/" aria-label="Close and return home" class="closer">
+      <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="#0b0b0c" stroke-width="2.2" aria-hidden="true">
+        <path d="M1 1l14 14M15 1L1 15"></path>
+      </svg>
+    </a>
+  </header>
+
+  <main class="outer brief-main" id="main">
+    <div class="brief-intro">
+      <div>
+        <div class="label starting">
+          <span class="dot" aria-hidden="true"></span>Start a project
+        </div>
+        <h1 class="disp" style="font-size:clamp(44px,7vw,112px)">Draw up <span class="hl">your brief.</span></h1>
+      </div>
+      <p class="h3" style="font-size:22px;color:var(--on-ink-2)">Two minutes. Five questions.</p>
+    </div>
+
+    <div class="shell">
+      <section class="form" aria-label="Project brief">
+        <!-- ===================== THE FORM ===================== -->
+        <form method="POST" action="/api/enquiry" id="brief-form" novalidate>
+          <input type="hidden" name="form" value="brief" />
+          <input type="hidden" name="page" value="/start-a-project" />
+          <input type="hidden" name="_t" id="brief-t" value="" />
+          <div class="hp" aria-hidden="true">
+            <label for="brief-gotcha">Leave this field empty</label>
+            <input id="brief-gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <!-- Progress. Buttons only do anything with JS, so they are
+               rendered as buttons and hidden from the no-JS flow. -->
+          <div class="prog" id="brief-prog" aria-label="Step 1 of 5" hidden>
+            {stepLabels.map((l, i) => (
+              <button type="button" class:list={['pstep', { on: i === 0 }]} data-goto={i} aria-label={`Go to step ${i + 1}: ${l}`}>
+                <span class="ln"></span><span class="t">{l}</span>
+              </button>
+            ))}
+          </div>
+
+          <!-- ---- 01 Firm ---- -->
+          <fieldset class="stage" data-step="0">
+            <legend class="sr-only">What kind of firm are you?</legend>
+            <div class="label" style="color:var(--on-paper-3)">01 / 05</div>
+            <h2 class="q" style="margin-top:12px">What kind of firm are you?</h2>
+            <div class="opt-grid" style="margin-top:28px">
+              {sectorOptions.map((label, i) => (
+                <label class="opt">
+                  <input type="radio" name="sector" value={label} class="vis-hidden" data-sector-pick required />
+                  <span style="display:flex;width:100%;justify-content:space-between;align-items:center">
+                    <span class="n">{`0${i + 1}`}</span>
+                    <span class="tick" aria-hidden="true">
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#0b0b0c" stroke-width="2.8"><path d="M2.5 8.5l3.5 3.5 7.5-8"></path></svg>
+                    </span>
+                  </span>
+                  <span class="h3" style="font-size:22px;text-transform:uppercase">{label}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <!-- ---- 02 Work ---- -->
+          <fieldset class="stage" data-step="1" hidden>
+            <legend class="sr-only">Which work do you want more of?</legend>
+            <div class="label" style="color:var(--on-paper-3)">02 / 05</div>
+            <h2 class="q" style="margin-top:12px">Which work do you want more of?</h2>
+            <p style="margin-top:10px;font-size:17px;font-weight:600;color:var(--on-paper-2)">Pick as many as you like.</p>
+            {Object.entries(workBySector).map(([sector, items]) => (
+              <div class="work-group" data-work-for={sector} style="margin-top:26px">
+                <div class="lbl work-group-label">{sector}</div>
+                <div style="display:flex;flex-wrap:wrap;gap:10px">
+                  {items.map((label) => (
+                    <label class="chip">
+                      <input type="checkbox" name="work" value={label} class="vis-hidden" />
+                      <span>{label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </fieldset>
+
+          <!-- ---- 03 Today ---- -->
+          <fieldset class="stage" data-step="2" hidden>
+            <legend class="sr-only">Where does work come from today?</legend>
+            <div class="label" style="color:var(--on-paper-3)">03 / 05</div>
+            <h2 class="q" style="margin-top:12px">Where does work come from today?</h2>
+            <div style="margin-top:26px;display:flex;flex-wrap:wrap;gap:10px">
+              {sourceOptions.map((label) => (
+                <label class="chip">
+                  <input type="checkbox" name="sources" value={label} class="vis-hidden" />
+                  <span>{label}</span>
+                </label>
+              ))}
+            </div>
+
+            <h3 class="h3" style="margin-top:40px;font-size:24px;text-transform:uppercase">And your website?</h3>
+            <div class="opt-grid" style="margin-top:16px">
+              {siteOptions.map((o) => (
+                <label class="opt">
+                  <input type="radio" name="website" value={o.label} class="vis-hidden" />
+                  <span class="h3" style="font-size:20px;text-transform:uppercase">{o.label}</span>
+                  <span style="font-size:15px;line-height:1.45;font-weight:500">{o.sub}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <!-- ---- 04 Budget ---- -->
+          <fieldset class="stage" data-step="3" hidden>
+            <legend class="sr-only">Budget and timing</legend>
+            <div class="label" style="color:var(--on-paper-3)">04 / 05</div>
+            <h2 class="q" style="margin-top:12px">Budget and timing</h2>
+
+            <h3 class="lbl" style="margin-top:30px">Monthly ad budget</h3>
+            <div style="display:flex;flex-wrap:wrap;gap:10px">
+              {budgetOptions.map((label) => (
+                <label class="chip">
+                  <input type="radio" name="budget" value={label} class="vis-hidden" />
+                  <span>{label}</span>
+                </label>
+              ))}
+            </div>
+
+            <h3 class="lbl" style="margin-top:32px">When do you want to start?</h3>
+            <div style="display:flex;flex-wrap:wrap;gap:10px">
+              {timingOptions.map((label) => (
+                <label class="chip">
+                  <input type="radio" name="timing" value={label} class="vis-hidden" />
+                  <span>{label}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <!-- ---- 05 Contact ---- -->
+          <fieldset class="stage" data-step="4" hidden>
+            <legend class="sr-only">Where should we send the plan?</legend>
+            <div class="label" style="color:var(--on-paper-3)">05 / 05</div>
+            <h2 class="q" style="margin-top:12px">Where should we send the plan?</h2>
+            <div class="form-grid" style="margin-top:28px">
+              <div>
+                <label class="lbl" for="b-name">Your name *</label>
+                <input id="b-name" name="name" class="field" type="text" autocomplete="name" required />
+              </div>
+              <div>
+                <label class="lbl" for="b-firm">Firm</label>
+                <input id="b-firm" name="firm" class="field" type="text" autocomplete="organization" />
+              </div>
+              <div>
+                <label class="lbl" for="b-email">Email *</label>
+                <input id="b-email" name="email" class="field" type="email" autocomplete="email" required />
+              </div>
+              <div>
+                <label class="lbl" for="b-phone">Phone</label>
+                <input id="b-phone" name="phone" class="field" type="tel" autocomplete="tel" />
+              </div>
+              <div style="grid-column:1 / -1">
+                <label class="lbl" for="b-area">Areas you cover</label>
+                <input id="b-area" name="area" class="field" type="text" placeholder="e.g. Hampshire and Dorset" />
+              </div>
+              <div style="grid-column:1 / -1">
+                <label class="lbl" for="b-notes">Anything else?</label>
+                <textarea id="b-notes" name="notes" class="field" rows="3" style="resize:vertical;min-height:120px"></textarea>
+              </div>
+            </div>
+            <p class="alert" id="brief-error" role="alert" hidden></p>
+          </fieldset>
+
+          <!-- ---- Booking (shown after the brief is sent when JS is on) ---- -->
+          <fieldset class="stage" data-step="5" id="brief-booking" hidden>
+            <legend class="sr-only">Book your discovery call</legend>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <span class="stepflag done">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8"></path></svg>
+                Step 1 · Brief received
+              </span>
+              <span class="stepflag now">Step 2 · Book your discovery call</span>
+            </div>
+            <h2 class="q" style="margin-top:26px">Book your discovery call.</h2>
+            <p style="margin-top:12px;max-width:560px;font-size:17px;font-weight:600;line-height:1.5;color:var(--on-paper-2)">
+              Your brief is in. The discovery call is how your enquiry gets looked at fastest:
+              30 minutes to talk it through, so we come back with a plan, not a pitch.
+              Pick a time that suits.
+            </p>
+
+            {ghlCalendar ? (
+              <div class="ghl" style="margin-top:28px">
+                <iframe
+                  src={ghlCalendar}
+                  title="Book a discovery call"
+                  loading="lazy"
+                  style="width:100%;height:680px;border:0;display:block"
+                ></iframe>
+              </div>
+            ) : (
+              <div class="ghl" style="margin-top:28px">
+                <div style="padding:26px 24px 28px">
+                  <h3 class="lbl">Pick a day</h3>
+                  <div style="display:flex;flex-wrap:wrap;gap:10px">
+                    {days.map((label) => (
+                      <label class="chip">
+                        <input type="radio" name="callDay" value={label} class="vis-hidden" />
+                        <span>{label}</span>
+                      </label>
+                    ))}
+                  </div>
+
+                  <h3 class="lbl" style="margin-top:24px">Pick a time</h3>
+                  <div style="display:flex;flex-wrap:wrap;gap:10px">
+                    {callTimes.map((label) => (
+                      <label class="chip">
+                        <input type="radio" name="callTime" value={label} class="vis-hidden" />
+                        <span>{label}</span>
+                      </label>
+                    ))}
+                  </div>
+
+                  <p style="margin-top:18px;font-size:14px;font-weight:600;color:var(--on-paper-4)">
+                    30 minutes · phone or video · confirmation lands on WhatsApp
+                  </p>
+                </div>
+              </div>
+            )}
+            <p class="alert" id="call-error" role="alert" hidden></p>
+          </fieldset>
+
+          <!-- ---- Controls ---- -->
+          <div class="controls">
+            <button type="button" class="back" id="brief-back" hidden>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M10 2L4 8l6 6"></path></svg>
+              Back
+            </button>
+            <span style="flex:1"></span>
+            <button type="submit" class="btn" id="brief-next">
+              <span id="brief-next-label">Send brief</span> <i aria-hidden="true">→</i>
+            </button>
+          </div>
+        </form>
+
+        <!-- ===================== DONE ===================== -->
+        <div class="stage" id="brief-done" hidden>
+          <div style="min-height:520px;display:flex;flex-direction:column;justify-content:center;gap:24px">
+            <span aria-hidden="true" class="done-mark">
+              <svg width="40" height="40" viewBox="0 0 16 16" fill="none" stroke="#ff5a1f" stroke-width="2.4" stroke-dasharray="40" style="animation:drawok .8s .25s ease both"><path d="M2.5 8.5l3.5 3.5 7.5-8"></path></svg>
+            </span>
+            <h2 class="disp" style="font-size:clamp(38px,4.6vw,72px)">
+              All done, <span class="hl" id="done-name">thanks.</span>
+            </h2>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <span class="stepflag done">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8"></path></svg>
+                Brief received
+              </span>
+              <span class="stepflag done" id="done-slot">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8"></path></svg>
+                Discovery call booked
+              </span>
+            </div>
+            <div>
+              <h3 class="lbl" style="margin-bottom:12px">What happens next</h3>
+              <ol class="nexts">
+                <li><b>1</b>You'll get a WhatsApp message shortly confirming your call time, with joining instructions.</li>
+                <li><b>2</b>We review your brief before the call, so we're not starting cold.</li>
+                <li><b>3</b>On the call: your numbers, your patch, and the plan we'd build. No pitch deck.</li>
+              </ol>
+            </div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px">
+              <a class="btn" href="/">Back to home <i aria-hidden="true">→</i></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SPEC PANEL ===================== -->
+      <aside class="spec" aria-label="Your spec so far">
+        <div style="position:sticky;top:24px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline">
+            <span class="label">Your spec</span>
+            <span class="spec-pct" id="spec-pct">0%</span>
+          </div>
+          <div class="spec-bar"><div id="spec-fill"></div></div>
+          <div class="spec-list" id="spec-list" aria-live="polite"></div>
+          <p class="spec-list h3" style="margin-top:26px;font-size:18px;text-transform:uppercase">
+            Handed over with confidence. Always in your control.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .brief-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    padding-top: 18px; padding-bottom: 18px; max-width: 1376px; margin: 0 auto;
+  }
+  .closer {
+    width: 52px; height: 52px; border-radius: var(--r-xs); background: var(--paper);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .brief-main { padding-top: 40px; padding-bottom: 90px; }
+  .brief-intro {
+    max-width: var(--wrap); margin: 0 auto 44px; display: flex;
+    justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap;
+  }
+  .starting {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 20px; color: var(--acc);
+  }
+  .starting .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--acc); animation: blink 1.4s ease-in-out infinite; }
+
+  .shell {
+    display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 16px;
+    max-width: var(--wrap); margin: 0 auto;
+  }
+  .form { background: var(--paper); color: var(--on-paper); border-radius: var(--r-xl); padding: 44px 48px; }
+  .spec { background: var(--acc); color: var(--ink); border-radius: var(--r-xl); padding: 36px 34px; }
+  .spec-pct { font-weight: 900; font-stretch: 118%; font-size: 56px; line-height: .85; letter-spacing: -.03em; }
+  .spec-bar { margin-top: 16px; height: 10px; border-radius: 10px; background: rgba(11, 11, 12, .2); overflow: hidden; }
+  .spec-bar div { height: 100%; width: 0; background: var(--ink); border-radius: 10px; transition: width .55s var(--ease); }
+  .spec-list { display: flex; flex-direction: column; margin-top: 22px; }
+  @media (max-width: 1000px) {
+    .shell { grid-template-columns: 1fr; }
+    .spec { order: -1; }
+    .spec-list { display: none !important; }
+  }
+  @media (max-width: 760px) {
+    .form { padding: 28px 20px; border-radius: var(--r-md); }
+    .spec { padding: 22px 20px; border-radius: var(--r-md); }
+  }
+
+  fieldset { border: 0; }
+  .stage { animation: stepin .5s var(--ease) both; }
+  .stage[hidden] { display: none; }
+  .q {
+    font-weight: 900; font-stretch: 112%; text-transform: uppercase;
+    letter-spacing: -.015em; line-height: .95; font-size: clamp(30px, 3.6vw, 54px); text-wrap: balance;
+  }
+
+  /* Real inputs, visually replaced by the canvas's cards and chips. */
+  .vis-hidden {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+  .opt-grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr)); }
+  .opt {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 10px; text-align: left;
+    min-height: 96px; padding: 18px; border-radius: var(--r-sm); background: var(--paper-4);
+    cursor: pointer; transition: background .2s, color .2s, transform .25s var(--ease);
+  }
+  .opt:hover { transform: translateY(-3px); }
+  .opt:has(input:checked) { background: var(--ink); color: var(--paper); }
+  .opt:has(input:focus-visible) { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .opt .tick {
+    width: 26px; height: 26px; border-radius: 7px; border: 2px solid currentColor;
+    display: inline-flex; align-items: center; justify-content: center; transition: all .2s;
+  }
+  .opt .tick svg { opacity: 0; }
+  .opt:has(input:checked) .tick { background: var(--acc); border-color: var(--acc); animation: pop .35s var(--ease); }
+  .opt:has(input:checked) .tick svg { opacity: 1; }
+  .opt .n { font-weight: 900; font-size: 15px; }
+  .opt:has(input:checked) .n { color: var(--acc); }
+
+  .chip { cursor: pointer; }
+  .chip:has(input:checked) { background: var(--ink); color: var(--paper); }
+  .chip:has(input:checked)::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--acc); }
+  .chip:has(input:focus-visible) { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+  .prog { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+  .prog[hidden] { display: none; }
+  .pstep { display: flex; flex-direction: column; gap: 10px; text-align: left; min-height: 44px; }
+  .pstep .ln { height: 8px; border-radius: 8px; background: var(--paper-5); position: relative; overflow: hidden; }
+  .pstep .ln::after {
+    content: ''; position: absolute; inset: 0; background: var(--ink); border-radius: 8px;
+    transform: scaleX(0); transform-origin: left; transition: transform .55s var(--ease);
+  }
+  .pstep.on .ln::after { background: var(--acc); transform: scaleX(1); }
+  .pstep.done .ln::after { transform: scaleX(1); }
+  .pstep .t { font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--on-paper-3); }
+  .pstep.on .t { color: var(--on-paper); }
+  @media (max-width: 760px) { .pstep .t { display: none; } }
+
+  .controls {
+    margin-top: 44px; padding-top: 26px; border-top: 3px solid var(--ink);
+    display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .controls .btn { background: var(--ink); color: var(--paper); border-radius: var(--r-xs); min-height: 62px; }
+  .controls .btn i { background: var(--acc); color: var(--ink); width: 46px; height: 46px; border-radius: 8px; }
+
+  .stepflag {
+    display: inline-flex; align-items: center; gap: 9px; align-self: flex-start; min-height: 40px;
+    padding: 0 16px; border-radius: var(--r-pill); font-size: 13px; font-weight: 800;
+    letter-spacing: .04em; text-transform: uppercase;
+  }
+  .stepflag.done { background: var(--ink); color: var(--paper); }
+  .stepflag.done svg { color: var(--acc); }
+  .stepflag.now { background: var(--acc); color: var(--ink); }
+
+  .ghl { border: 2px solid var(--ink); border-radius: 18px; overflow: hidden; background: var(--white); }
+
+  .done-mark {
+    width: 84px; height: 84px; border-radius: var(--r-md); background: var(--ink);
+    display: inline-flex; align-items: center; justify-content: center; animation: pop .5s var(--ease);
+  }
+  .nexts { list-style: none; display: flex; flex-direction: column; gap: 12px; max-width: 560px; }
+  .nexts li {
+    display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 14px; align-items: baseline;
+    font-size: 16px; line-height: 1.5; font-weight: 600; color: var(--on-paper-2);
+  }
+  .nexts li b {
+    display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px;
+    border-radius: 9px; background: var(--acc); color: var(--ink); font-size: 14px; font-weight: 900;
+  }
+
+  /* Without JS every step is visible and the group labels explain the
+     work options, so the whole brief can be filled in and submitted once. */
+  .work-group-label { display: block; }
+</style>
+
+<script>
+  const form = document.getElementById('brief-form') as HTMLFormElement | null;
+  if (form) {
+    const prog = document.getElementById('brief-prog')!;
+    const steps = Array.from(form.querySelectorAll<HTMLElement>('[data-step]'));
+    const backBtn = document.getElementById('brief-back') as HTMLButtonElement;
+    const nextBtn = document.getElementById('brief-next') as HTMLButtonElement;
+    const nextLabel = document.getElementById('brief-next-label')!;
+    const errorEl = document.getElementById('brief-error') as HTMLElement;
+    const callError = document.getElementById('call-error') as HTMLElement;
+    const doneEl = document.getElementById('brief-done')!;
+    const pctEl = document.getElementById('spec-pct')!;
+    const fillEl = document.getElementById('spec-fill') as HTMLElement;
+    const listEl = document.getElementById('spec-list')!;
+    const progBtns = Array.from(prog.querySelectorAll<HTMLButtonElement>('[data-goto]'));
+    const BOOKING = 5;
+    const LAST_FORM_STEP = 4;
+
+    (document.getElementById('brief-t') as HTMLInputElement).value = String(Date.now());
+
+    // JS is on: take over the step flow.
+    prog.hidden = false;
+    let step = 0;
+    let briefSent = false;
+
+    const val = (name: string) =>
+      (form.querySelector<HTMLInputElement>(`[name="${name}"]:checked`) ?? null)?.value ?? '';
+    const multi = (name: string) =>
+      Array.from(form.querySelectorAll<HTMLInputElement>(`[name="${name}"]:checked`)).map((i) => i.value);
+    const text = (name: string) =>
+      (form.querySelector<HTMLInputElement>(`[name="${name}"]`)?.value ?? '').trim();
+
+    const emailOk = () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text('email'));
+
+    const valid = (i: number) => {
+      if (i === 0) return !!val('sector');
+      if (i === 1) return multi('work').length > 0;
+      if (i === 2) return multi('sources').length > 0 && !!val('website');
+      if (i === 3) return !!val('budget') && !!val('timing');
+      if (i === 4) return text('name').length > 1 && emailOk();
+      return true;
+    };
+
+    function show(i: number) {
+      step = i;
+      steps.forEach((el) => { el.hidden = Number(el.dataset.step) !== i; });
+      prog.hidden = i > LAST_FORM_STEP;
+      prog.setAttribute('aria-label', `Step ${Math.min(i + 1, 5)} of 5`);
+      progBtns.forEach((b, n) => {
+        b.classList.toggle('on', n === i);
+        b.classList.toggle('done', n < i);
+        b.disabled = n > i;
+      });
+      backBtn.hidden = i === 0 || i === BOOKING;
+      nextLabel.textContent = i === LAST_FORM_STEP ? 'Send brief' : i === BOOKING ? 'Confirm my call' : 'Continue';
+      errorEl.hidden = true;
+      render();
+    }
+
+    function render() {
+      const rows: [string, string][] = [
+        ['Firm', val('sector')],
+        ['More of', multi('work').join(', ')],
+        ['Today', multi('sources').join(', ')],
+        ['Website', val('website')],
+        ['Budget', val('budget') ? `${val('budget')} / month` : ''],
+        ['Start', val('timing')],
+        ['Contact', text('name') + (text('firm') ? `, ${text('firm')}` : '')],
+      ];
+      const answered = [0, 1, 2, 3, 4].filter((i) => valid(i)).length;
+      const pct = `${step > LAST_FORM_STEP ? 100 : Math.round((answered / 5) * 100)}%`;
+      pctEl.textContent = pct;
+      fillEl.style.width = pct;
+
+      listEl.replaceChildren(
+        ...rows.map(([k, v]) => {
+          const row = document.createElement('div');
+          row.className = 'srow';
+          const key = document.createElement('span');
+          key.className = 'label';
+          key.style.cssText = 'font-size:11px;padding-top:3px';
+          key.textContent = k;
+          const value = document.createElement('span');
+          value.style.cssText = `font-size:16px;line-height:1.4;font-weight:${v ? 800 : 500};opacity:${v ? 1 : 0.55}`;
+          value.textContent = v || 'Not set';
+          row.append(key, value);
+          return row;
+        }),
+      );
+    }
+
+    // Only show work options for the chosen sector.
+    const groups = Array.from(form.querySelectorAll<HTMLElement>('[data-work-for]'));
+    const syncWork = () => {
+      const chosen = val('sector');
+      groups.forEach((g) => {
+        const match = g.dataset.workFor === chosen;
+        g.hidden = !match;
+        g.querySelector('.work-group-label')?.toggleAttribute('hidden', true);
+        if (!match) {
+          g.querySelectorAll<HTMLInputElement>('input:checked').forEach((i) => { i.checked = false; });
+        }
+      });
+    };
+
+    form.addEventListener('change', (e) => {
+      if ((e.target as HTMLElement).hasAttribute('data-sector-pick')) syncWork();
+      render();
+    });
+    form.addEventListener('input', render);
+
+    backBtn.addEventListener('click', () => show(Math.max(0, step - 1)));
+    progBtns.forEach((b, i) => b.addEventListener('click', () => { if (i <= step) show(i); }));
+
+    async function post(extra: Record<string, string>) {
+      const data = new FormData(form!);
+      for (const [k, v] of Object.entries(extra)) data.set(k, v);
+      const res = await fetch(form!.action, {
+        method: 'POST',
+        body: data,
+        headers: { accept: 'application/json' },
+      });
+      let body: { ok?: boolean; message?: string } = {};
+      try { body = await res.json(); } catch { /* non-JSON error page */ }
+      if (!res.ok || body.ok === false) {
+        throw new Error(body.message ?? 'We could not submit the form just now. Please email team@advrt.co.uk or call 0800 689 3759.');
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (step < LAST_FORM_STEP) {
+        if (!valid(step)) return;
+        show(step + 1);
+        return;
+      }
+
+      nextBtn.disabled = true;
+
+      if (step === LAST_FORM_STEP) {
+        if (!valid(4)) {
+          errorEl.textContent = 'Add your name and a valid email so we can send the plan.';
+          errorEl.hidden = false;
+          form.querySelector<HTMLInputElement>('[name="name"]')?.focus();
+          nextBtn.disabled = false;
+          return;
+        }
+        try {
+          await post({ form: 'brief', stage: 'brief' });
+          briefSent = true;
+          show(BOOKING);
+          scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (err) {
+          errorEl.textContent = (err as Error).message;
+          errorEl.hidden = false;
+        } finally {
+          nextBtn.disabled = false;
+        }
+        return;
+      }
+
+      // Booking step.
+      const day = val('callDay');
+      const time = val('callTime');
+      if (!day || !time) {
+        callError.textContent = 'Pick a day and a time for your call.';
+        callError.hidden = false;
+        nextBtn.disabled = false;
+        return;
+      }
+      callError.hidden = true;
+      try {
+        await post({ form: 'brief-call', stage: 'call', callSlot: `${day}, ${time}` });
+      } catch (err) {
+        // The brief itself is already in, so never block the confirmation on
+        // the booking call failing — but say what happened.
+        callError.textContent = (err as Error).message;
+        callError.hidden = false;
+        if (!briefSent) { nextBtn.disabled = false; return; }
+      }
+
+      const first = text('name').split(' ')[0] || 'thanks';
+      document.getElementById('done-name')!.textContent = `${first}.`;
+      document.getElementById('done-slot')!.append(` · ${day}, ${time}`);
+      form.hidden = true;
+      doneEl.hidden = false;
+      pctEl.textContent = '100%';
+      fillEl.style.width = '100%';
+      scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    syncWork();
+    show(0);
+  }
+</script>

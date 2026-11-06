@@ -1,0 +1,259 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import logo from '../assets/images/advrt-logo.png';
+import { site } from '../data/site';
+import { contactTopics } from '../data/brief';
+
+const schema = [
+  {
+    '@type': 'ContactPage',
+    name: 'Contact ADVRT',
+    url: new URL('/contact', Astro.site).href,
+  },
+];
+---
+
+<Base
+  title="Contact us · ADVRT"
+  description="General enquiries, partnerships, press or support. Instant acknowledgement, then a reply from a human the same business day."
+  path="/contact"
+  schema={schema}
+>
+  <header class="outer contact-head">
+    <a href="/" aria-label="ADVRT home" style="display:flex;align-items:center;min-height:44px">
+      <Image src={logo} alt="ADVRT" height={26} densities={[1, 2]} loading="eager" style="height:26px;width:auto" />
+    </a>
+    <a href="/" aria-label="Close and return home" class="closer">
+      <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="#0b0b0c" stroke-width="2.2" aria-hidden="true">
+        <path d="M1 1l14 14M15 1L1 15"></path>
+      </svg>
+    </a>
+  </header>
+
+  <main class="outer contact-main" id="main">
+    <div class="contact-intro">
+      <div>
+        <div class="label" style="margin-bottom:20px;color:var(--acc)">Contact us</div>
+        <h1 class="disp" style="font-size:clamp(44px,7vw,112px)">Say <span class="hl">hello.</span></h1>
+      </div>
+      <p class="h3" style="font-size:22px;color:var(--on-ink-2);max-width:420px">
+        General enquiries, partnerships, press or support. Instant acknowledgement, then a reply
+        from a human the same business day.
+      </p>
+    </div>
+
+    <div class="shell">
+      <section class="form" aria-label="Contact form">
+        <form method="POST" action="/api/enquiry" id="contact-form" novalidate>
+          <input type="hidden" name="form" value="contact" />
+          <input type="hidden" name="page" value="/contact" />
+          <input type="hidden" name="_t" id="contact-t" value="" />
+          <div class="hp" aria-hidden="true">
+            <label for="contact-gotcha">Leave this field empty</label>
+            <input id="contact-gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <fieldset style="border:0">
+            <legend class="lbl" style="margin-bottom:14px">What's it about?</legend>
+            <div style="display:flex;flex-wrap:wrap;gap:10px">
+              {contactTopics.map((t, i) => (
+                <label class="chip">
+                  <input type="radio" name="topic" value={t} class="vis-hidden" checked={i === 0} />
+                  <span>{t}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <div class="form-grid" style="margin-top:30px">
+            <div>
+              <label class="lbl" for="c-name">Your name *</label>
+              <input id="c-name" name="name" class="field" type="text" autocomplete="name" required />
+            </div>
+            <div>
+              <label class="lbl" for="c-company">Company</label>
+              <input id="c-company" name="company" class="field" type="text" autocomplete="organization" />
+            </div>
+            <div>
+              <label class="lbl" for="c-email">Email *</label>
+              <input id="c-email" name="email" class="field" type="email" autocomplete="email" required />
+            </div>
+            <div>
+              <label class="lbl" for="c-phone">Phone</label>
+              <input id="c-phone" name="phone" class="field" type="tel" autocomplete="tel" />
+            </div>
+            <div style="grid-column:1 / -1">
+              <label class="lbl" for="c-msg">Message *</label>
+              <textarea id="c-msg" name="message" class="field" rows="5" style="resize:vertical;min-height:160px" required></textarea>
+            </div>
+          </div>
+
+          <p class="alert" id="contact-error" role="alert" hidden></p>
+
+          <div class="controls">
+            <button type="submit" class="btn" id="contact-submit">
+              Send message <i aria-hidden="true">→</i>
+            </button>
+          </div>
+        </form>
+
+        <div id="contact-done" hidden>
+          <div style="min-height:460px;display:flex;flex-direction:column;justify-content:center;gap:24px;animation:stepin .5s var(--ease) both">
+            <span aria-hidden="true" class="done-mark">
+              <svg width="40" height="40" viewBox="0 0 16 16" fill="none" stroke="#ff5a1f" stroke-width="2.4" stroke-dasharray="40" style="animation:drawok .8s .25s ease both"><path d="M2.5 8.5l3.5 3.5 7.5-8"></path></svg>
+            </span>
+            <h2 class="disp" style="font-size:clamp(40px,5vw,80px)">
+              Message sent, <span class="hl" id="contact-name">thanks.</span>
+            </h2>
+            <p style="max-width:540px;font-size:19px;line-height:1.55;font-weight:600;color:var(--on-paper-2)">
+              Thanks for getting in touch. You'll get an acknowledgement straight away, and a human
+              will reply the same business day.
+            </p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap">
+              <a class="btn" href="/">Back to home <i aria-hidden="true">→</i></a>
+              <button type="button" class="back" id="contact-again">Send another</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side" aria-label="Other ways to reach us">
+        <div class="side-row" style="border-top:0;padding-top:0">
+          <span class="label">Email</span>
+          <a href={`mailto:${site.email}`} class="h3" style="font-size:26px">{site.email}</a>
+        </div>
+        <div class="side-row">
+          <span class="label">Phone</span>
+          <a href={site.phoneHref} class="h3" style="font-size:26px">{site.phone}</a>
+        </div>
+        <div class="side-row">
+          <span class="label">Registered office</span>
+          <address style="font-style:normal;font-size:17px;font-weight:600;line-height:1.5">
+            {site.address.line1}<br />{site.address.line2}<br />{site.address.city}<br />{site.address.postcode}
+          </address>
+        </div>
+        <div class="side-row">
+          <span class="label">After a quote?</span>
+          <p style="font-size:17px;font-weight:600;line-height:1.5">The project brief gets you a plan fastest.</p>
+          <a href="/start-a-project" class="label" style="margin-top:6px;display:inline-flex;align-items:center;gap:10px;min-height:44px">
+            Start a project <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </aside>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .contact-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    padding-top: 18px; padding-bottom: 18px; max-width: 1376px; margin: 0 auto;
+  }
+  .closer {
+    width: 52px; height: 52px; border-radius: var(--r-xs); background: var(--paper);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .contact-main { padding-top: 40px; padding-bottom: 90px; }
+  .contact-intro {
+    max-width: var(--wrap); margin: 0 auto 44px; display: flex;
+    justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap;
+  }
+  .shell {
+    display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 16px;
+    max-width: var(--wrap); margin: 0 auto;
+  }
+  .form { background: var(--paper); color: var(--on-paper); border-radius: var(--r-xl); padding: 44px 48px; }
+  .side {
+    background: var(--acc); color: var(--ink); border-radius: var(--r-xl); padding: 36px 34px;
+    display: flex; flex-direction: column; gap: 26px;
+  }
+  .side-row { display: flex; flex-direction: column; gap: 6px; padding-top: 18px; border-top: 3px solid var(--ink); }
+  @media (max-width: 1000px) { .shell { grid-template-columns: 1fr; } }
+  @media (max-width: 760px) {
+    .form { padding: 28px 20px; border-radius: var(--r-md); }
+    .side { padding: 24px 20px; border-radius: var(--r-md); }
+  }
+
+  .vis-hidden {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+  .chip { min-height: 48px; padding: 0 18px; font-size: 15px; cursor: pointer; }
+  .chip:has(input:checked) { background: var(--ink); color: var(--paper); }
+  .chip:has(input:checked)::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--acc); }
+  .chip:has(input:focus-visible) { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+  .controls {
+    margin-top: 32px; padding-top: 24px; border-top: 3px solid var(--ink);
+    display: flex; justify-content: flex-end;
+  }
+  .controls .btn { background: var(--ink); color: var(--paper); border-radius: var(--r-xs); min-height: 62px; }
+  .controls .btn i { background: var(--acc); color: var(--ink); width: 46px; height: 46px; border-radius: 8px; }
+
+  .done-mark {
+    width: 84px; height: 84px; border-radius: var(--r-md); background: var(--ink);
+    display: inline-flex; align-items: center; justify-content: center; animation: pop .5s var(--ease);
+  }
+</style>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  if (form) {
+    const errorEl = document.getElementById('contact-error') as HTMLElement;
+    const submit = document.getElementById('contact-submit') as HTMLButtonElement;
+    const done = document.getElementById('contact-done')!;
+
+    (document.getElementById('contact-t') as HTMLInputElement).value = String(Date.now());
+
+    const text = (name: string) =>
+      (form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name="${name}"]`)?.value ?? '').trim();
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const ok =
+        text('name').length > 1 &&
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text('email')) &&
+        text('message').length > 2;
+
+      if (!ok) {
+        errorEl.textContent = 'Add your name, a valid email and a message.';
+        errorEl.hidden = false;
+        return;
+      }
+
+      errorEl.hidden = true;
+      submit.disabled = true;
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { accept: 'application/json' },
+        });
+        let body: { ok?: boolean; message?: string } = {};
+        try { body = await res.json(); } catch { /* non-JSON error page */ }
+        if (!res.ok || body.ok === false) {
+          throw new Error(body.message ?? 'We could not send your message just now. Please email team@advrt.co.uk or call 0800 689 3759.');
+        }
+
+        document.getElementById('contact-name')!.textContent = `${text('name').split(' ')[0] || 'thanks'}.`;
+        form.hidden = true;
+        done.hidden = false;
+        scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (err) {
+        errorEl.textContent = (err as Error).message;
+        errorEl.hidden = false;
+      } finally {
+        submit.disabled = false;
+      }
+    });
+
+    document.getElementById('contact-again')?.addEventListener('click', () => {
+      form.reset();
+      (document.getElementById('contact-t') as HTMLInputElement).value = String(Date.now());
+      done.hidden = true;
+      form.hidden = false;
+    });
+  }
+</script>

@@ -1,0 +1,139 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { site } from '../data/site';
+
+// NOTE FOR ADVRT: this notice describes exactly what this website does, which
+// is accurate as built. The items in [SQUARE BRACKETS] are facts only you can
+// supply (company number, ICO registration, retention periods, and the name of
+// the CRM the webhook forwards to). Have it checked before the domain goes live.
+---
+
+<Legal
+  title="Privacy notice · ADVRT"
+  description="How ADVRT collects, uses and protects personal data submitted through this website."
+  path="/privacy"
+  heading="Privacy notice"
+  updated="6 November 2026"
+>
+  <h2>Who we are</h2>
+  <p>
+    ADVRT (“we”, “us”) is the data controller for personal data submitted through this website.
+    We are a marketing agency working with firms in the built environment.
+  </p>
+  <address>
+    {site.address.line1}, {site.address.line2}<br />
+    {site.address.city} {site.address.postcode}<br />
+    United Kingdom
+  </address>
+  <p>
+    Email <a href={`mailto:${site.email}`}>{site.email}</a> ·
+    Telephone <a href={site.phoneHref}>{site.phone}</a>
+  </p>
+  <p>
+    Company registration number [COMPANY NUMBER]. ICO registration reference [ICO REFERENCE].
+  </p>
+
+  <h2>What we collect</h2>
+  <p>
+    We only collect what you type into one of the two forms on this site. We do not use advertising
+    cookies, third-party analytics or tracking pixels on this website, and nothing on it profiles you.
+  </p>
+
+  <h3>The project brief</h3>
+  <ul>
+    <li>Your name, firm, email address and telephone number</li>
+    <li>The areas you cover and any notes you add</li>
+    <li>Your answers about your sector, the work you want, your current lead sources, your website, your budget range and your timescale</li>
+    <li>Your preferred day and time for a discovery call, if you pick one</li>
+  </ul>
+
+  <h3>The contact form</h3>
+  <ul>
+    <li>Your name, company, email address and telephone number</li>
+    <li>The topic you select and the message you write</li>
+  </ul>
+
+  <h3>Collected automatically</h3>
+  <p>
+    When a form is submitted, our hosting provider records the page it came from, the referring page,
+    and your browser's user agent string alongside the submission. Our host also keeps standard
+    server logs, which include IP addresses, for security and abuse prevention.
+  </p>
+
+  <h2>Why we use it, and our lawful basis</h2>
+  <ul>
+    <li>
+      <strong>To reply to your enquiry and prepare a plan or quote.</strong> Our lawful basis is
+      legitimate interests: you contacted us asking for exactly this, and responding is what you expect.
+    </li>
+    <li>
+      <strong>To arrange and hold a discovery call</strong> where you have asked for one. Lawful basis:
+      legitimate interests, and steps towards a contract.
+    </li>
+    <li>
+      <strong>To keep a record of enquiries and prevent abuse of the forms.</strong> Lawful basis:
+      legitimate interests.
+    </li>
+  </ul>
+  <p>
+    We do not add you to a marketing list from a website enquiry, and we do not send marketing email
+    unless you separately ask us to.
+  </p>
+
+  <h2>Who we share it with</h2>
+  <p>
+    Form submissions are passed to the systems we use to run the business. These act as our
+    processors, handle the data on our instructions only, and do not use it for their own purposes.
+  </p>
+  <ul>
+    <li><strong>Netlify</strong> — hosts this website and runs the function that receives your submission.</li>
+    <li><strong>[CRM NAME]</strong> — our customer relationship system, where enquiries are stored and worked.</li>
+    <li><strong>[EMAIL / MESSAGING PROVIDER]</strong> — used to acknowledge your enquiry and to send call confirmations.</li>
+  </ul>
+  <p>
+    We do not sell personal data, and we do not share your enquiry with other firms. An enquiry you
+    send us goes to us alone.
+  </p>
+  <p>
+    Where a provider processes data outside the UK, that transfer is covered by the UK's adequacy
+    regulations or by an International Data Transfer Agreement or Addendum.
+  </p>
+
+  <h2>How long we keep it</h2>
+  <ul>
+    <li><strong>Enquiries that do not become clients:</strong> [RETENTION PERIOD, e.g. 24 months] from your last contact with us, then deleted.</li>
+    <li><strong>Client records:</strong> for the duration of our work together and [RETENTION PERIOD] afterwards, to meet our legal and accounting obligations.</li>
+    <li><strong>Server logs:</strong> as long as our host retains them, which is a short rolling window.</li>
+  </ul>
+
+  <h2>Your rights</h2>
+  <p>Under UK data protection law you can ask us to:</p>
+  <ul>
+    <li>Give you a copy of the personal data we hold about you</li>
+    <li>Correct it if it is wrong, or complete it if it is incomplete</li>
+    <li>Delete it, where we have no overriding reason to keep it</li>
+    <li>Restrict or object to how we use it, including objecting to our legitimate interests</li>
+    <li>Transfer it to you or another provider in a portable format</li>
+  </ul>
+  <p>
+    Email <a href={`mailto:${site.email}`}>{site.email}</a> and we will respond within one month.
+    There is no charge.
+  </p>
+  <p>
+    If you are unhappy with how we have handled your data you can complain to the Information
+    Commissioner's Office at <a href="https://ico.org.uk" rel="noopener">ico.org.uk</a>, or by
+    calling 0303 123 1113. We would rather you raised it with us first so we can put it right.
+  </p>
+
+  <h2>Cookies</h2>
+  <p>
+    This website sets no cookies and uses no browser storage. There is no cookie banner because
+    there is nothing to consent to. If we add analytics later, this notice will be updated and
+    consent will be requested before anything non-essential is set.
+  </p>
+
+  <h2>Changes</h2>
+  <p>
+    If we change how we use personal data we will update this page and the date at the top of it.
+  </p>
+</Legal>

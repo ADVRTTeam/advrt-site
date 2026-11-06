@@ -1,0 +1,815 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Marquee from '../components/Marquee.astro';
+import HeroCanvas from '../components/HeroCanvas.astro';
+import { site, homeNav, homeMenu } from '../data/site';
+import {
+  tickerWords, marqueeWords, sectors, process, cases, edge, ownership, nextQuarter,
+} from '../data/home';
+import { img } from '../lib/images';
+import jackFounder from '../assets/images/jack-founder.jpg';
+
+const nextQ = nextQuarter();
+
+const schema = [
+  {
+    '@type': 'ProfessionalService',
+    '@id': new URL('/#service', Astro.site).href,
+    name: 'ADVRT',
+    description: site.description,
+    url: Astro.site!.href,
+    telephone: site.phone,
+    email: site.email,
+    areaServed: { '@type': 'Country', name: 'United Kingdom' },
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: `${site.address.line1}, ${site.address.line2}`,
+      addressLocality: site.address.city,
+      postalCode: site.address.postcode,
+      addressCountry: site.address.country,
+    },
+    serviceType: [
+      'Paid media', 'Lead generation', 'Google Ads', 'Paid social', 'Conversion tracking',
+    ],
+  },
+];
+---
+
+<Base
+  title="ADVRT · Marketing for the built environment"
+  description="Specialist paid media and lead generation for surveyors, architects, contractors, compliance firms, training providers and the wider built environment. We draw the plans, then build the pipeline."
+  path="/"
+  schema={schema}
+>
+  <Nav links={homeNav} menuLinks={homeMenu} showMore showProgress spy />
+
+  <main id="main">
+    <!-- 01 HERO -->
+    <section id="top" class="hero" data-label="01">
+      <HeroCanvas />
+      <div class="wrap" style="z-index:2">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px">
+          <span class="label booking">
+            <span class="dot" aria-hidden="true"></span>Now booking {nextQ}
+          </span>
+          <span class="label partner">Google Partner</span>
+        </div>
+
+        <h1 class="disp hero-h1">
+          Marketing that builds the <span class="hl">built environment.</span>
+        </h1>
+
+        <div class="hero-foot">
+          <div style="max-width:600px">
+            <p class="h3 ticker-line">
+              Paid growth for
+              <span class="ticker"><span class="ticker-in" id="ticker">
+                {tickerWords.map((word) => <span>{word}</span>)}
+              </span></span>
+            </p>
+            <p class="lede" style="margin-top:16px;color:var(--on-ink-2)">
+              Specialist paid media and lead generation for surveyors, contractors, compliance firms,
+              training providers and the wider built environment. We draw the plans, then build the pipeline.
+            </p>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <a class="btn" href="/start-a-project">Start a project <i aria-hidden="true">→</i></a>
+            <a class="btn-line" href="#process">How we work</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <Marquee items={marqueeWords} fast />
+
+    <!-- 02 GROUNDWORK -->
+    <section class="scene paper tall" data-label="02">
+      <div class="wrap">
+        <div class="tag"><b>02</b><span>Groundwork</span></div>
+        <h2 class="h2" data-rise style="max-width:1180px">
+          Generalists guess. <span class="hl">We survey first,</span> then build to spec.
+        </h2>
+        <div class="two-col">
+          <p class="lede" data-rise style="color:var(--on-paper-2)">
+            The built environment runs on long cycles, high-value work and trust earned over decades.
+            Generic agencies treat a £2m development enquiry like an e-commerce click. We don't.
+          </p>
+          <p class="lede" data-rise style="color:var(--on-paper-2)">
+            Every campaign we run is engineered around how buyers in property, design and construction
+            actually make decisions.
+          </p>
+        </div>
+
+        <div class="stats" style="margin-top:80px;border-top-width:4px">
+          <div class="stat-cell">
+            <div class="stat-n" data-count-to="100" data-suffix="%">100%</div>
+            <div class="label" style="margin-top:14px;color:var(--on-paper-3)">Built-environment focus</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-n" data-count-to="6">6</div>
+            <div class="label" style="margin-top:14px;color:var(--on-paper-3)">Sectors served</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-n" data-count-to="10" data-prefix="£" data-suffix="m+">£10m+</div>
+            <div class="label" style="margin-top:14px;color:var(--on-paper-3)">Ad spend managed</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 SECTORS -->
+    <section id="sectors" class="scene ink tall" data-label="03">
+      <div class="wrap">
+        <div class="row-between">
+          <div>
+            <div class="tag"><b>03</b><span>Who we build for</span></div>
+            <h2 class="h2" data-rise style="max-width:980px">
+              Four ways in. <span style="color:var(--acc)">One discipline.</span>
+            </h2>
+          </div>
+          <p class="lede" style="max-width:380px;color:var(--on-ink-3)">
+            Turning specialist expertise into qualified enquiries. Open a sector to see the spec.
+          </p>
+        </div>
+
+        <div style="margin-top:64px" id="sector-rows">
+          {sectors.map((s, i) => (
+            <div class:list={['srow', { open: i === 0 }]} data-srow>
+              <div class="shead">
+                <button type="button" class="stog" aria-expanded={i === 0 ? 'true' : 'false'} data-stog>
+                  <span class="sno">{s.no}</span>
+                  <span class="sname">{s.name}</span>
+                </button>
+                <a class="btn sm scta" href={s.href} aria-label={s.cta}>
+                  <span class="scta-t">Explore</span> <i aria-hidden="true">→</i>
+                </a>
+                <button type="button" class="splus" aria-label={`Show details for ${s.name}`} aria-expanded={i === 0 ? 'true' : 'false'} data-stog>
+                  <svg width="18" height="18" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M7 0v14M0 7h14"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class:list={['acc', { open: i === 0 }]} data-sacc>
+                <div class="acc-in">
+                  <div class="sbody">
+                    <span class="sbody-sp"></span>
+                    <p style="font-size:18px;line-height:1.5;font-weight:600">{s.desc}</p>
+                    <div>
+                      <div class="label" style="opacity:.75">Typical enquiries</div>
+                      <p style="margin-top:10px;font-size:16px;line-height:1.5;font-weight:500">{s.enquiries}</p>
+                    </div>
+                    <div>
+                      <div class="label" style="opacity:.75">What we run</div>
+                      <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px">
+                        {s.chips.map((c) => <span class="spill">{c}</span>)}
+                      </div>
+                      <a class="btn dark sm" href={s.href} style="margin-top:20px">{s.cta} <i aria-hidden="true">→</i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 PROCESS -->
+    <section id="process" class="proc swipe" data-label="04">
+      <div class="proc-stage">
+        <div class="proc-head">
+          <div class="row-between" style="align-items:flex-end">
+            <div>
+              <div class="tag"><b>04</b><span>The process is the service</span></div>
+              <h2 class="h2" style="font-size:clamp(36px,5.4vw,84px)">One system.<br />Five build stages.</h2>
+            </div>
+            <div style="display:flex;gap:10px">
+              <button type="button" class="arrowb" aria-label="Previous stage" id="proc-prev">
+                <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M10 2L4 8l6 6"></path></svg>
+              </button>
+              <button type="button" class="arrowb" aria-label="Next stage" id="proc-next">
+                <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 2l6 6-6 6"></path></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="pbar" style="margin-top:26px"><i id="proc-bar" style="width:20%"></i></div>
+
+          <div class="steps-row" style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+            {process.map((p, i) => (
+              <button type="button" class:list={['stepb', { on: i === 0 }]} data-step={i}>
+                {p.no} {p.tag}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div class="rail" id="proc-rail">
+          <div class="track" id="proc-track">
+            {process.map((p, i) => (
+              <article class:list={['pcard', { on: i === 0 }]} data-pcard>
+                <div class="pimg">
+                  <Image src={img(p.img)} alt={p.alt} width={400} height={210} widths={[400, 800]} sizes="400px" loading="lazy" />
+                  <span class="pno">{p.no}</span>
+                </div>
+                <div style="padding:26px 26px 28px;display:flex;flex-direction:column;flex:1">
+                  <div class="label" style="color:var(--acc)">{p.tag}</div>
+                  <h3 class="h3" style="margin-top:10px;font-size:30px;text-transform:uppercase">{p.name}</h3>
+                  <p style="margin-top:14px;font-size:16px;line-height:1.55;color:var(--on-ink-2);flex:1">{p.desc}</p>
+                  <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:6px">
+                    {p.chips.map((c) => <span class="pchip">{c}</span>)}
+                  </div>
+                </div>
+              </article>
+            ))}
+            <div aria-hidden="true" style="flex:0 0 28px"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 ADVANTAGE -->
+    <section id="advantage" class="scene paper tall" data-label="05">
+      <div class="wrap">
+        <div class="tag"><b>05</b><span>Why us</span></div>
+        <h2 class="h2" data-rise style="max-width:1220px">
+          We field-test with <span class="hl">our own money.</span> Your budget never pays to learn your industry.
+        </h2>
+        <div class="cards3" data-rise style="margin-top:72px">
+          {edge.map((e) => (
+            <div class="ecard">
+              <span class="big">{e.no}</span>
+              <div class="label" style="margin-top:40px;color:var(--acc)">{e.tag}</div>
+              <h3 class="h3" style="margin-top:10px;font-size:28px;text-transform:uppercase">{e.name}</h3>
+              <p style="margin-top:14px;font-size:16px;line-height:1.6;color:var(--on-ink-2)">{e.desc}</p>
+            </div>
+          ))}
+        </div>
+        <p class="h3" data-rise style="margin-top:64px;max-width:980px;font-size:clamp(24px,2.6vw,38px)">
+          The result: campaigns already running, optimised and proven before they reach you. <br />
+          <span class="hl">A shorter road to results</span> while other agencies are still learning on your spend.
+        </p>
+      </div>
+    </section>
+
+    <!-- 06 WORK -->
+    <section id="work" class="scene ink tall" data-label="06">
+      <div class="wrap">
+        <div class="row-between">
+          <div>
+            <div class="tag"><b>06</b><span>Completed builds</span></div>
+            <h2 class="h2" data-rise>
+              Pipelines we've built <span style="color:var(--acc)">and handed over.</span>
+            </h2>
+          </div>
+        </div>
+
+        <div class="case-grid">
+          {cases.map((k, i) => (
+            <article class="case" style={`animation-delay:${(i * 0.07).toFixed(2)}s`}>
+              <div class="case-img">
+                <Image src={img(k.img)} alt={k.alt} width={500} height={313} widths={[400, 700, 1000]} sizes="(max-width:760px) 92vw, 400px" loading="lazy" />
+                <span class="label case-tag">{k.sector}</span>
+              </div>
+              <div style="padding:28px 26px;display:flex;flex-direction:column;gap:16px;flex:1">
+                <div class="label" style="color:var(--on-ink-3)">{k.client}</div>
+                <h3 class="h3" style="font-size:26px">{k.title}</h3>
+                <div style="padding-top:18px;border-top:2px solid var(--ink-5)">
+                  <div class="case-stat">{k.stat}</div>
+                  <div style="margin-top:8px;font-size:14px;font-weight:700;color:var(--on-ink-3)">{k.statLabel}</div>
+                </div>
+                <div style="margin-top:auto;display:flex;flex-wrap:wrap;gap:6px">
+                  {k.chips.map((c) => <span class="pchip" style="background:var(--ink-4)">{c}</span>)}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 TEAM -->
+    <section id="about" class="scene paper tall" data-label="07">
+      <div class="wrap team">
+        <div class="team-photo" data-wipe>
+          <Image
+            src={jackFounder}
+            alt="Jack, founder of ADVRT, on stage at a conference"
+            width={640}
+            height={800}
+            widths={[480, 640, 960]}
+            sizes="(max-width:900px) 92vw, 480px"
+            loading="lazy"
+          />
+          <span class="label photo-tag">Founder, ADVRT</span>
+        </div>
+        <div>
+          <div class="tag"><b>07</b><span>Real people, real accounts</span></div>
+          <h2 class="disp" data-rise style="font-size:clamp(80px,12vw,200px)">Jack</h2>
+          <p class="h3" data-rise style="margin-top:26px;font-size:clamp(22px,2.2vw,30px)">
+            Founder of ADVRT. <span class="hl">Lead generation specialist</span> and Google Partner.
+          </p>
+          <p class="lede" style="margin-top:22px;color:var(--on-paper-2)">
+            He's also co-founded several lead generation brands of his own. Their data, findings and
+            results feed straight into every system we build for clients. Campaigns are run by
+            ex-RICS media buyers who've spent careers inside the built environment.
+          </p>
+          <div style="margin-top:28px;display:flex;flex-wrap:wrap;gap:8px">
+            <span class="spill">Google Partner</span>
+            <span class="spill">Ex-RICS media buyers</span>
+            <span class="spill">Own lead-gen brands</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 OWNERSHIP -->
+    <section class="scene ink tall" data-label="08">
+      <div class="wrap">
+        <div class="tag"><b>08</b><span>Always in control</span></div>
+        <h2 class="h2" data-rise style="max-width:1100px">
+          Your system. Your team. <span style="color:var(--acc)">Your call.</span>
+        </h2>
+        <p class="lede" data-rise style="margin-top:26px;max-width:680px;color:var(--on-ink-2)">
+          We hand over the keys with everything working, documented and understood. Keep us on to grow it,
+          or take it in-house. Either way, nothing's held hostage.
+        </p>
+        <div style="margin-top:64px;border-bottom:2px solid rgba(242,240,234,.18)">
+          {ownership.map((o) => (
+            <div class="orow" data-rise>
+              <span class="otick" aria-hidden="true">
+                <svg width="30" height="30" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2.5 8.5l3.5 3.5 7.5-8"></path></svg>
+              </span>
+              <h3 class="disp">{o.name}</h3>
+              <p style="font-size:18px;line-height:1.55;color:var(--on-ink-2);font-weight:500">{o.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 CTA -->
+    <section id="contact" class="scene sig tall" data-label="09" style="padding-bottom:170px">
+      <div class="wrap">
+        <div class="tag"><b>09</b><span>Ready to break ground</span></div>
+        <h2 class="disp" data-rise style="font-size:clamp(40px,10vw,170px)">Let's build your pipeline.</h2>
+        <div class="row-between" style="margin-top:48px">
+          <p class="h3" style="max-width:560px;font-size:clamp(20px,2vw,28px)">
+            Tell us about your firm and the work you want more of. We'll come back with a plan, not a pitch.
+          </p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <a class="btn dark" href="/start-a-project" style="min-height:68px;font-size:17px">
+              Start a project <i aria-hidden="true">→</i>
+            </a>
+            <a class="btn-line" href={`mailto:${site.email}`} style="min-height:68px;text-transform:none;letter-spacing:0">
+              {site.email}
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer variant="full" />
+</Base>
+
+<style>
+  /* ---- Hero ---- */
+  .hero {
+    position: relative;
+    isolation: isolate;
+    min-height: min(100svh, 960px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 140px var(--gutter) 110px;
+    background: var(--ink);
+    overflow: clip;
+  }
+  .hero-h1 {
+    font-size: clamp(40px, 6.2vw, 100px);
+    font-stretch: 108%;
+    max-width: 900px;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-foot {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .booking {
+    display: inline-flex; align-items: center; gap: 10px; min-height: 36px;
+    padding: 0 14px; border-radius: var(--r-pill);
+    background: var(--paper); color: var(--ink);
+  }
+  .booking .dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--acc); animation: blink 1.4s ease-in-out infinite;
+  }
+  .partner {
+    display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px;
+    border-radius: var(--r-pill); border: 2px solid rgba(242, 240, 234, .4);
+  }
+  .ticker-line { font-size: clamp(22px, 2.2vw, 32px); text-transform: uppercase; }
+  .ticker {
+    display: inline-flex; height: 1.15em; overflow: hidden;
+    vertical-align: bottom; color: var(--acc);
+  }
+  .ticker-in { display: flex; flex-direction: column; transition: transform .7s cubic-bezier(.75, 0, .2, 1); }
+  .ticker-in span { display: block; height: 1.15em; line-height: 1.15em; }
+  @media (max-width: 900px) {
+    .hero { padding: 120px var(--gutter-sm) 90px; }
+    .hero-h1 { font-size: clamp(29px, 9vw, 72px); }
+  }
+
+  .two-col {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+    gap: 40px 64px;
+    align-items: start;
+  }
+
+  /* ---- Sector accordion ---- */
+  .srow {
+    border-top: 2px solid rgba(242, 240, 234, .18);
+    transition: background .35s, color .35s;
+  }
+  .srow:last-child { border-bottom: 2px solid rgba(242, 240, 234, .18); }
+  .srow:hover { background: var(--ink-2); }
+  .srow.open {
+    background: var(--acc); color: var(--ink);
+    border-color: var(--acc); border-radius: 18px;
+  }
+  .srow.open + .srow { border-top-color: transparent; }
+  .shead {
+    width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto 56px;
+    gap: 18px; align-items: center; padding-right: 24px;
+  }
+  .stog {
+    display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 24px;
+    align-items: center; text-align: left; padding: 30px 0 30px 24px; width: 100%;
+  }
+  .scta { flex: 0 0 auto; }
+  .srow.open .scta { background: var(--ink); color: var(--on-ink); }
+  .srow.open .scta i { background: var(--acc); color: var(--ink); }
+  .sname {
+    font-weight: 900; font-stretch: 115%; text-transform: uppercase;
+    letter-spacing: -.02em; font-size: clamp(30px, 4.6vw, 72px); line-height: .95;
+  }
+  .sno { font-weight: 900; font-size: 20px; }
+  .splus {
+    width: 56px; height: 56px; border-radius: var(--r-xs);
+    border: 2px solid currentColor; display: inline-flex;
+    align-items: center; justify-content: center;
+    transition: transform .45s var(--ease), background .3s;
+  }
+  .srow.open .splus {
+    transform: rotate(45deg); background: var(--ink);
+    color: var(--acc); border-color: var(--ink);
+  }
+  .sbody {
+    display: grid; grid-template-columns: 90px repeat(3, minmax(0, 1fr));
+    gap: 28px; padding: 0 24px 34px;
+  }
+  .spill {
+    display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px;
+    border-radius: var(--r-pill); font-size: 14px; font-weight: 700;
+    background: var(--ink); color: var(--on-ink);
+  }
+  @media (max-width: 860px) {
+    .shead { grid-template-columns: minmax(0, 1fr) auto; gap: 8px; padding-right: 12px; }
+    .shead .splus { display: none; }
+    .stog { grid-template-columns: 34px minmax(0, 1fr); gap: 10px; padding: 22px 0 22px 12px; }
+    .scta-t { display: none; }
+    .sname { font-size: 26px; font-stretch: 100%; overflow-wrap: anywhere; }
+    .sbody { grid-template-columns: 1fr; gap: 20px; padding: 0 14px 26px; }
+    .sbody-sp { display: none; }
+    .sno { font-size: 15px; }
+  }
+
+  /* ---- Process rail ---- */
+  .proc {
+    position: relative; margin-top: calc(var(--r-scene) * -1);
+    border-radius: var(--r-scene) var(--r-scene) 0 0;
+    background: var(--acc); color: var(--ink); overflow: clip;
+  }
+  .proc.pin .proc-stage {
+    position: sticky; top: 0; height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 90px 0 40px;
+  }
+  .proc.swipe .proc-stage { padding: 140px 0 130px; }
+  .proc-head { padding: 0 var(--gutter); max-width: 1376px; margin: 0 auto; width: 100%; }
+  .rail { position: relative; margin-top: 36px; padding: 6px var(--gutter) 10px; }
+  .proc.swipe .rail {
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    scroll-padding-left: var(--gutter); scrollbar-width: none;
+    -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain;
+  }
+  .proc.swipe .rail::-webkit-scrollbar { display: none; }
+  .track { display: flex; gap: 20px; width: max-content; will-change: transform; }
+  .pcard {
+    flex: 0 0 auto; width: 400px; background: var(--ink); color: var(--on-ink);
+    border-radius: var(--r-md); overflow: hidden; display: flex; flex-direction: column;
+    scroll-snap-align: start; transition: transform .45s var(--ease);
+  }
+  .pcard.on { transform: translateY(-10px); }
+  .pimg { position: relative; height: 210px; overflow: hidden; background: var(--ink-2); }
+  .pimg :global(img) {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: brightness(.85); transform: scale(1.06);
+    transition: filter .6s, transform 1.2s var(--ease);
+  }
+  .pcard.on .pimg :global(img), .pcard:hover .pimg :global(img) { filter: brightness(1); transform: scale(1); }
+  .pno {
+    position: absolute; left: 18px; bottom: 14px;
+    font-weight: 900; font-stretch: 118%; font-size: 76px; line-height: .8;
+    color: var(--acc); letter-spacing: -.04em;
+  }
+  .pchip {
+    display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px;
+    border-radius: var(--r-pill); background: var(--ink-3); font-size: 13px;
+    font-weight: 700; color: var(--on-ink);
+  }
+  .stepb {
+    display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px;
+    border-radius: var(--r-pill); border: 2px solid var(--ink);
+    font-size: 13px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+    transition: background .2s, color .2s;
+  }
+  .stepb.on { background: var(--ink); color: var(--acc); }
+  .arrowb {
+    width: 56px; height: 56px; border-radius: var(--r-xs);
+    background: var(--ink); color: var(--acc);
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: transform .2s;
+  }
+  .arrowb:hover { transform: translateY(-2px); }
+  .pbar { height: 6px; border-radius: 6px; background: rgba(11, 11, 12, .2); overflow: hidden; }
+  .pbar i { display: block; height: 100%; background: var(--ink); border-radius: 6px; transition: width .2s linear; }
+  @media (max-height: 900px) {
+    .proc.pin .proc-stage { padding-top: 76px; }
+    .proc.pin .tag { margin-bottom: 16px; }
+    .proc.pin .h2 { font-size: 52px !important; }
+    .proc.pin .pimg { height: 160px; }
+    .proc.pin .rail { margin-top: 22px; }
+  }
+  @media (max-width: 760px) {
+    .proc { margin-top: calc(var(--r-scene-sm) * -1); border-radius: var(--r-scene-sm) var(--r-scene-sm) 0 0; }
+    .proc-head { padding: 0 var(--gutter-sm); }
+    .rail { padding: 6px var(--gutter-sm) 10px; }
+    .proc.swipe .rail { scroll-padding-left: var(--gutter-sm); }
+    .pcard { width: min(84vw, 360px); }
+    .steps-row { display: none !important; }
+    .pno { font-size: 60px; }
+  }
+
+  /* ---- Edge cards ---- */
+  .ecard {
+    background: var(--ink); color: var(--on-ink); border-radius: var(--r-md);
+    padding: 34px 30px 32px; min-height: 340px; display: flex; flex-direction: column;
+    transition: transform .4s var(--ease), background .3s;
+  }
+  .ecard:hover { transform: translateY(-8px) rotate(-.6deg); background: var(--ink-2); }
+  .ecard .big {
+    font-weight: 900; font-stretch: 118%; font-size: 88px; line-height: .8;
+    color: var(--acc); letter-spacing: -.04em;
+  }
+
+  /* ---- Case cards ---- */
+  .case-grid {
+    margin-top: 52px; display: grid; gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
+  }
+  .case {
+    display: flex; flex-direction: column; background: var(--ink-2);
+    border-radius: var(--r-md); overflow: hidden;
+    transition: transform .4s var(--ease), box-shadow .4s;
+    animation: rise .6s var(--ease) backwards;
+  }
+  .case:hover { transform: translateY(-6px); }
+  .case-img { aspect-ratio: 16 / 10; background: #222226; position: relative; }
+  .case-img :global(img) {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: top center; display: block;
+  }
+  .case-tag {
+    position: absolute; top: 16px; left: 16px; background: var(--acc);
+    color: var(--ink); padding: 7px 11px; border-radius: 7px;
+  }
+  .case-stat {
+    font-weight: 900; font-stretch: 115%; font-size: 56px; line-height: 1;
+    color: var(--acc); text-transform: uppercase;
+  }
+
+  /* ---- Team ---- */
+  .team {
+    display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: 56px; align-items: center;
+  }
+  .team-photo {
+    aspect-ratio: 4 / 5; border-radius: var(--r-lg); background: var(--ink);
+    position: relative; overflow: hidden;
+  }
+  .team-photo :global(img) {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    display: block; object-fit: cover; object-position: 50% 30%;
+  }
+  .photo-tag {
+    position: absolute; left: 18px; bottom: 18px; background: var(--acc);
+    color: var(--ink); padding: 8px 12px; border-radius: 7px;
+  }
+  @media (max-width: 900px) { .team { grid-template-columns: 1fr; gap: 36px; } }
+
+  /* ---- Ownership rows ---- */
+  .orow {
+    display: grid; grid-template-columns: 96px minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 40px; align-items: center; padding: 36px 0;
+    border-top: 2px solid rgba(242, 240, 234, .18); transition: padding .35s;
+  }
+  .orow h3 {
+    font-size: clamp(28px, 3.4vw, 50px); font-stretch: 104%;
+    overflow-wrap: break-word; hyphens: auto;
+  }
+  .orow:hover { padding-left: 20px; }
+  .orow:hover .otick { background: var(--acc); color: var(--ink); }
+  .otick {
+    width: 72px; height: 72px; border-radius: var(--r-sm);
+    border: 3px solid var(--acc); color: var(--acc);
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: background .3s, color .3s;
+  }
+  @media (max-width: 860px) {
+    .orow { grid-template-columns: 56px minmax(0, 1fr); gap: 18px; padding: 26px 0; }
+    .orow p { grid-column: 2; }
+    .otick { width: 52px; height: 52px; border-radius: var(--r-xs); }
+  }
+</style>
+
+<script>
+  // ---- Hero ticker -------------------------------------------------
+  const ticker = document.getElementById('ticker');
+  if (ticker && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const count = ticker.children.length;
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % count;
+      ticker.style.transform = `translateY(-${i * 1.15}em)`;
+    }, 2200);
+  }
+
+  // ---- Count-up stats ----------------------------------------------
+  const counters = Array.from(document.querySelectorAll<HTMLElement>('[data-count-to]'));
+  if (counters.length) {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      // Leave the server-rendered final values in place.
+    } else {
+      const run = (el: HTMLElement) => {
+        const to = parseFloat(el.dataset.countTo ?? '0');
+        const pre = el.dataset.prefix ?? '';
+        const suf = el.dataset.suffix ?? '';
+        const start = performance.now();
+        const dur = 1100;
+        const tick = (now: number) => {
+          const p = Math.min(1, (now - start) / dur);
+          el.textContent = pre + Math.round(to * (1 - Math.pow(1 - p, 3))) + suf;
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const en of entries) {
+            if (en.isIntersecting) {
+              io.unobserve(en.target);
+              run(en.target as HTMLElement);
+            }
+          }
+        },
+        { threshold: 0.4 },
+      );
+      counters.forEach((el) => io.observe(el));
+    }
+  }
+
+  // ---- Sector accordion --------------------------------------------
+  const rows = Array.from(document.querySelectorAll<HTMLElement>('[data-srow]'));
+  rows.forEach((row, idx) => {
+    row.querySelectorAll<HTMLButtonElement>('[data-stog]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const wasOpen = row.classList.contains('open');
+        rows.forEach((r, i) => {
+          const open = !wasOpen && i === idx;
+          r.classList.toggle('open', open);
+          r.querySelector('[data-sacc]')?.classList.toggle('open', open);
+          r.querySelectorAll('[data-stog]').forEach((b) => b.setAttribute('aria-expanded', String(open)));
+        });
+      });
+    });
+  });
+
+  // ---- Process rail ------------------------------------------------
+  const proc = document.getElementById('process');
+  const rail = document.getElementById('proc-rail');
+  const track = document.getElementById('proc-track');
+  const bar = document.getElementById('proc-bar');
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-pcard]'));
+  const stepBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-step]'));
+  const N = cards.length;
+
+  if (proc && rail && track && N) {
+    let mode: 'pin' | 'swipe' = 'swipe';
+    let step = 0;
+
+    const setStep = (i: number) => {
+      step = Math.max(0, Math.min(N - 1, i));
+      cards.forEach((c, n) => c.classList.toggle('on', n === step));
+      stepBtns.forEach((b, n) => b.classList.toggle('on', n === step));
+    };
+
+    const pickMode = () => {
+      const coarse = matchMedia('(pointer: coarse)').matches;
+      const next =
+        innerWidth >= 900 && innerHeight >= 720 && innerHeight <= 1400 && !coarse ? 'pin' : 'swipe';
+      if (next === mode) return;
+      mode = next;
+      proc.classList.toggle('pin', mode === 'pin');
+      proc.classList.toggle('swipe', mode === 'swipe');
+      measure();
+    };
+
+    function travel() {
+      if (!rail || !track) return 0;
+      const cs = getComputedStyle(rail);
+      const inner = rail.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      return Math.max(0, track.scrollWidth - inner);
+    }
+
+    function measure() {
+      if (!proc || !track) return;
+      if (mode !== 'pin') {
+        proc.style.height = '';
+        track.style.transform = '';
+        return;
+      }
+      proc.style.height = `${innerHeight + travel()}px`;
+    }
+
+    // Pinned mode: vertical scroll drives horizontal travel.
+    const onScroll = () => {
+      if (mode !== 'pin' || !proc || !track) return;
+      const rect = proc.getBoundingClientRect();
+      const total = proc.offsetHeight - innerHeight;
+      const scrolled = Math.min(Math.max(-rect.top, 0), Math.max(total, 0));
+      const p = total > 0 ? scrolled / total : 0;
+      track.style.transform = `translateX(${(-(p * travel())).toFixed(1)}px)`;
+      if (bar) bar.style.width = `${(20 + p * 80).toFixed(1)}%`;
+      if (rect.top <= 0 && rect.bottom >= innerHeight) setStep(Math.round(p * (N - 1)));
+    };
+
+    // Swipe mode: the rail is a native horizontal scroller.
+    rail.addEventListener(
+      'scroll',
+      () => {
+        if (mode !== 'swipe' || !track) return;
+        const unit = (cards[0]?.getBoundingClientRect().width ?? 1) + 20;
+        setStep(Math.round(rail.scrollLeft / unit));
+        const max = rail.scrollWidth - rail.clientWidth;
+        if (bar) bar.style.width = `${(20 + (max > 0 ? rail.scrollLeft / max : 0) * 80).toFixed(1)}%`;
+      },
+      { passive: true },
+    );
+
+    const goto = (i: number) => {
+      const target = Math.max(0, Math.min(N - 1, i));
+      if (mode === 'pin' && proc) {
+        const total = proc.offsetHeight - innerHeight;
+        const top = proc.getBoundingClientRect().top + scrollY;
+        scrollTo({ top: top + total * (target / (N - 1)) + 2, behavior: 'smooth' });
+      } else if (rail && track) {
+        const card = cards[target];
+        if (card) rail.scrollTo({ left: card.offsetLeft - cards[0].offsetLeft, behavior: 'smooth' });
+      }
+      setStep(target);
+    };
+
+    document.getElementById('proc-prev')?.addEventListener('click', () => goto(step - 1));
+    document.getElementById('proc-next')?.addEventListener('click', () => goto(step + 1));
+    stepBtns.forEach((b, i) => b.addEventListener('click', () => goto(i)));
+
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', () => { pickMode(); measure(); }, { passive: true });
+    pickMode();
+    measure();
+    requestAnimationFrame(measure);
+    setTimeout(measure, 400);
+  }
+</script>
