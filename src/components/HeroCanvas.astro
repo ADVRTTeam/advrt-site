@@ -26,10 +26,12 @@
     height: 100%;
     z-index: 0;
   }
+  /* Hidden on phones and tablets. The canvas sits behind the headline, and
+     at mobile width it is cropped by the nav and competes with the copy
+     rather than setting it off. Desktop only. */
   @media (max-width: 900px) {
     .hero-canvas {
-      width: 100%;
-      height: 44%;
+      display: none;
     }
   }
 </style>
@@ -40,7 +42,12 @@
   const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement | null;
   const ctx = canvas?.getContext('2d');
 
-  if (canvas && ctx) {
+  // Matches the stylesheet: below this the canvas is display:none, so there
+  // is no point building the scene or running a frame loop for it.
+  const desktop = matchMedia('(min-width: 901px)');
+
+  function startHero() {
+    if (!canvas || !ctx) return;
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const saveData =
       (navigator as unknown as { connection?: { saveData?: boolean } }).connection?.saveData === true;
@@ -333,5 +340,17 @@
     } else {
       draw(performance.now());
     }
+  }
+
+  if (canvas && ctx) {
+    let started = false;
+    const maybeStart = () => {
+      if (started || !desktop.matches) return;
+      started = true;
+      startHero();
+    };
+    maybeStart();
+    // Picks it up if the window is resized past the breakpoint.
+    desktop.addEventListener('change', maybeStart);
   }
 </script>
