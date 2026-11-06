@@ -146,11 +146,19 @@ section { scroll-margin-top: 84px; }
 }
 
 /* Scroll-driven reveals. Progressive enhancement: where
-   animation-timeline is unsupported the content is simply there. */
-[data-rise] { animation: rise .9s var(--ease) both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
-[data-wipe] { animation: wipe 1s var(--ease-wipe) both; animation-timeline: view(); animation-range: entry 10% cover 35%; }
-@supports not (animation-timeline: view()) {
-  [data-rise], [data-wipe] { animation: none; }
+   animation-timeline is unsupported the content is simply there.
+
+   Desktop pointers only. On phones the viewport height changes as the
+   address bar shows and hides, which re-resolves the view() ranges
+   mid-scroll and makes headings flicker or sit at their start offset.
+   They are decorative, so below this breakpoint the content just renders. */
+@media (min-width: 901px) and (hover: hover) {
+  [data-rise] { animation: rise .9s var(--ease) both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
+  [data-wipe] { animation: wipe 1s var(--ease-wipe) both; animation-timeline: view(); animation-range: entry 10% cover 35%; }
+
+  @supports not (animation-timeline: view()) {
+    [data-rise], [data-wipe] { animation: none; }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -190,8 +198,12 @@ section { scroll-margin-top: 84px; }
 .scene.ink { background: var(--ink); color: var(--on-ink); }
 .scene.paper { background: var(--paper); color: var(--on-paper); }
 .scene.sig { background: var(--acc); color: var(--ink); }
-.scene > .wrap { animation: sheet 1s var(--ease) both; animation-timeline: view(); animation-range: entry 0% entry 60%; }
-@supports not (animation-timeline: view()) { .scene > .wrap { animation: none; } }
+/* The sheet slide is scroll-driven too; same reasoning as [data-rise]. */
+@media (min-width: 901px) and (hover: hover) {
+  .scene > .wrap { animation: sheet 1s var(--ease) both; animation-timeline: view(); animation-range: entry 0% entry 60%; }
+
+  @supports not (animation-timeline: view()) { .scene > .wrap { animation: none; } }
+}
 
 .wrap { max-width: var(--wrap); margin: 0 auto; width: 100%; position: relative; }
 .outer { padding-left: var(--gutter); padding-right: var(--gutter); }
