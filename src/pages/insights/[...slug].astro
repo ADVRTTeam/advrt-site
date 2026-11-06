@@ -6,24 +6,30 @@ import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import jackFounder from '../../assets/images/jack-founder.jpg';
 import { site } from '../../data/site';
+import { bySlug } from '../../data/sectors';
 
 export async function getStaticPaths() {
   const posts = await getCollection('insights', ({ data }) => !data.draft);
   const sorted = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-  return sorted.map((post, i) => ({
-    params: { slug: post.id },
-    props: {
-      post,
-      // Three other articles to offer under the author bio.
-      more: sorted.filter((p) => p.id !== post.id).slice(0, 3),
-    },
-  }));
+  return sorted.map((post, i) => {
+    const others = sorted.filter((p) => p.id !== post.id);
+    // Same topic first, then a rotation starting after this post, so every
+    // article is linked from several others rather than only the newest three.
+    const sameTopic = others.filter((p) => p.data.topic === post.data.topic);
+    const rotated = others.slice(i).concat(others.slice(0, i));
+    const more = [...new Map([...sameTopic, ...rotated].map((p) => [p.id, p])).values()].slice(0, 3);
+    return { params: { slug: post.id }, props: { post, more } };
+  });
 }
 
 const { post, more } = Astro.props;
 const { Content } = await render(post);
 const d = post.data;
+
+const relatedSectors = d.sectors
+  .map((slug) => bySlug.get(slug))
+  .filter((x): x is NonNullable<typeof x> => Boolean(x));
 
 const fmt = (date: Date) =>
   date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -53,7 +59,7 @@ const schema = [
 ---
 
 <Base
-  title={`${d.title} · ADVRT`}
+  title={`${d.metaTitle ?? d.title} · ADVRT`}
   description={d.excerpt}
   path={`/insights/${post.id}`}
   ogType="article"
@@ -115,6 +121,23 @@ const schema = [
           </div>
         )}
         <Content />
+
+        {relatedSectors.length > 0 && (
+          <aside class="related" aria-labelledby="related-h">
+            <h2 id="related-h" class="label">What we build for these firms</h2>
+            <ul>
+              {relatedSectors.map((sec) => (
+                <li>
+                  <a href={`/${sec.slug}`}>
+                    <span class="rel-name">{sec.short}</span>
+                    <span class="rel-desc">{sec.h1a} {sec.h1b}</span>
+                    <span aria-hidden="true" class="rel-go">→</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        )}
       </div>
     </section>
 
@@ -178,14 +201,7 @@ const schema = [
     </section>
   </main>
 
-  <Footer
-    slimLinks={[
-      { label: 'Home', href: '/' },
-      { label: 'Insights', href: '/insights' },
-      { label: 'Start a project', href: '/start-a-project' },
-      { label: 'Contact us', href: '/contact' },
-    ]}
-  />
+  <Footer variant="full" />
 </Base>
 
 <style>
@@ -292,6 +308,26 @@ const schema = [
   }
   .art :global(.ctarow .btn) { flex: 0 0 auto; }
   @media (max-width: 760px) { .art :global(.ctarow) { padding: 26px 22px; } }
+
+  .related {
+    margin-top: 60px; padding-top: 28px; border-top: 3px solid var(--ink);
+  }
+  .related h2 { color: var(--on-paper-4); margin: 0; }
+  .related ul { margin-top: 14px; list-style: none; display: flex; flex-direction: column; gap: 0; }
+  .related li { padding: 0; }
+  .related li::before { content: none; }
+  .related a {
+    display: grid; grid-template-columns: minmax(0, 1fr) 24px; align-items: center;
+    gap: 2px 12px; padding: 18px 0; border-bottom: 2px solid var(--paper-5);
+    text-decoration: none; transition: padding-left .25s var(--ease);
+  }
+  .related a:hover { padding-left: 10px; background: none; }
+  .rel-name {
+    font-weight: 900; font-stretch: 108%; text-transform: uppercase;
+    font-size: 20px; letter-spacing: -.01em;
+  }
+  .rel-desc { grid-column: 1; font-size: 15px; font-weight: 500; color: var(--on-paper-3); }
+  .rel-go { grid-column: 2; grid-row: 1 / span 2; color: var(--acc); font-weight: 900; }
 
   .author {
     display: grid; grid-template-columns: 280px minmax(0, 1fr);

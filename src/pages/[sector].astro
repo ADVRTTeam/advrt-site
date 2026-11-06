@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Marquee from '../components/Marquee.astro';
+import { getCollection } from 'astro:content';
 import { sectors, LAB_BRANDS_CARDS } from '../data/sectors';
 import { img } from '../lib/images';
 
@@ -12,6 +13,13 @@ export function getStaticPaths() {
 }
 
 const { s } = Astro.props;
+
+// Other sectors, and the articles written for this one.
+const otherSectors = sectors.filter((x) => x.slug !== s.slug);
+const articles = (await getCollection('insights', ({ data }) => !data.draft))
+  .filter((a) => a.data.sectors.includes(s.slug))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
 
 // Section numbering shifts by one when the page opens with a disciplines block.
 const base = s.disciplines ? 1 : 0;
@@ -55,7 +63,7 @@ const schema = [
 ];
 ---
 
-<Base title={s.title} description={s.description} path={`/${s.slug}`} schema={schema}>
+<Base title={s.metaTitle} description={s.metaDescription} path={`/${s.slug}`} schema={schema}>
   <Nav sublabel={s.short} links={navLinks} />
 
   <main id="main">
@@ -91,7 +99,7 @@ const schema = [
             <p class="lede" style="max-width:420px;color:var(--on-ink-2)">{s.disciplines.lede}</p>
           </div>
           <div class="disc">
-            <div class="disc-list" role="tablist" aria-label={s.disciplines.tag}>
+            <div class="disc-list" data-nudge role="tablist" aria-label={s.disciplines.tag}>
               {s.disciplines.items.map((d, i) => (
                 <button
                   type="button" role="tab" id={`dtab-${i}`}
@@ -329,7 +337,7 @@ const schema = [
             <div class="stats" style="margin-top:64px;border-top-width:4px">
               {s.lab.stats.map((st) => (
                 <div class="stat-cell">
-                  <div class="lab-n">{st.n}</div>
+                  <div class="lab-n num">{st.n}</div>
                   <div class="label" style="margin-top:14px">{st.label}</div>
                 </div>
               ))}
@@ -353,7 +361,7 @@ const schema = [
     </section>
 
     <!-- HOW IT LANDS -->
-    <section class="scene paper">
+    <section class="scene paper steps-scene">
       <div class="wrap">
         <div class="row-between">
           <div>
@@ -441,6 +449,46 @@ const schema = [
       </div>
     </section>
 
+    <!-- MORE -->
+    <section class="scene ink">
+      <div class="wrap">
+        <div class="more-grid">
+          <div>
+            <div class="label" style="color:var(--acc);margin-bottom:18px">We also build for</div>
+            <ul class="xlinks">
+              {otherSectors.map((o) => (
+                <li>
+                  <a href={`/${o.slug}`}>
+                    <span class="x-name">{o.short}</span>
+                    <span class="x-desc">{o.h1a} {o.h1b}</span>
+                    <span aria-hidden="true" class="x-go">→</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {articles.length > 0 && (
+            <div>
+              <div class="label" style="color:var(--acc);margin-bottom:18px">Reading for {s.short.toLowerCase()}</div>
+              <ul class="xlinks">
+                {articles.map((a) => (
+                  <li>
+                    <a href={`/insights/${a.id}`}>
+                      <span class="x-name" style="font-size:17px;text-transform:none;font-stretch:104%">{a.data.title}</span>
+                      <span class="x-desc">{a.data.topic} · {a.data.mins} min read</span>
+                      <span aria-hidden="true" class="x-go">→</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <a class="btn dark sm" href="/insights" style="margin-top:22px">All insights <i aria-hidden="true">→</i></a>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
     <!-- CTA -->
     <section class="scene sig" style="padding-bottom:136px">
       <div class="wrap">
@@ -456,13 +504,7 @@ const schema = [
     </section>
   </main>
 
-  <Footer
-    slimLinks={[
-      { label: 'Home', href: '/' },
-      { label: 'Start a project', href: '/start-a-project' },
-      { label: 'Contact us', href: '/contact' },
-    ]}
-  />
+  <Footer variant="full" />
 </Base>
 
 <style>
@@ -623,9 +665,17 @@ const schema = [
   }
 
   /* ---- Lab ---- */
+  /* Word labels ("Own brands") are sized to sit on one line inside their
+     column, so the three cells stay aligned and nothing runs into the
+     dividers. The numeric variant is short, so it keeps the larger size. */
   .lab-n {
-    font-weight: 900; font-stretch: 112%; font-size: clamp(34px, 3.6vw, 54px);
-    line-height: .95; letter-spacing: -.02em; text-transform: uppercase; white-space: nowrap;
+    font-weight: 900; font-stretch: 112%; font-size: clamp(28px, 2.9vw, 42px);
+    line-height: .95; letter-spacing: -.02em; text-transform: uppercase;
+    overflow-wrap: break-word;
+  }
+  .lab-n.num {
+    font-size: clamp(34px, 3.6vw, 54px);
+    white-space: nowrap;
   }
 
   /* ---- Stepper ---- */
@@ -643,6 +693,10 @@ const schema = [
     margin-top: 8px; background: var(--ink); color: var(--on-ink);
     border-radius: var(--r-sm); padding: 30px;
   }
+  /* This dark panel ends the section and the next section is also dark, so
+     without extra space the two read as one block split by a thin sliver. */
+  .steps-scene { padding-bottom: 180px; }
+  @media (max-width: 760px) { .steps-scene { padding-bottom: 150px; } }
   @media (max-width: 900px) {
     .steps { grid-template-columns: 1fr; }
     .step { min-height: 0; flex-direction: row; align-items: center; gap: 18px; padding: 16px 18px; }
@@ -669,6 +723,27 @@ const schema = [
     padding-top: 22px; border-top: 2px solid var(--ink-5);
   }
   .case-stat-n { font-weight: 900; font-stretch: 115%; font-size: 44px; line-height: 1; color: var(--acc); }
+
+  /* ---- Cross-links ---- */
+  .more-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
+    gap: 48px 64px;
+  }
+  .xlinks { list-style: none; display: flex; flex-direction: column; }
+  .xlinks a {
+    display: grid; grid-template-columns: minmax(0, 1fr) 24px; align-items: center;
+    gap: 2px 12px; padding: 16px 0; border-top: 2px solid rgba(242, 240, 234, .18);
+    transition: padding-left .25s var(--ease);
+  }
+  .xlinks li:last-child a { border-bottom: 2px solid rgba(242, 240, 234, .18); }
+  .xlinks a:hover { padding-left: 10px; }
+  .xlinks a:hover .x-name { color: var(--acc); }
+  .x-name {
+    font-weight: 900; font-stretch: 108%; text-transform: uppercase;
+    font-size: 20px; letter-spacing: -.01em; transition: color .2s;
+  }
+  .x-desc { grid-column: 1; font-size: 14px; font-weight: 600; color: var(--on-ink-3); }
+  .x-go { grid-column: 2; grid-row: 1 / span 2; color: var(--acc); font-weight: 900; }
 
   /* ---- FAQ ---- */
   .faq { border-top: 3px solid var(--ink); }
@@ -900,8 +975,10 @@ const schema = [
         for (const en of entries) {
           if (!en.isIntersecting) continue;
           io.unobserve(en.target);
-          const target =
-            en.target.querySelectorAll('button')[1] ?? en.target.querySelector('button');
+          const sel = (en.target as HTMLElement).dataset.nudgeSel;
+          const target = sel
+            ? en.target.querySelector(sel)
+            : (en.target.querySelectorAll('button')[1] ?? en.target.querySelector('button'));
           if (!target) continue;
           target.classList.add('nudge');
           setTimeout(() => target.classList.remove('nudge'), 2700);

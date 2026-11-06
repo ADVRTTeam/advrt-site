@@ -66,7 +66,12 @@ export interface Sector {
   /** Breadcrumb chip, e.g. "01 Surveyors". */
   crumb: string;
   title: string;
+  /** Used for schema and as a fallback. */
   description: string;
+  /** <title> for search results. Kept under 60 characters with the brand. */
+  metaTitle: string;
+  /** Meta description, written for the click. Kept under 158 characters. */
+  metaDescription: string;
   h1a: string;
   h1b: string;
   lede: string;
@@ -182,6 +187,9 @@ export const sectors: Sector[] = [
     title: 'ADVRT · Marketing for surveyors',
     description:
       'Paid search and lead generation for RICS surveyors. Level 2 and 3 surveys, Help to Buy and independent valuations, delivered to you alone and qualified before they reach your inbox.',
+    metaTitle: 'Marketing for surveyors | ADVRT',
+    metaDescription:
+      'Exclusive survey and valuation enquiries for RICS firms, never shared with four rivals. Paid search built on live surveyor data. A plan, not a pitch.',
     h1a: 'Instructions you want.',
     h1b: 'Not leads you share.',
     lede: 'Paid search and lead generation for RICS surveyors. Level 2 and 3 surveys, Help to Buy and independent valuations, delivered to you alone and qualified before they reach your inbox.',
@@ -303,6 +311,9 @@ export const sectors: Sector[] = [
     title: 'ADVRT · Marketing for architects',
     description:
       'Paid search, social and lead generation for architecture practices. Private residential, extensions, new-builds and commercial work, qualified on budget, scope and timeline before they reach you.',
+    metaTitle: 'Marketing for architects | ADVRT',
+    metaDescription:
+      'Paid search and social that brings architecture practices the right commissions, qualified on budget, scope and planning status before they reach you.',
     h1a: 'The right projects.',
     h1b: 'Not just more enquiries.',
     lede: 'Paid search, social and lead generation for architecture practices. Private residential, extensions, new-builds and commercial work, qualified on budget, scope and timeline before they reach you.',
@@ -413,6 +424,9 @@ export const sectors: Sector[] = [
     title: 'ADVRT · Marketing for contractors',
     description:
       'Lead generation for contractors and specialist trades. Direct client enquiries, tender opportunities and sub-contract packages in the trades and regions you prioritise.',
+    metaTitle: 'Marketing for contractors | ADVRT',
+    metaDescription:
+      'Direct client enquiries and tender-ready leads for contractors and specialist trades, filtered by trade, budget, start date and postcode.',
     h1a: 'Work you choose.',
     h1b: 'Not jobs you chase.',
     lede: 'Lead generation for contractors and specialist trades. Direct client enquiries, tender opportunities and sub-contract packages in the trades and regions you prioritise.',
@@ -523,6 +537,9 @@ export const sectors: Sector[] = [
     title: 'ADVRT · Marketing for compliance and inspection firms',
     description:
       'Lead generation for compliance and inspection businesses. EPCs, EICRs, gas safety checks, fire risk assessments and more, from landlords, agents and businesses who need the certificate by a date.',
+    metaTitle: 'Marketing for compliance firms | ADVRT',
+    metaDescription:
+      'Fill the diary with EPC, EICR, gas safety and fire risk assessment bookings. Local paid search built for buyers who need the certificate this week.',
     h1a: 'Inspections booked.',
     h1b: 'Not quotes chased.',
     lede: 'Lead generation for compliance and inspection businesses. EPCs, EICRs, gas safety checks, fire risk assessments and more, from landlords, agents and businesses who need the certificate by a date.',
@@ -670,6 +687,9 @@ export const sectors: Sector[] = [
     title: 'ADVRT · Marketing for built environment training providers',
     description:
       'Lead generation for training providers serving the built environment. Health and safety, retrofit, site cards, technical and compliance courses, filled with learners and employers who are ready to book.',
+    metaTitle: 'Marketing for training providers | ADVRT',
+    metaDescription:
+      'Fill every course date. Paid search and social for built-environment training providers, with separate journeys for employers and individual learners.',
     h1a: 'Full courses.',
     h1b: 'Not empty seats.',
     lede: 'Lead generation for training providers serving the built environment. Health and safety, retrofit, site cards, technical and compliance courses, filled with learners and employers who are ready to book.',
@@ -817,6 +837,9 @@ export const sectors: Sector[] = [
     title: 'ADVRT · Marketing for the wider built environment',
     description:
       'Engineers, planners, consultancies, fit-out specialists and trades. If your business lives in construction or the built environment, we build the lead generation system around your best-margin work.',
+    metaTitle: 'Marketing for the built environment | ADVRT',
+    metaDescription:
+      'Lead generation for engineers, planners, consultancies and specialist trades. Campaigns built around your best-margin services, not generic templates.',
     h1a: 'Specialist work.',
     h1b: 'Specialist marketing.',
     lede: 'Engineers, planners, consultancies, fit-out specialists and trades. If your business lives in construction or the built environment, we build the lead generation system around your best-margin work.',

@@ -1,9 +1,12 @@
 ---
 title: 'Filling course dates: paid search for training providers'
+metaTitle: 'Paid search for training providers'
 excerpt: 'Empty seats on a booked trainer are pure cost. Date-led campaigns that fill courses instead of inboxes.'
 topic: 'Training'
 date: 2026-09-15
 mins: 5
+sectors:
+  - 'training'
 takeaways:
   - 'A course costs the same to run half empty, so the marginal seat is almost pure margin.'
   - 'Campaigns should be aimed at specific dates and locations, not at courses in the abstract.'

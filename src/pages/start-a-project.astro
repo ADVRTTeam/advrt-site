@@ -480,6 +480,10 @@ const days = nextWeekdays();
     prog.hidden = false;
     let step = 0;
     let briefSent = false;
+    // The furthest step reached. Auto-advance only applies here, so going
+    // Back to change an answer does not immediately throw you forward again.
+    let maxStep = 0;
+    let advanceTimer: ReturnType<typeof setTimeout> | undefined;
 
     const val = (name: string) =>
       (form.querySelector<HTMLInputElement>(`[name="${name}"]:checked`) ?? null)?.value ?? '';
@@ -500,7 +504,9 @@ const days = nextWeekdays();
     };
 
     function show(i: number) {
+      clearTimeout(advanceTimer);
       step = i;
+      if (i > maxStep) maxStep = i;
       steps.forEach((el) => { el.hidden = Number(el.dataset.step) !== i; });
       prog.hidden = i > LAST_FORM_STEP;
       prog.setAttribute('aria-label', `Step ${Math.min(i + 1, 5)} of 5`);
@@ -561,9 +567,38 @@ const days = nextWeekdays();
       });
     };
 
+    // Steps whose questions are all single-choice can move on by themselves:
+    // answering the last one is the whole decision, so a Continue click is
+    // just a second click. Steps with an open-ended multi-select keep the
+    // button, because there is no way to know the person has finished picking.
+    //   0  firm        single      -> auto
+    //   1  work        multi       -> button
+    //   2  sources + website       -> auto once the website choice is made
+    //   3  budget + timing  both single -> auto
+    //   4  contact details         -> submits, never auto
+    const AUTO_ADVANCE: Record<number, (changed: HTMLElement) => boolean> = {
+      0: () => true,
+      2: (changed) => changed.getAttribute('name') === 'website',
+      3: () => true,
+    };
+
+    function maybeAdvance(changed: HTMLElement) {
+      clearTimeout(advanceTimer);
+      if (step !== maxStep) return;        // revisiting an earlier answer
+      if (step >= LAST_FORM_STEP) return;  // the last step submits
+      const rule = AUTO_ADVANCE[step];
+      if (!rule || !rule(changed) || !valid(step)) return;
+      // Long enough to see the selection register before the step changes.
+      advanceTimer = setTimeout(() => {
+        if (step === maxStep && valid(step)) show(step + 1);
+      }, 420);
+    }
+
     form.addEventListener('change', (e) => {
-      if ((e.target as HTMLElement).hasAttribute('data-sector-pick')) syncWork();
+      const target = e.target as HTMLElement;
+      if (target.hasAttribute('data-sector-pick')) syncWork();
       render();
+      maybeAdvance(target);
     });
     form.addEventListener('input', render);
 
@@ -587,6 +622,8 @@ const days = nextWeekdays();
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      clearTimeout(advanceTimer);
 
       if (step < LAST_FORM_STEP) {
         if (!valid(step)) return;

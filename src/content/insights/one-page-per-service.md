@@ -1,9 +1,14 @@
 ---
 title: 'One page per service: why focused landing pages win work'
+metaTitle: 'Why focused landing pages win work'
 excerpt: "A homepage tries to say everything. A landing page says one thing to one person, and that's exactly why it converts."
 topic: 'Landing pages'
 date: 2026-10-21
 mins: 5
+sectors:
+  - 'architects'
+  - 'contractors'
+  - 'built-environment'
 takeaways:
   - 'A homepage is written for everyone who might land on it, which means it is written for nobody in particular.'
   - 'One page per service lets the headline match the search, which lifts both conversion rate and Google Quality Score.'

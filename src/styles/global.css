@@ -295,14 +295,21 @@ section { scroll-margin-top: 84px; }
 .more-btn svg { transition: transform .25s; }
 .more:hover .more-btn svg, .more-btn[aria-expanded='true'] svg { transform: rotate(180deg); }
 .more-panel {
-  position: absolute; top: calc(100% + 12px); right: 0; width: 360px;
-  background: var(--ink); border: 1px solid rgba(242, 240, 234, .14);
-  border-radius: 14px; padding: 8px; opacity: 0; transform: translateY(-6px);
+  position: absolute; top: 100%; right: 0; width: 360px;
+  /* The 12px stand-off from the button is padding on the panel, not empty
+     space, so the pointer never crosses a dead zone on the way down. */
+  margin-top: 0; padding: 20px 8px 8px; opacity: 0; transform: translateY(-6px);
   pointer-events: none; transition: opacity .2s, transform .25s var(--ease);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, .5);
 }
-.more-panel::before { content: ''; position: absolute; left: 0; right: 0; top: -14px; height: 14px; }
-.more:hover .more-panel, .more:focus-within .more-panel, .more-panel.open { opacity: 1; transform: none; pointer-events: auto; }
+.more-panel > * { position: relative; z-index: 1; }
+.more-panel::before {
+  content: ''; position: absolute; left: 0; right: 0; top: 12px; bottom: 0;
+  background: var(--ink); border: 1px solid rgba(242, 240, 234, .14);
+  border-radius: 14px; box-shadow: 0 24px 60px rgba(0, 0, 0, .5);
+}
+.more-panel.open { opacity: 1; transform: none; pointer-events: auto; }
+/* Keyboard fallback if the script has not run yet. */
+.more:focus-within .more-panel { opacity: 1; transform: none; pointer-events: auto; }
 .more-item {
   display: grid; grid-template-columns: minmax(0, 1fr) 24px; gap: 2px 12px;
   align-items: center; padding: 14px 16px; border-radius: var(--r-2xs);

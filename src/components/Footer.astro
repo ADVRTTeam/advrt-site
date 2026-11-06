@@ -18,7 +18,11 @@ const defaultSlim = [
   { label: 'Start a project', href: '/start-a-project' },
   { label: 'Contact us', href: '/contact' },
 ];
-const slim = slimLinks ?? defaultSlim;
+// Insights is always present, wherever a caller's list places the rest.
+const given = slimLinks ?? defaultSlim;
+const slim = given.some((l) => l.href === '/insights')
+  ? given
+  : [...given.slice(0, 1), { label: 'Insights', href: '/insights' }, ...given.slice(1)];
 ---
 
 {variant === 'full' ? (
@@ -63,10 +67,8 @@ const slim = slimLinks ?? defaultSlim;
     <div class="wrap label"
       style="margin-top:64px;padding-top:22px;border-top:2px solid var(--ink-3);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--on-ink-4)">
       <span>{site.copyright}</span>
-      <span style="display:flex;gap:16px">
-        <a href="/privacy" style="min-height:44px;display:inline-flex;align-items:center">Privacy</a>
-        <span aria-hidden="true">·</span>
-        <a href="/terms" style="min-height:44px;display:inline-flex;align-items:center">Terms</a>
+      <span class="legal-links">
+        <a href="/privacy">Privacy</a><span aria-hidden="true">·</span><a href="/terms">Terms</a>
       </span>
     </div>
   </footer>
@@ -85,3 +87,15 @@ const slim = slimLinks ?? defaultSlim;
     </div>
   </footer>
 )}
+
+<style>
+  /* Keep the separator tight against both links so it reads as
+     "Privacy · Terms" rather than a stray dot, while the links stay a
+     comfortable height to tap. */
+  .legal-links { display: inline-flex; align-items: center; }
+  .legal-links a { padding: 10px 10px; display: inline-flex; align-items: center; }
+  .legal-links a:first-child { padding-left: 0; }
+  .legal-links a:last-child { padding-right: 0; }
+  .legal-links a:hover { color: var(--acc); }
+  .legal-links span { opacity: .6; }
+</style>

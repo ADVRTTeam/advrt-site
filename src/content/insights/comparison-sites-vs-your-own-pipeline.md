@@ -1,9 +1,13 @@
 ---
 title: 'Comparison sites vs your own pipeline: the real trade-off'
+metaTitle: 'Comparison sites vs your own pipeline'
 excerpt: 'Shared leads feel cheap until you count the race to the phone. What it actually takes to own the enquiry instead.'
 topic: 'Strategy'
 date: 2026-10-28
 mins: 6
+sectors:
+  - 'surveyors'
+  - 'compliance'
 takeaways:
   - 'A comparison site sells one enquiry to several firms, so you are buying a place in a queue rather than a client.'
   - 'Shared leads are quick to switch on and need no build. That convenience is real, and it is what you are paying for.'

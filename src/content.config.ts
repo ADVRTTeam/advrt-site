@@ -5,6 +5,8 @@ const insights = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/insights' }),
   schema: z.object({
     title: z.string(),
+    /** Short <title> for search results; falls back to `title`. */
+    metaTitle: z.string().optional(),
     /** Shown on the card and used as the meta description. */
     excerpt: z.string(),
     /** Filter chip on the index, e.g. "Strategy". */
@@ -22,6 +24,9 @@ const insights = defineCollection({
     coverWord: z.string().optional(),
     /** Bulleted summary rendered above the article body. */
     takeaways: z.array(z.string()).default([]),
+    /** Sector slugs this article is relevant to; renders a related-services
+        block and gives the sector pages inbound links from the blog. */
+    sectors: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
   }),
 });

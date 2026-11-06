@@ -1,9 +1,14 @@
 ---
 title: 'Why we test on our own money first'
+metaTitle: 'Why we test on our own money first'
 excerpt: 'We run our own lead generation brands in the built environment. What that lab teaches us before your budget is ever involved.'
 topic: 'Strategy'
 date: 2026-09-01
 mins: 6
+sectors:
+  - 'surveyors'
+  - 'training'
+  - 'built-environment'
 takeaways:
   - 'Most agencies learn a new industry on their first client''s budget. We think that cost should sit with us.'
   - 'We run our own lead generation brands in the built environment, on our own spend, as a live testing ground.'

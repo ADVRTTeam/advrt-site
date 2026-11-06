@@ -1,9 +1,13 @@
 ---
 title: 'The first five minutes: why response speed decides who wins'
+metaTitle: 'Why response speed decides who wins'
 excerpt: 'Most enquiries go to whoever answers first, not whoever’s best. The habits and tooling that get you there.'
 topic: 'Lead handling'
 date: 2026-09-22
 mins: 4
+sectors:
+  - 'compliance'
+  - 'contractors'
 takeaways:
   - 'When an enquiry goes to several firms, the one that replies first usually wins, regardless of who is better.'
   - 'Response speed is the cheapest conversion improvement available, because it needs no extra ad spend.'

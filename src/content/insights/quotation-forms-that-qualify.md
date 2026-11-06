@@ -1,9 +1,13 @@
 ---
 title: 'Quotation forms that qualify, not just capture'
+metaTitle: 'Quotation forms that qualify'
 excerpt: "A name and a number isn't a lead, it's a chore. Two-stage forms that hand you everything you need to price the job."
 topic: 'Forms'
 date: 2026-09-29
 mins: 4
+sectors:
+  - 'surveyors'
+  - 'architects'
 takeaways:
   - 'A form that collects only a name and number moves the work onto you, instead of doing any of it.'
   - 'Two stages works best: capture the contact first, then ask the qualifying questions on a second step.'

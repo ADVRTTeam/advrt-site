@@ -1,9 +1,12 @@
 ---
 title: 'Google Ads for compliance firms: EPCs, EICRs and search intent'
+metaTitle: 'Google Ads for compliance firms'
 excerpt: 'Compliance work is bought in a hurry by people who need a certificate this week. Your campaigns should act like it.'
 topic: 'Compliance'
 date: 2026-10-06
 mins: 5
+sectors:
+  - 'compliance'
 takeaways:
   - 'Compliance buyers are on a deadline, not a journey. The search is already the decision.'
   - 'One campaign per discipline per area, because an EPC buyer and a fire risk assessment buyer have nothing in common.'

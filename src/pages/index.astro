@@ -40,7 +40,7 @@ const schema = [
 
 <Base
   title="ADVRT · Marketing for the built environment"
-  description="Specialist paid media and lead generation for surveyors, architects, contractors, compliance firms, training providers and the wider built environment. We draw the plans, then build the pipeline."
+  description="Specialist paid media and lead generation for the built environment: surveyors, architects, contractors, compliance and training. We build the pipeline."
   path="/"
   schema={schema}
 >
@@ -135,7 +135,7 @@ const schema = [
           </p>
         </div>
 
-        <div style="margin-top:64px" id="sector-rows">
+        <div style="margin-top:64px" id="sector-rows" data-nudge data-nudge-sel=".srow:nth-child(2) .splus">
           {sectors.map((s, i) => (
             <div class:list={['srow', { open: i === 0 }]} data-srow>
               <div class="shead">
@@ -198,7 +198,7 @@ const schema = [
 
           <div class="pbar" style="margin-top:26px"><i id="proc-bar" style="width:20%"></i></div>
 
-          <div class="steps-row" style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+          <div class="steps-row" data-nudge style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
             {process.map((p, i) => (
               <button type="button" class:list={['stepb', { on: i === 0 }]} data-step={i}>
                 {p.no} {p.tag}
@@ -315,11 +315,11 @@ const schema = [
           <p class="lede" style="margin-top:22px;color:var(--on-paper-2)">
             He's also co-founded several lead generation brands of his own. Their data, findings and
             results feed straight into every system we build for clients. Campaigns are run by
-            ex-RICS media buyers who've spent careers inside the built environment.
+            an industry-specialist team who've spent careers inside the built environment.
           </p>
           <div style="margin-top:28px;display:flex;flex-wrap:wrap;gap:8px">
             <span class="spill">Google Partner</span>
-            <span class="spill">Ex-RICS media buyers</span>
+            <span class="spill">Industry-specialist team</span>
             <span class="spill">Own lead-gen brands</span>
           </div>
         </div>
@@ -392,7 +392,10 @@ const schema = [
   .hero-h1 {
     font-size: clamp(40px, 6.2vw, 100px);
     font-stretch: 108%;
-    max-width: 900px;
+    /* At the top of the clamp, "environment." needs ~1010px. The canvas's
+       900px was never reached inside its 1477px artboard, so above ~1600px
+       the full stop was breaking onto a line of its own. */
+    max-width: 1040px;
     position: relative;
     z-index: 2;
   }
@@ -572,6 +575,8 @@ const schema = [
     .pno { font-size: 60px; }
   }
 
+  .nudge { animation: nudge 1.05s ease-out .25s 2 both; }
+
   /* ---- Edge cards ---- */
   .ecard {
     background: var(--ink); color: var(--on-ink); border-radius: var(--r-md);
@@ -715,6 +720,29 @@ const schema = [
       });
     });
   });
+
+  // ---- One-shot "nudge" pulse to show a control is interactive --------
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const nio = new IntersectionObserver(
+      (entries) => {
+        for (const en of entries) {
+          if (!en.isIntersecting) continue;
+          nio.unobserve(en.target);
+          const sel = (en.target as HTMLElement).dataset.nudgeSel;
+          const target = sel
+            ? en.target.querySelector(sel)
+            : (en.target.querySelectorAll('button')[1] ?? en.target.querySelector('button'));
+          if (!target) continue;
+          target.classList.add('nudge');
+          setTimeout(() => target.classList.remove('nudge'), 2700);
+        }
+      },
+      { threshold: 0.5 },
+    );
+    setTimeout(() => {
+      document.querySelectorAll('[data-nudge]').forEach((el) => nio.observe(el));
+    }, 350);
+  }
 
   // ---- Process rail ------------------------------------------------
   const proc = document.getElementById('process');

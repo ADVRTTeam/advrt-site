@@ -1,9 +1,13 @@
 ---
 title: 'CRM or inbox? When your lead handling needs to grow up'
+metaTitle: 'CRM or inbox? Lead handling that scales'
 excerpt: "An inbox works until it doesn't. The signs you've outgrown it, and what to deploy when you're ready."
 topic: 'Lead handling'
 date: 2026-09-08
 mins: 6
+sectors:
+  - 'contractors'
+  - 'built-environment'
 takeaways:
   - 'An email inbox is a perfectly good lead handling system at low volume, and pretending otherwise wastes money.'
   - 'The signs you have outgrown it are specific: dropped follow-ups, no shared view, and no idea of your conversion rate.'

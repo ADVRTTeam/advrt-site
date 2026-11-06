@@ -215,13 +215,34 @@ const menu = menuLinks ?? links.map((l) => ({ label: l.label, href: l.href, no: 
   });
 
   // ---- "More services" dropdown ------------------------------------
+  // Hover intent: open immediately, but wait before closing so moving the
+  // pointer from the button down to the panel does not snap it shut.
+  const CLOSE_DELAY = 260;
+  let closeTimer: ReturnType<typeof setTimeout> | undefined;
+
   function setMore(open: boolean) {
+    clearTimeout(closeTimer);
     moreBtn?.setAttribute('aria-expanded', String(open));
     morePanel?.classList.toggle('open', open);
   }
 
+  function closeMoreSoon() {
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(() => setMore(false), CLOSE_DELAY);
+  }
+
+  if (more && matchMedia('(hover: hover)').matches) {
+    more.addEventListener('pointerenter', () => setMore(true));
+    more.addEventListener('pointerleave', closeMoreSoon);
+  }
+
   moreBtn?.addEventListener('click', () => {
     setMore(moreBtn.getAttribute('aria-expanded') !== 'true');
+  });
+
+  // Keyboard users get it via focus; close when focus leaves the group.
+  more?.addEventListener('focusout', (e) => {
+    if (!more.contains(e.relatedTarget as Node)) setMore(false);
   });
 
   document.addEventListener('click', (e) => {

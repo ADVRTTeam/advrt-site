@@ -1,9 +1,13 @@
 ---
 title: 'Attribution without the headache: know which pound brought the job'
+metaTitle: 'Attribution without the headache'
 excerpt: "If you can't trace an instruction back to the click that started it, you're guessing. The tracking setup worth having."
 topic: 'Tracking'
 date: 2026-10-14
 mins: 7
+sectors:
+  - 'surveyors'
+  - 'contractors'
 takeaways:
   - 'Counting clicks and form fills is not attribution. Attribution is knowing which click produced a job you were paid for.'
   - 'The chain breaks in four predictable places: the click, the enquiry, the phone call and the outcome.'

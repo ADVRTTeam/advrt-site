@@ -1,5 +1,6 @@
 ---
 title: 'What a surveyor lead actually costs, and why cheap ones are the expensive kind.'
+metaTitle: 'What a surveyor lead really costs'
 excerpt: 'The price on the invoice is the least interesting number. Work out your cost per instruction and the whole market looks different.'
 topic: 'Strategy'
 crumb: 'Surveyors · Strategy'
@@ -7,6 +8,8 @@ date: 2026-10-12
 mins: 8
 featured: true
 coverWord: 'Cost per job'
+sectors:
+  - 'surveyors'
 takeaways:
   - 'The invoice price of a lead tells you almost nothing. The number that matters is cost per instruction: what you pay, divided by the jobs you actually win.'
   - "Shared leads carry a hidden cost: you're racing four other firms to the same phone number, so your conversion rate does the suffering."
