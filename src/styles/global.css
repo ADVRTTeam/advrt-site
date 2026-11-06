@@ -412,7 +412,7 @@ section { scroll-margin-top: 84px; }
 /* ---- Runtime-built elements --------------------------------------------
    Created by page scripts (the brief's spec panel and the sector pages'
    stack map), so they cannot rely on component-scoped styles. */
-.srow {
+.spec-row {
   display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 14px;
   padding: 14px 0; border-top: 2px solid rgba(11, 11, 12, .18);
   animation: linein .4s ease both;
