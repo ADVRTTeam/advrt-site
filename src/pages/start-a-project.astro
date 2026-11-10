@@ -48,16 +48,16 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
           <button
             type="button" class={i === 0 ? 'pstep on' : 'pstep'}
             data-goto={i} aria-label={`Go to step ${i + 1}: ${l}`} disabled={i > 0}
-          ><span class="n">{`0${i + 1}`}</span>{l}</button>
+          ><span class="n">{`0${i + 1}`}</span><span class="plabel">{l}</span></button>
         ))}
       </div>
 
       <!-- ---- 01 · Firm ---- -->
-      <fieldset class="stage" data-step="0" style="margin-top:48px">
+      <fieldset class="stage" data-step="0">
         <legend class="vis-hidden">What kind of firm are you?</legend>
         <p class="lbl"><span class="dot" aria-hidden="true"></span>Step 1 of 5 · Two minutes, five questions</p>
-        <h2 class="q" style="margin-top:18px">What kind of <em>firm</em> are you?</h2>
-        <div class="optgrid" style="margin-top:34px">
+        <h2 class="q">What kind of <em>firm</em> are you?</h2>
+        <div class="optgrid sectorgrid">
           {sectorOptions.map((label, i) => (
             <label class="opt">
               <input type="radio" name="sector" value={label} class="vis-hidden" data-sector-pick />
@@ -70,14 +70,14 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
       </fieldset>
 
       <!-- ---- 02 · Work ---- -->
-      <fieldset class="stage" data-step="1" style="margin-top:48px">
+      <fieldset class="stage" data-step="1">
         <legend class="vis-hidden">Which work do you want more of?</legend>
         <p class="lbl"><span class="dot" aria-hidden="true"></span>Step 2 of 5 · Pick as many as you like</p>
-        <h2 class="q" style="margin-top:18px">Which work do you want <em>more of?</em></h2>
+        <h2 class="q">Which work do you want <em>more of?</em></h2>
         {Object.entries(workBySector).map(([sector, items]) => (
-          <div class="workgroup" data-work-for={sector} style="margin-top:34px">
+          <div class="workgroup" data-work-for={sector}>
             <p class="flabel wg-label">{sector}</p>
-            <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <div class="chiprow tight">
               {items.map((label) => (
                 <label class="chip">
                   <input type="checkbox" name="work" value={label} class="vis-hidden" />
@@ -90,11 +90,11 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
       </fieldset>
 
       <!-- ---- 03 · Today ---- -->
-      <fieldset class="stage" data-step="2" style="margin-top:48px">
+      <fieldset class="stage" data-step="2">
         <legend class="vis-hidden">Where does work come from today?</legend>
         <p class="lbl"><span class="dot" aria-hidden="true"></span>Step 3 of 5 · Where you are today</p>
-        <h2 class="q" style="margin-top:18px">Where does work <em>come from</em> today?</h2>
-        <div role="group" aria-label="Current lead sources" style="margin-top:34px;display:flex;flex-wrap:wrap;gap:10px">
+        <h2 class="q">Where does work <em>come from</em> today?</h2>
+        <div class="chiprow" role="group" aria-label="Current lead sources">
           {sourceOptions.map((label) => (
             <label class="chip">
               <input type="checkbox" name="sources" value={label} class="vis-hidden" />
@@ -102,10 +102,10 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
             </label>
           ))}
         </div>
-        <p class="lbl next-q" id="website-q" style="margin-top:38px">
+        <p class="lbl next-q" id="website-q">
           <span class="dot" aria-hidden="true" hidden></span>And your website?
         </p>
-        <div class="optgrid" style="margin-top:16px">
+        <div class="optgrid sitegrid">
           {siteOptions.map((o) => (
             <label class="opt">
               <input type="radio" name="website" value={o.label} class="vis-hidden" />
@@ -118,12 +118,12 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
       </fieldset>
 
       <!-- ---- 04 · Budget and timing ---- -->
-      <fieldset class="stage" data-step="3" style="margin-top:48px">
+      <fieldset class="stage" data-step="3">
         <legend class="vis-hidden">Budget and timing</legend>
         <p class="lbl"><span class="dot" aria-hidden="true"></span>Step 4 of 5 · Budget and timing</p>
-        <h2 class="q" style="margin-top:18px">What does <em>ambition</em> look like?</h2>
+        <h2 class="q">What does <em>ambition</em> look like?</h2>
         <p class="lbl" style="margin-top:34px">Monthly ad budget</p>
-        <div role="group" aria-label="Monthly ad budget" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
+        <div class="chiprow tight" role="group" aria-label="Monthly ad budget">
           {budgetOptions.map((label) => (
             <label class="chip">
               <input type="radio" name="budget" value={label} class="vis-hidden" />
@@ -132,7 +132,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
           ))}
         </div>
         <p class="lbl" style="margin-top:32px">When do you want to start?</p>
-        <div role="group" aria-label="Start date" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
+        <div class="chiprow tight" role="group" aria-label="Start date">
           {timingOptions.map((label) => (
             <label class="chip">
               <input type="radio" name="timing" value={label} class="vis-hidden" />
@@ -143,11 +143,11 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
       </fieldset>
 
       <!-- ---- 05 · Contact ---- -->
-      <fieldset class="stage" data-step="4" style="margin-top:48px">
+      <fieldset class="stage" data-step="4">
         <legend class="vis-hidden">Where should we send the plan?</legend>
         <p class="lbl"><span class="dot" aria-hidden="true"></span>Step 5 of 5 · Nearly there</p>
-        <h2 class="q" style="margin-top:18px">Where should we <em>send the plan?</em></h2>
-        <div class="fgrid" style="margin-top:34px">
+        <h2 class="q">Where should we <em>send the plan?</em></h2>
+        <div class="fgrid">
           <div>
             <label class="flabel" for="b-name">Your name *</label>
             <input id="b-name" name="name" class="field" type="text" autocomplete="name" required />
@@ -170,7 +170,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
           </div>
           <div class="wide">
             <label class="flabel" for="b-notes">Anything else?</label>
-            <textarea id="b-notes" name="notes" class="field" rows="3" style="resize:vertical;min-height:110px"></textarea>
+            <textarea id="b-notes" name="notes" class="field notes" rows="3"></textarea>
           </div>
         </div>
         <p class="alert" id="brief-error" role="alert" hidden></p>
@@ -270,6 +270,48 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
   .js .stage[data-step='2'],
   .js .stage[data-step='3'],
   .js .stage[data-step='4'] { display: none; }
+
+  /* ---- Layout, now in CSS so a media query can trim it ---- */
+  .stage[data-step] { margin-top: 48px; }
+  .q { margin-top: 18px; }
+  .workgroup { margin-top: 34px; }
+  .sectorgrid { margin-top: 34px; }
+  .sitegrid { margin-top: 16px; }
+  .fgrid { margin-top: 34px; }
+  .chiprow { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .chiprow.tight { margin-top: 14px; }
+  #website-q { margin-top: 38px; }
+  .notes { resize: vertical; min-height: 110px; }
+
+  /* ---- Phones: every step fits one screen, no scrolling for the
+     options or the Continue button ---- */
+  @media (max-width: 760px) {
+    .stage[data-step] { margin-top: 20px; }
+    .q { margin-top: 12px; font-size: clamp(23px, 6.6vw, 34px); }
+    .workgroup { margin-top: 18px; }
+    /* Six sector cards in one column is what pushed step 1 past the fold. */
+    .sectorgrid { margin-top: 20px; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+    /* Three cards, two up: one column cost a whole screen on step 3. */
+    .sitegrid { margin-top: 10px; gap: 9px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .chiprow { margin-top: 18px; gap: 8px; }
+    .chiprow.tight { margin-top: 10px; }
+    #website-q { margin-top: 20px; }
+    .fgrid { margin-top: 18px; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .notes { min-height: 64px; }
+  }
+
+  @media (max-width: 760px) and (max-height: 720px) {
+    .stage[data-step] { margin-top: 11px; }
+    .sitegrid { margin-top: 8px; gap: 7px; }
+    .q { margin-top: 8px; font-size: clamp(21px, 6vw, 28px); }
+    .sectorgrid { margin-top: 14px; }
+    .chiprow { margin-top: 14px; gap: 7px; }
+    .chiprow.tight { margin-top: 8px; }
+    .workgroup { margin-top: 14px; }
+    #website-q { margin-top: 14px; }
+    .fgrid { margin-top: 14px; gap: 9px; }
+    .notes { min-height: 54px; }
+  }
 
   /* The step's second question, once the first has been answered. */
   .next-q { transition: color .3s ease; }
