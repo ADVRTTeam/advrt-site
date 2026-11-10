@@ -13,7 +13,8 @@ const featured = all.find((p) => p.data.featured) ?? all[0];
 const rest = all.filter((p) => p.id !== featured.id);
 
 /** Filter chips, in the board's order, limited to topics we actually have. */
-const ORDER = ['Strategy', 'Landing pages', 'Tracking', 'Lead handling', 'Compliance', 'Training', 'Forms'];
+const ORDER = ['Strategy', 'Specialist trades', 'Fire protection', 'Compliance', 'Landing pages',
+  'Tracking', 'Lead handling', 'Training', 'Forms'];
 const present = new Set(rest.map((p) => p.data.topic));
 const topics = ['All', ...ORDER.filter((t) => present.has(t)), ...[...present].filter((t) => !ORDER.includes(t))];
 
