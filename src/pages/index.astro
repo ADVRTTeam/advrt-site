@@ -157,7 +157,7 @@ const schema = [
         <span class="line" aria-hidden="true"></span>
         {process.map((p) => (
           <div class="tlrow">
-            <Image src={img(p.img)} alt={p.alt} width={300} height={206} widths={[150, 300]} sizes="150px" loading="lazy" />
+            <Image src={img(p.img)} alt={p.alt} width={450} height={450} widths={[150, 300, 450]} sizes="150px" loading="lazy" />
             <h3><i>Stage {p.no}</i>{p.name}</h3>
             <p>{p.desc}</p>
           </div>
@@ -410,9 +410,12 @@ const schema = [
     margin-top: -5px; border-radius: 50%; background: var(--acc);
     box-shadow: 0 0 14px rgba(255, 90, 31, .7);
   }
+  /* Square, and square in the source too: the stage photos used to be
+     16:11 boxes cropping a 16:8.4 original, so the browser was covering the
+     box with a fraction of an already-small render and they looked soft. */
   .tlrow :global(img) {
-    width: 100%; max-width: 150px; aspect-ratio: 16/11; object-fit: cover;
-    border-radius: 10px; filter: brightness(.8) saturate(.9);
+    width: 100%; max-width: 150px; height: auto; aspect-ratio: 1; object-fit: cover;
+    border-radius: 12px; filter: brightness(.88) saturate(.92);
   }
   .tlrow h3 { font-weight: 800; font-stretch: 104%; text-transform: uppercase; font-size: clamp(19px, 1.8vw, 25px); }
   .tlrow h3 i { font-style: normal; color: var(--acc); font-size: 13px; letter-spacing: .16em; display: block; margin-bottom: 7px; }
