@@ -1,7 +1,7 @@
 /** Brief form options, verbatim from the design canvas. */
 
 export const sectorOptions = [
-  'Surveyors', 'Architects', 'Contractors', 'Compliance', 'Training', 'Everyone else',
+  'Surveyors', 'Architects', 'Contractors', 'Compliance', 'Training', 'Wider built environment',
 ] as const;
 
 export const workBySector: Record<string, string[]> = {
@@ -21,7 +21,7 @@ export const workBySector: Record<string, string[]> = {
     'Health and safety courses', 'Retrofit qualifications', 'Site cards and tests',
     'Plant and scaffolding tickets', 'Electrical and gas courses', 'Awareness and refresher training',
   ],
-  'Everyone else': ['Consultancy work', 'Planning work', 'Fit-out', 'Specialist trades', 'Not sure yet'],
+  'Wider built environment': ['Consultancy work', 'Planning work', 'Fit-out', 'Specialist trades', 'Not sure yet'],
 };
 
 export const sourceOptions = [

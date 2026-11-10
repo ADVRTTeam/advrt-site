@@ -58,7 +58,7 @@ export const sectorRows = [
   { no: '03', name: 'Compliance', href: '/compliance', desc: 'EPCs, EICRs, gas, fire: people who need the certificate this week.' },
   { no: '04', name: 'Training', href: '/training', desc: 'Course dates filled by learners and employers ready to book.' },
   { no: '05', name: 'Architects', href: '/architects', desc: "Commissions that fit the portfolio you're building." },
-  { no: '06', name: 'Everyone else', href: '/built-environment', desc: 'Engineers, planners, consultancies and specialist trades.' },
+  { no: '06', name: 'Wider built environment', href: '/built-environment', desc: 'Engineers, planners, consultancies and specialist trades.' },
 ] as const;
 
 export const process = [

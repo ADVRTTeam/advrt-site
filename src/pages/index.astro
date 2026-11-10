@@ -503,6 +503,25 @@ const schema = [
     });
   }
 
+  // ---- Scroll cue: stand down when the copy reaches the fold --------
+  const cueEl = document.querySelector<HTMLElement>('.cue');
+  const ctaEl = document.querySelector<HTMLElement>('.hero-cta');
+  if (cueEl && ctaEl) {
+    let queued = false;
+    const fitCue = () => {
+      queued = false;
+      cueEl.classList.remove('cue-off');
+      const clearance = cueEl.getBoundingClientRect().top - ctaEl.getBoundingClientRect().bottom;
+      if (clearance < 28) cueEl.classList.add('cue-off');
+    };
+    addEventListener('resize', () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(fitCue);
+    }, { passive: true });
+    fitCue();
+  }
+
   // ---- Manifesto word reveal + counters -----------------------------
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const man = document.getElementById('manifesto');

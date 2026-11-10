@@ -432,19 +432,39 @@ section { scroll-margin-top: 84px; }
 }
 
 .cue {
-  /* Auto margins again, not a translate: the cue also carries `.st4`, whose
-     entrance animation sets its own transform and would otherwise cancel the
-     centring and leave it half its width to the right. */
-  position: absolute; left: 0; right: 0; bottom: 30px; z-index: 3;
+  /* Anchored a viewport height down from the hero's top, not to the hero's
+     own bottom. The hero is taller than the screen at most window sizes
+     because of the room the skyline needs, so `bottom` put the cue well
+     below the fold — 275px below it at 1440x700.
+     Auto margins rather than a translate for the horizontal centring: the cue
+     carries `.st4`, whose entrance animation sets its own transform and would
+     otherwise cancel a `translateX(-50%)`. */
+  --cue-h: clamp(104px, 15svh, 164px);
+  position: absolute; left: 0; right: 0; z-index: 3;
+  top: calc(100svh - var(--cue-h)); height: var(--cue-h);
   width: max-content; margin-inline: auto;
-  display: flex; flex-direction: column; align-items: center; gap: 10px; pointer-events: none;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  pointer-events: none;
 }
 .cue em {
   font-style: normal; font-size: 10px; font-weight: 800; letter-spacing: .32em;
-  text-transform: uppercase; color: var(--fg-4);
+  line-height: 1; text-transform: uppercase; color: var(--fg-4);
 }
+/* On a short window the hero's own copy reaches the bottom of the screen and
+   there is nowhere for the cue to go. Whether it clears the buttons cannot be
+   settled with a media query, because the headline rewraps at certain widths
+   and the content's height jumps with it — 666px at 1440 wide, 829px at 1536.
+   So the page measures the gap and sets `.cue-off`; this is the fallback for
+   a reader without scripting. The cue is decorative and aria-hidden either
+   way, so standing it down costs nothing. */
+.cue-off { display: none !important; }
+@media (max-height: 820px) { html:not(.js) .cue { display: none; } }
+
 .cueline {
-  width: 1px; height: 52px; background: linear-gradient(var(--acc), transparent);
+  /* Fills whatever is left, so the line's far end lands exactly on the
+     bottom edge of the viewport at every window size. */
+  width: 1px; flex: 1; min-height: 0;
+  background: linear-gradient(var(--acc), transparent);
   animation: cue 2.4s cubic-bezier(.6, 0, .4, 1) 1.4s infinite;
 }
 
@@ -1320,12 +1340,6 @@ section { scroll-margin-top: 84px; }
 }
 .ptrow b { color: var(--fg); font-weight: 700; }
 @media (max-width: 700px) { .ptrow { grid-template-columns: 1fr; gap: 6px; } }
-.draft {
-  display: inline-flex; align-items: center; gap: 10px; min-height: 38px; padding: 0 16px;
-  border-radius: var(--r-pill); border: 1px dashed rgba(255, 90, 31, .55);
-  background: rgba(255, 90, 31, .08); font-size: 11px; font-weight: 800;
-  letter-spacing: .12em; text-transform: uppercase; color: #ff8c5a;
-}
 
 /* ============================================================
    404 and thank-you

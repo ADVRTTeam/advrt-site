@@ -102,7 +102,9 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
             </label>
           ))}
         </div>
-        <p class="lbl" style="margin-top:38px">And your website?</p>
+        <p class="lbl next-q" id="website-q" style="margin-top:38px">
+          <span class="dot" aria-hidden="true" hidden></span>And your website?
+        </p>
         <div class="optgrid" style="margin-top:16px">
           {siteOptions.map((o) => (
             <label class="opt">
@@ -269,6 +271,11 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
   .js .stage[data-step='3'],
   .js .stage[data-step='4'] { display: none; }
 
+  /* The step's second question, once the first has been answered. */
+  .next-q { transition: color .3s ease; }
+  .next-q.on { color: var(--acc); }
+  .next-q .dot[hidden] { display: none; }
+
   .workgroup[hidden] { display: none !important; }
   /* With JS only the chosen sector's options are on screen, so naming the
      sector is redundant. Without JS all six groups show and the name is
@@ -416,9 +423,21 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
       }, 420);
     }
 
+    // Step 3 asks two questions and the second sits below the fold on a
+    // phone. Once the first is answered, the second lights up so it is
+    // obvious why Continue has not moved on by itself.
+    const websiteQ = document.getElementById('website-q');
+    function markFollowOn() {
+      if (!websiteQ) return;
+      const on = multi('sources').length > 0 && !val('website');
+      websiteQ.classList.toggle('on', on);
+      websiteQ.querySelector('.dot')?.toggleAttribute('hidden', !on);
+    }
+
     form.addEventListener('change', (e) => {
       const t = e.target as HTMLElement;
       if (t.hasAttribute('data-sector-pick')) syncWork();
+      markFollowOn();
       paint();
       maybeAdvance(t);
     });

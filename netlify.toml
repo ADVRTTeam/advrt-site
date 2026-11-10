@@ -166,3 +166,142 @@
   from = "/BuiltEnvironmentC.dc.html"
   to = "/built-environment"
   status = 301
+
+# ---------------------------------------------------------------------------
+# Trailing-slash forms
+#
+# This site moved from directory-style output (/surveyors/) to file-style
+# (/surveyors). Browsers that saw the old build cached its permanent redirect
+# from /surveyors to /surveyors/ — and a 301 with no Cache-Control is cached
+# heuristically, often for good. Left alone, Netlify would then 301 the slashed
+# form back to the bare one and the two would ping-pong.
+#
+# So the slashed form serves the page itself, with status 200 rather than a
+# redirect. A stale cached redirect lands on the right content and stops there.
+# The canonical tag, the sitemap and every link on the site use the bare form.
+# ---------------------------------------------------------------------------
+
+[[redirects]]
+  from = "/accessibility/"
+  to = "/accessibility.html"
+  status = 200
+
+[[redirects]]
+  from = "/architects/"
+  to = "/architects.html"
+  status = 200
+
+[[redirects]]
+  from = "/built-environment/"
+  to = "/built-environment.html"
+  status = 200
+
+[[redirects]]
+  from = "/complaints/"
+  to = "/complaints.html"
+  status = 200
+
+[[redirects]]
+  from = "/compliance/"
+  to = "/compliance.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact/"
+  to = "/contact.html"
+  status = 200
+
+[[redirects]]
+  from = "/contractors/"
+  to = "/contractors.html"
+  status = 200
+
+[[redirects]]
+  from = "/cookies/"
+  to = "/cookies.html"
+  status = 200
+
+[[redirects]]
+  from = "/insights/"
+  to = "/insights.html"
+  status = 200
+
+[[redirects]]
+  from = "/insights/attribution-without-the-headache/"
+  to = "/insights/attribution-without-the-headache.html"
+  status = 200
+
+[[redirects]]
+  from = "/insights/comparison-sites-vs-your-own-pipeline/"
+  to = "/insights/comparison-sites-vs-your-own-pipeline.html"
+  status = 200
+
+[[redirects]]
+  from = "/insights/crm-or-inbox/"
+  to = "/insights/crm-or-inbox.html"
+  status = 200
+
+[[redirects]]
+  from = "/insights/filling-course-dates/"
+  to = "/insights/filling-course-dates.html"
+  status = 200
+
+[[redirects]]
+  from = "/insights/google-ads-for-compliance-firms/"
+  to = "/insights/google-ads-for-compliance-firms.html"
+  status = 200
+
+[[redirects]]
+  from = "/insights/one-page-per-service/"
+  to = "/insights/one-page-per-service.html"
+  status = 200
+
+[[redirects]]
+  from = "/insights/quotation-forms-that-qualify/"
+  to = "/insights/quotation-forms-that-qualify.html"
+  status = 200
+
+[[redirects]]
+  from = "/insights/the-first-five-minutes/"
+  to = "/insights/the-first-five-minutes.html"
+  status = 200
+
+[[redirects]]
+  from = "/insights/what-a-surveyor-lead-actually-costs/"
+  to = "/insights/what-a-surveyor-lead-actually-costs.html"
+  status = 200
+
+[[redirects]]
+  from = "/insights/why-we-test-on-our-own-money-first/"
+  to = "/insights/why-we-test-on-our-own-money-first.html"
+  status = 200
+
+[[redirects]]
+  from = "/privacy/"
+  to = "/privacy.html"
+  status = 200
+
+[[redirects]]
+  from = "/start-a-project/"
+  to = "/start-a-project.html"
+  status = 200
+
+[[redirects]]
+  from = "/surveyors/"
+  to = "/surveyors.html"
+  status = 200
+
+[[redirects]]
+  from = "/terms/"
+  to = "/terms.html"
+  status = 200
+
+[[redirects]]
+  from = "/thank-you/"
+  to = "/thank-you.html"
+  status = 200
+
+[[redirects]]
+  from = "/training/"
+  to = "/training.html"
+  status = 200
