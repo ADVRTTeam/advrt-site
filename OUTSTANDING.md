@@ -1,11 +1,12 @@
-# Outstanding — to sweep once the tech stack is confirmed
+# Outstanding
 
 Everything here is built and waiting on information or a decision, not on code.
+Updated for the night-system rebuild, 10 November 2026.
 
 ## 1. Enquiry webhook
 
-**Status:** built, unconfigured. The function returns 503 and both forms show the
-phone number and email address, so nothing is lost silently.
+**Status:** built, unconfigured. `netlify/functions/enquiry.mjs` returns 503 and
+both forms show the phone number and email address, so nothing is lost silently.
 
 Set in **Netlify → Site configuration → Environment variables**:
 
@@ -14,75 +15,89 @@ Set in **Netlify → Site configuration → Environment variables**:
 | `ENQUIRY_WEBHOOK_URL` | Where enquiries are POSTed |
 | `ENQUIRY_WEBHOOK_TOKEN` | Optional, sent as `Authorization: Bearer …` |
 
-Payload shape and the two-stage brief submission are documented in `README.md`.
-No redeploy needed — these are read at runtime.
+Read at runtime, so no redeploy is needed.
 
-**To verify once set:** submit a test brief and a test contact message, confirm
-both land in the CRM with their `source.page` and `form` fields intact.
+**To verify once set:** submit a test brief and a test contact message, and
+confirm both land in the CRM with their `form` and `source.page` fields intact.
+The brief posts twice — `form: "brief"` when the five steps are sent, then
+`form: "brief-call"` with `callSlot` when the call is confirmed.
 
 ## 2. GoHighLevel booking widget
 
-**Status:** the canvas marked this `[GHL] GoHighLevel booking widget embeds
+**Status:** the board marked this `[GHL] GoHighLevel booking widget embeds
 here`. Built as the designed day/time picker, which submits the chosen slot with
-the brief.
+the brief. The day chips are generated at runtime from the next five weekdays,
+so they never go stale on a static build.
 
-Set `PUBLIC_GHL_CALENDAR_URL` to the calendar embed URL and the iframe replaces
-the picker automatically (`src/pages/start-a-project.astro`).
+Swapping in the real calendar means replacing the picker in the step-5 fieldset
+of `src/pages/start-a-project.astro` and adding the GHL host to `frame-src` in
+`netlify.toml`, which currently allows no frames at all.
 
-**Note:** the CSP in `netlify.toml` currently allows no third-party frames. Add
-the GHL host to `frame-src` when the calendar goes in, or the iframe will be
-blocked.
+## 3. Company registration number
 
-## 3. Privacy notice and terms of use
+`src/data/site.ts` has `companyNumber: ''`. It belongs in the footer's legal
+line and in the privacy policy and terms. Everything else in the footer's
+registered-office line is already correct.
 
-**Status:** written to describe what this site actually does, with
-`[SQUARE BRACKET]` placeholders for the facts only ADVRT can supply.
+## 4. The five policies
 
-`src/pages/privacy.astro` needs:
-- Company registration number
-- ICO registration reference
-- CRM name (the webhook destination)
-- Email / messaging provider used for acknowledgements
-- Retention periods for non-client enquiries and client records
+`src/data/policies.ts` carries the privacy policy, cookie policy, terms of
+business, accessibility statement and complaints procedure, transcribed from the
+board. Each page shows the board's own **"Draft · for legal review before
+launch"** badge.
 
-`src/pages/terms.astro` needs:
-- Company registration number
+They need a legal review before `advrt.co.uk` is pointed here, and the badge
+should come off at that point (it is rendered in `src/pages/[policy].astro`).
+The privacy policy is not optional: the site collects personal data through two
+forms.
 
-Both need a legal review before a custom domain is pointed here. The privacy
-notice is not optional — the site collects personal data through two forms.
-
-## 4. Article copy
-
-The ten articles in `src/content/insights/` are a first draft written to match
-the canvas's voice, using only claims the canvas already makes. Everything else
-on the site is ADVRT's own copy, verbatim. Read these before launch.
+The cookie policy says cookie names and durations are "confirmed in the consent
+banner on the live site" — worth making that true once GA4 is switched on.
 
 ## 5. Analytics and consent
 
-None installed. The site sets no cookies and the privacy notice says so, which
-is why there is no cookie banner.
+**Status:** built, unconfigured. `src/components/Consent.astro` renders nothing
+at all unless `PUBLIC_GA4_ID` is set, because with no analytics there are no
+non-essential cookies and asking permission for nothing is worse than not
+asking.
 
-If GA4, GTM or a Meta pixel goes in:
-- Add the host to `script-src` and `connect-src` in `netlify.toml`
-- Add a consent banner — these are non-essential cookies under UK GDPR/PECR
-- Update the Cookies section of `src/pages/privacy.astro`
+Set `PUBLIC_GA4_ID` in Netlify and **redeploy** — it is a build-time variable,
+unlike the webhook ones. GA4 is then injected only after an explicit Accept,
+with `anonymize_ip` on and Google Signals off. Accept and Reject carry equal
+visual weight, as the ICO expects. The cookie policy page offers a "Change
+cookie settings" button that clears the stored choice.
 
-## 6. Domain
+The Content-Security-Policy in `netlify.toml` already allows the GA4 hosts.
+
+## 6. Article copy
+
+The ten articles in `src/content/insights/` are a first draft written to match
+the board's voice, using only claims the board already makes. Everything else on
+the site is ADVRT's own copy, verbatim. Read these before launch.
+
+## 7. Domain
 
 Currently `advrt-site.netlify.app`. When `advrt.co.uk` is pointed here:
+
 - Add the domain in Netlify and update DNS
 - Set `SITE_URL` to the live origin and redeploy — it drives canonicals, OG
   tags, the sitemap and the RSS feed
 - Update the `Sitemap:` line in `public/robots.txt`
 - Submit the sitemap in Google Search Console
 
-## 7. Case study permissions
+## 8. Case study permissions
 
 The site names Huxley Surveyors, Foundation Surveyors and Nicholas & Co with
 first-month enquiry figures, and shows screenshots of their sites. All taken
-from the canvas. Worth confirming each is happy to be named before launch.
+from the board. Worth confirming each is happy to be named before launch.
 
-## 8. Open Graph image
+## 9. Open Graph image
 
-`public/og-default.png` is a generated placeholder built from the brand palette.
-Worth replacing with something designed. Per-page OG images could follow.
+`public/og-default.png` is a generated placeholder built from the brand palette,
+and predates the night system. Worth replacing with something designed in the
+new look. Per-page OG images could follow.
+
+## 10. GetADVRTISE
+
+Out of scope for this build, by decision on 10 November 2026. Recorded in
+`SCOPE-night-system.md`.

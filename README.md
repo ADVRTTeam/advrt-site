@@ -2,9 +2,8 @@
 
 Marketing site for ADVRT: paid media and lead generation for the built environment.
 
-Built from the **ADVRT Built Environment · Agency Site** design canvas, which is the
-single source of truth for every colour, type size, spacing value and piece of copy
-on this site.
+Built from the **night system** design boards, which are the single source of
+truth for every colour, type size, spacing value and piece of copy on this site.
 
 ## Stack
 
@@ -44,18 +43,19 @@ npm run build && npm run preview
 ```
 src/
   assets/images/      Source images; Astro emits optimised WebP
-  components/         Nav, Footer, Marquee, HeroCanvas
+  components/         Nav, Footer, Atmosphere, Consent, CitySkyline
   content/insights/   Blog articles (markdown + frontmatter)
   data/               All page copy and config, lifted from the design canvas
-  layouts/            Base (SEO/meta/JSON-LD), Legal
+  layouts/            Base (SEO/meta/JSON-LD)
   lib/images.ts       Name → ImageMetadata registry
   pages/
     index.astro           Home
     [sector].astro        Six sector pages from src/data/sectors.ts
     start-a-project.astro The brief
     contact.astro         Contact
+    [policy].astro        Five policy pages from src/data/policies.ts
     insights/             Index, article template, RSS
-    privacy, terms, thank-you, 404
+    thank-you.astro, 404.astro
   styles/global.css   Design tokens and shared component classes
 netlify/functions/
   enquiry.mjs         Receives both forms, forwards to the CRM webhook
@@ -106,8 +106,8 @@ Set these in **Netlify → Site configuration → Environment variables**:
 |---|---|---|
 | `ENQUIRY_WEBHOOK_URL` | Yes | Where enquiries are forwarded |
 | `ENQUIRY_WEBHOOK_TOKEN` | No | Sent as `Authorization: Bearer …` |
-| `PUBLIC_GHL_CALENDAR_URL` | No | GoHighLevel calendar embed for the brief's booking step |
 | `SITE_URL` | No | Canonical origin; set when a custom domain goes live |
+| `PUBLIC_GA4_ID` | No | GA4 measurement ID. Build-time: set it and redeploy. Nothing loads before consent |
 
 Until `ENQUIRY_WEBHOOK_URL` is set the function returns 503 and the forms show a
 fallback message with the phone number and email address, so no enquiry is lost
@@ -142,10 +142,13 @@ Measured on the production build:
 - One self-hosted font file, preloaded, subset to the glyphs and axis ranges
   actually used (88 KB → 48 KB)
 
-The hero's assembling-building animation is a hand-written perspective projector
-on a 2D canvas (~3 KB) rather than the Three.js scene in the design, which would
-have cost 608 KB. It renders a single static frame when `prefers-reduced-motion`
-or Save-Data is set, and stops drawing entirely once scrolled out of view.
+The hero's starfield, horizon and assembling skyline are CSS and a hand-authored
+SVG, not a canvas or a WebGL scene. Nothing animates off-screen: the hero's
+entrance is gated on an IntersectionObserver, and the manifesto reveal runs on a
+single rAF-throttled scroll handler.
+
+Scroll-driven section reveals use `animation-timeline: view()`, so they cost no
+JavaScript at all and simply show the content where the property is unsupported.
 
 ## Accessibility
 
@@ -153,7 +156,9 @@ or Save-Data is set, and stops drawing entirely once scrolled out of view.
 - Tablists use roving tabindex and arrow-key navigation
 - The mobile menu is a focus-trapped dialog, closable with Escape
 - Visible focus rings throughout; `prefers-reduced-motion` respected
-- Colour pairings verified against WCAG AA
+- Colour pairings verified against WCAG AA, including the dark palette's
+  smallest label sizes
+- Both forms, the brief wizard included, work with JavaScript turned off
 
 ## Deployment
 
@@ -164,7 +169,12 @@ legacy-URL redirects are in `netlify.toml`.
 
 - [ ] Set `ENQUIRY_WEBHOOK_URL` and confirm a test enquiry reaches the CRM
 - [ ] Set `SITE_URL` to the live origin and redeploy (drives canonicals, OG tags, sitemap, RSS)
-- [ ] Fill the `[SQUARE BRACKET]` placeholders in `src/pages/privacy.astro` and
-      `src/pages/terms.astro`, and have both reviewed
+- [ ] Have the five policies in `src/data/policies.ts` reviewed, add the company
+      registration number to `src/data/site.ts`, and remove the "Draft · for
+      legal review" badge from `src/pages/[policy].astro`
 - [ ] Read the ten articles in `src/content/insights/` — the copy is a first draft
 - [ ] Update the `Sitemap:` line in `public/robots.txt`
+- [ ] Decide on GA4: set `PUBLIC_GA4_ID` and redeploy, or leave it unset and the
+      consent banner stays off the site entirely
+
+See `OUTSTANDING.md` for the full list, with what each item is waiting on.

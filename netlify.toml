@@ -26,9 +26,11 @@
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
     Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=()"
     Cross-Origin-Opener-Policy = "same-origin"
-    # Everything is self-hosted: no third-party scripts, styles or fonts.
-    # Add analytics or a GoHighLevel embed host here when they are introduced.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'self'; form-action 'self'; base-uri 'self'; object-src 'none'"
+    # Fonts, styles and scripts are all self-hosted. The only third party is
+    # GA4, which the consent banner injects after an explicit opt-in and
+    # which therefore has to be allowed here. Add a GoHighLevel embed host to
+    # frame-src when the booking calendar goes in.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com; frame-src 'none'; frame-ancestors 'self'; form-action 'self'; base-uri 'self'; object-src 'none'"
 
 # Build assets carry a content hash in the filename, so they can never go
 # stale. Cache them for a year.
@@ -47,8 +49,9 @@
 # Redirects
 # ---------------------------------------------------------------------------
 
-# The design canvas linked artboards by filename. Anyone following an old
-# prototype link lands on the right page instead of a 404.
+# The design canvases linked artboards by filename. Anyone following an old
+# prototype link lands on the right page instead of a 404. Both generations
+# of board names are covered.
 [[redirects]]
   from = "/Main.dc.html"
   to = "/"
@@ -96,5 +99,70 @@
 
 [[redirects]]
   from = "/BuiltEnvironment.dc.html"
+  to = "/built-environment"
+  status = 301
+
+[[redirects]]
+  from = "/HomeC.dc.html"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/BriefC.dc.html"
+  to = "/start-a-project"
+  status = 301
+
+[[redirects]]
+  from = "/ContactC.dc.html"
+  to = "/contact"
+  status = 301
+
+[[redirects]]
+  from = "/BlogC.dc.html"
+  to = "/insights"
+  status = 301
+
+[[redirects]]
+  from = "/BlogPostC.dc.html"
+  to = "/insights"
+  status = 301
+
+[[redirects]]
+  from = "/PolicyC.dc.html"
+  to = "/privacy"
+  status = 301
+
+[[redirects]]
+  from = "/NotFoundC.dc.html"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/SurveyorsC.dc.html"
+  to = "/surveyors"
+  status = 301
+
+[[redirects]]
+  from = "/ArchitectsC.dc.html"
+  to = "/architects"
+  status = 301
+
+[[redirects]]
+  from = "/ContractorsC.dc.html"
+  to = "/contractors"
+  status = 301
+
+[[redirects]]
+  from = "/ComplianceC.dc.html"
+  to = "/compliance"
+  status = 301
+
+[[redirects]]
+  from = "/TrainingC.dc.html"
+  to = "/training"
+  status = 301
+
+[[redirects]]
+  from = "/BuiltEnvironmentC.dc.html"
   to = "/built-environment"
   status = 301
