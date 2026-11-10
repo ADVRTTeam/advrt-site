@@ -306,6 +306,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
     let step = 0;
     let maxStep = 0;       // auto-advance only applies at the furthest step
     let briefSent = false;
+    let started = false;    // suppresses the focus move on the opening render
     let timer: ReturnType<typeof setTimeout> | undefined;
 
     const val = (n: string) =>
@@ -366,9 +367,12 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
       callError.hidden = true;
       paint();
       // Move focus to the new step's heading, so a screen reader and the
-      // keyboard both land where the page now starts.
+      // keyboard both land where the page now starts. Not on the first call:
+      // the page has only just opened and nobody has asked to go anywhere,
+      // so a focus ring round the heading would come out of nowhere.
       const head = stages[i]?.querySelector<HTMLElement>('.q');
-      if (head) { head.tabIndex = -1; head.focus({ preventScroll: true }); }
+      if (head && started) { head.tabIndex = -1; head.focus({ preventScroll: true }); }
+      started = true;
     }
 
     // Only the chosen sector's work options are offered.
