@@ -418,16 +418,16 @@ export const sectors: Sector[] = [
     "slug": "contractors",
     "short": "Contractors",
     "crumb": "04 Contractors",
-    "metaTitle": "Marketing for contractors | ADVRT",
-    "metaDescription": "Direct client enquiries and tender-ready leads for contractors and specialist trades, filtered by trade, budget, start date and postcode.",
+    "metaTitle": "Marketing for specialist contractors | ADVRT",
+    "metaDescription": "Exclusive, high-value enquiries for specialist contractors: damp proofing, asbestos, air conditioning and fire protection. Qualified on scope and budget.",
     "h1a": "Work you choose.",
     "h1b": "Not jobs you chase.",
-    "lede": "Lead generation for contractors and specialist trades. Direct client enquiries, tender opportunities and sub-contract packages in the trades and regions you prioritise.",
+    "lede": "Lead generation for specialist contractors. Damp proofing and structural waterproofing, asbestos, air conditioning and ventilation, fire protection and the rest of the high-value trades, in the specialisms and regions you prioritise.",
     "proof": [
       {
         "n": "49",
         "k": "Enquiries in month one",
-        "c": "On a surveyors build running this exact framework."
+        "c": "On a build running this exact framework."
       },
       {
         "n": "0",
@@ -441,24 +441,24 @@ export const sectors: Sector[] = [
       }
     ],
     "disciplines": null,
-    "p2a": "Feast or famine",
-    "p2b": "isn't a business plan.",
-    "pLede": "Work out how many enquiries it takes to keep the order book full, at the win rate you actually see on quotes.",
+    "p2a": "Ten good contracts",
+    "p2b": "beat a hundred quotes.",
+    "pLede": "Specialist work is bought on expertise, not on price, and one contract can be worth a month of small jobs. Work out how many enquiries it takes to keep the diary full at the win rate you actually see.",
     "calc": {
       "kind": "pipeline",
-      "unit": "job",
-      "unitPlural": "jobs",
-      "jobsLabel": "Jobs you want to win a month",
+      "unit": "contract",
+      "unitPlural": "contracts",
+      "jobsLabel": "Contracts you want to win a month",
       "jobsMin": 1,
-      "jobsMax": 20,
-      "jobs": 3,
-      "winLabel": "Your win rate on quotes",
-      "win": 25,
-      "valLabel": "Average job value",
-      "valMin": 2000,
-      "valMax": 250000,
+      "jobsMax": 25,
+      "jobs": 4,
+      "winLabel": "Your win rate after survey",
+      "win": 30,
+      "valLabel": "Average contract value",
+      "valMin": 1000,
+      "valMax": 150000,
       "valStep": 1000,
-      "val": 25000,
+      "val": 12000,
       "needLabel": "Qualified enquiries you need a month",
       "yearLabel": "Added turnover a year"
     },
@@ -470,11 +470,11 @@ export const sectors: Sector[] = [
         "no": "01",
         "name": "Landing pages",
         "tag": "ADVRTISE / 01",
-        "head": "Pages built to turn searches into enquiries.",
-        "body": "Pages by trade and region, so a fit-out client in Bristol sees fit-out work in Bristol, with the accreditations and case studies that win the quote.",
+        "head": "A page per specialism, not a services list.",
+        "body": "Someone searching for a damp survey in Bristol is not browsing. They land on a page about that one specialism in that one area, with the accreditations and completed works that decide who gets the call.",
         "points": [
-          "One page per trade and service area",
-          "Accreditations and past projects front and centre",
+          "One page per specialism and service area",
+          "Accreditations, memberships and guarantees front and centre",
           "Your branding, your domain, your property"
         ]
       },
@@ -482,12 +482,12 @@ export const sectors: Sector[] = [
         "no": "02",
         "name": "Targeted ads",
         "tag": "ADVRTISE / 02",
-        "head": "Campaigns aimed at the work you want.",
-        "body": "Google Search for direct client enquiries by trade and postcode, with radius targeting matched to how far you'll actually travel.",
+        "head": "Campaigns aimed at the contracts worth having.",
+        "body": "Google Search built around specialist intent: the surveys, remedial works and installations you want, in the postcodes you cover, filtered away from the small jobs and the price shoppers.",
         "points": [
-          "Search themes by trade, job type and area",
-          "Radius and postcode targeting",
-          "Spend dialled up or down with your capacity"
+          "Search themes by specialism, not by trade in general",
+          "Radius and postcode targeting matched to your coverage",
+          "Low-value and out-of-scope searches excluded, not just outbid"
         ]
       },
       {
@@ -495,10 +495,10 @@ export const sectors: Sector[] = [
         "name": "Tracking",
         "tag": "ADVRTISE / 03",
         "head": "Rock-solid tracking and attribution.",
-        "body": "Every enquiry traced back to the search, ad and keyword that caused it. You see what each pound bought, and we optimise on real enquiries, not clicks.",
+        "body": "Every enquiry traced back to the search, ad and keyword that caused it, and reported by specialism, so you can see which line of work actually pays and move budget towards it.",
         "points": [
           "Conversion tracking from click to enquiry",
-          "Source-level reporting on what actually converts",
+          "Reporting split by specialism and contract value",
           "Clean data behind every optimisation decision"
         ]
       },
@@ -506,12 +506,12 @@ export const sectors: Sector[] = [
         "no": "04",
         "name": "Quotation forms",
         "tag": "ADVRTISE / 04",
-        "head": "Optimised forms. Job-ready enquiries.",
-        "body": "Quote forms that capture scope, site location, budget and start date, so you price the right jobs first and skip the ones that were never going to happen.",
+        "head": "Forms that qualify a survey, not a tyre-kick.",
+        "body": "Specialist work usually needs a survey before anyone can price it. The form asks property type, the problem, access, budget range and timescale, so the enquiries you call back are the ones worth a van and an afternoon.",
         "points": [
-          "Scope, budget and start date asked up front",
-          "Out-of-area jobs filtered out",
-          "Everything you need to book a site visit"
+          "Problem, property type and access asked up front",
+          "Budget range and timescale captured before you commit a survey",
+          "Out-of-area and out-of-scope enquiries filtered out"
         ]
       },
       {
@@ -522,7 +522,7 @@ export const sectors: Sector[] = [
         "body": "Nothing gets handed over until it works and you know how to run it. Campaigns, lead flow, what to chase and when: all documented, all yours. Prefer we keep driving? Ongoing management and optimisation is available, and included in some packages.",
         "points": [
           "A proper walkthrough on your own accounts",
-          "Lead handling: response speed, follow-up, which enquiries to chase",
+          "Lead handling: response speed, follow-up, which enquiries to survey first",
           "You own the site, the campaigns and the data",
           "We stay on hand to support and scale"
         ]
@@ -532,22 +532,22 @@ export const sectors: Sector[] = [
       {
         "no": "01",
         "name": "Audit",
-        "desc": "We look at your trades, the jobs and margins you want more of, your patch and where work comes from today."
+        "desc": "We look at the specialisms and contract sizes you want more of, your coverage, your accreditations and where work comes from today."
       },
       {
         "no": "02",
         "name": "Lead hub",
-        "desc": "We build trade and area pages and wire up tracking, so every enquiry traces back to the search that caused it."
+        "desc": "We build a page per specialism and area and wire up tracking, so every enquiry traces back to the search that caused it."
       },
       {
         "no": "03",
         "name": "Campaigns",
-        "desc": "Search campaigns go live using structures already proven on our own lead-gen brands, tuned to your trades and patch."
+        "desc": "Search campaigns go live using structures already proven on our own lead-gen brands, tuned to your specialisms and patch."
       },
       {
         "no": "04",
         "name": "Qualify",
-        "desc": "Quote forms filter on scope, budget, location and start date. You call back the jobs worth pricing."
+        "desc": "Forms filter on the problem, the property, budget and timescale. You survey the contracts worth pricing and leave the rest."
       },
       {
         "no": "05",
@@ -559,7 +559,7 @@ export const sectors: Sector[] = [
       "kind": "cards",
       "head1": "Proven in the field.",
       "head2": "Then built for you.",
-      "lede": "We run our own lead generation brands with our own money, including trade-led home improvement verticals. What works there gets built into your campaigns, so you skip the learning phase other agencies bill you for.",
+      "lede": "We run our own lead generation brands with our own money, including property-maintenance and remedial-works verticals where the buyer has a problem and a deadline. What works there gets built into your campaigns, so you skip the learning phase other agencies bill you for.",
       "cards": [
         {
           "k": "01",
@@ -568,13 +568,13 @@ export const sectors: Sector[] = [
         },
         {
           "k": "02",
-          "h": "Rebuilt for the quote",
-          "b": "Trade buyers compare on availability and certainty. Pages lead with accreditations and patch, and the form asks scope and start date before you book a site visit."
+          "h": "Built for the survey",
+          "b": "Specialist buyers want certainty and a date, not the cheapest number. Pages lead with accreditations and guarantees, and the form earns you the survey."
         },
         {
           "k": "03",
           "h": "No learning phase on your bill",
-          "b": "Your campaigns start from structures already converting, so you aren't paying Google to teach us the basics of your market."
+          "b": "Your campaigns start from structures already converting, so you aren't paying Google to teach us the basics of your specialism."
         }
       ]
     },
@@ -583,22 +583,22 @@ export const sectors: Sector[] = [
       "alt": "Foundation Chartered Surveyors landing page",
       "client": "Foundation Surveyors · North London",
       "title": "A bespoke build on their existing site.",
-      "lede": "Custom landing pages engineered into the site they already had, with ads, tracking and CRM integration. The same bolt-on build works for contractors.",
+      "lede": "Custom landing pages engineered into the site they already had, with ads, tracking and CRM integration. The same bolt-on build works for a specialist contractor with a site worth keeping.",
       "stat": "26"
     },
-    "faqHead": "What contractors ask first.",
+    "faqHead": "What specialist contractors ask first.",
     "faqs": [
       {
-        "q": "We win most work through tenders. Does this help?",
-        "a": "Yes. It runs alongside tenders and builds a pipeline of direct client work, which usually carries better margins."
+        "q": "We do several specialisms. Does one campaign cover them?",
+        "a": "No, and it shouldn't. Each specialism gets its own pages and its own search themes, because a damp survey and an air conditioning install are bought by different people for different reasons. You see which one earns its budget."
       },
       {
-        "q": "Can you target just our area?",
-        "a": "Yes. Campaigns are radius and postcode targeted to where you'll actually work."
+        "q": "Most of our work comes through main contractors and agents.",
+        "a": "That keeps running. This builds a direct pipeline alongside it, which usually carries better margins and less waiting to be paid, and makes you less dependent on two or three relationships."
       },
       {
-        "q": "We're flat out at the moment.",
-        "a": "Good. That's the best time to build the pipeline for when current jobs finish. Spend can be throttled up or down with your capacity."
+        "q": "How do you keep the small jobs out?",
+        "a": "Two ways. The campaigns target the searches that signal real scope rather than every variation of your trade, and the form asks for the problem, the property and a budget range before it reaches you."
       },
       {
         "q": "Where do the leads go?",
@@ -616,7 +616,7 @@ export const sectors: Sector[] = [
     ],
     "ctaHead1": "Fill the order",
     "ctaHead2": "book.",
-    "ctaBody": "Tell us which jobs you want more of and where. We'll come back with a plan, not a pitch."
+    "ctaBody": "Tell us which specialisms you want more of and where. We'll come back with a plan, not a pitch."
   },
   {
     "slug": "compliance",

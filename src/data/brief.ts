@@ -11,7 +11,9 @@ export const workBySector: Record<string, string[]> = {
   ],
   Architects: ['Private residential', 'Extensions', 'New-builds', 'Commercial', 'Framework bids'],
   Contractors: [
-    'Direct client work', 'Tender invitations', 'Sub-contract packages', 'Maintenance contracts',
+    'Damp proofing and waterproofing', 'Asbestos surveys and removal',
+    'Air conditioning and ventilation', 'Fire protection', 'Insulation and retrofit',
+    'Direct client work', 'Sub-contract packages',
   ],
   Compliance: [
     'EPCs', 'EICRs', 'Gas safety certificates', 'Fire risk assessments',
