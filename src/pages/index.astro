@@ -294,13 +294,17 @@ const schema = [
     font-size: clamp(28px, 3.4vw, 52px); line-height: 1.22; letter-spacing: -.015em;
     max-width: 1060px; text-wrap: pretty;
   }
-  .w { color: var(--fg-off); transition: color .3s ease; }
+  /* Held dim only when scripting is on: without JS nothing lights the words
+     up, so they must read at full contrast from the start. */
+  :global(.js) .w { color: var(--fg-off); transition: color .3s ease; }
+  .w.hot { color: var(--acc); }
   .w.on { color: var(--fg); }
   .w.hot.on { color: var(--acc); text-shadow: 0 0 24px rgba(255, 90, 31, .35); }
-  /* Without the reveal running, every word reads normally. */
+  /* Without the reveal running, every word reads normally. Matched to the
+     dim rule's specificity so it wins on source order. */
   @media (prefers-reduced-motion: reduce) {
-    .w { color: var(--fg); }
-    .w.hot { color: var(--acc); }
+    :global(.js) .w { color: var(--fg); }
+    :global(.js) .w.hot { color: var(--acc); }
   }
 
   /* ---- Proof ---- */

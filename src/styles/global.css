@@ -177,6 +177,10 @@ section { scroll-margin-top: 84px; }
   [data-rise] { animation: none !important; }
   *, *::before, *::after {
     animation-duration: .001s !important;
+    /* Delays must go too: a staged entrance holds opacity 0 through its
+       delay, so a near-zero duration alone still leaves the copy invisible
+       until the delay has run. */
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: .01s !important;
   }
@@ -405,7 +409,6 @@ section { scroll-margin-top: 84px; }
 .city .jib { transform-box: fill-box; transform-origin: 26% 50%; animation: sway 18s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .city .bld { transform: none; } }
 
-/* Staged hero entrance */
 /* Staged hero entrance. Held at opacity 0 only when scripting is on —
    without JS nothing adds `.play`, so the copy must simply be there. */
 .js .st1, .js .st2, .js .st3, .js .st4 { opacity: 0; }
@@ -414,7 +417,12 @@ section { scroll-margin-top: 84px; }
 .play .st3 { animation: fadeup 1s var(--ease) .6s both; }
 .play .st4 { animation: fadeup 1s var(--ease) .8s both; }
 @media (prefers-reduced-motion: reduce) {
-  .js .st1, .js .st2, .js .st3, .js .st4 { opacity: 1; }
+  /* No entrance at all: dropping the animation rather than shortening it
+     means the copy is never waiting on an animation frame to appear. */
+  .js .st1, .js .st2, .js .st3, .js .st4 {
+    animation: none !important;
+    opacity: 1 !important;
+  }
 }
 
 .cue {
@@ -526,6 +534,7 @@ section { scroll-margin-top: 84px; }
 }
 .sfoot > .wrap { position: relative; padding-top: 66px; padding-bottom: 30px; }
 .ftop { display: grid; gap: 50px; grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr); }
+.flogo { display: inline-flex; align-items: center; min-height: 28px; padding: 3px 0; }
 .fbio { margin-top: 22px; max-width: 420px; font-size: 15px; line-height: 1.7; font-weight: 450; color: var(--fg-3); }
 .fbio b { color: var(--fg); font-weight: 700; }
 .fsoc { margin-top: 24px; display: flex; gap: 9px; flex-wrap: wrap; }
