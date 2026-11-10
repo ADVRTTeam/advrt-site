@@ -110,6 +110,10 @@ import { primaryNav, sectorNav } from '../data/site';
     { passive: true },
   );
 
+  // Tabbing into a hidden pill would put focus on something invisible, so
+  // focus brings it back.
+  nav?.addEventListener('focusin', () => nav.classList.remove('hide'));
+
   // ---- Sectors dropdown --------------------------------------------
   // Hover intent: open at once, close after a delay, so moving the pointer
   // from the button down into the panel does not snap it shut.
