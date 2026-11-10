@@ -1,0 +1,203 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const all = (await getCollection('insights', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const featured = all.find((p) => p.data.featured) ?? all[0];
+const rest = all.filter((p) => p.id !== featured.id);
+
+/** Filter chips, in the board's order, limited to topics we actually have. */
+const ORDER = ['Strategy', 'Landing pages', 'Tracking', 'Lead handling', 'Compliance', 'Training', 'Forms'];
+const present = new Set(rest.map((p) => p.data.topic));
+const topics = ['All', ...ORDER.filter((t) => present.has(t)), ...[...present].filter((t) => !ORDER.includes(t))];
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+const schema = [
+  {
+    '@type': 'Blog',
+    '@id': new URL('/insights#blog', Astro.site).href,
+    url: new URL('/insights', Astro.site).href,
+    name: 'ADVRT Insights',
+    description: 'Field notes on lead generation in the built environment.',
+    publisher: { '@id': new URL('/#organisation', Astro.site).href },
+    blogPost: all.map((p) => ({
+      '@type': 'BlogPosting',
+      '@id': new URL(`/insights/${p.id}#article`, Astro.site).href,
+      headline: p.data.title,
+      datePublished: p.data.date.toISOString(),
+      url: new URL(`/insights/${p.id}`, Astro.site).href,
+    })),
+  },
+];
+---
+
+<Base
+  title="Insights · Lead generation in the built environment | ADVRT"
+  description="Field notes from running paid search and lead generation for surveyors, architects, contractors, compliance firms and training providers. No fluff, no gated PDFs."
+  path="/insights"
+  schema={schema}
+>
+  <Nav />
+
+  <main id="main" class="play">
+    <section class="hero">
+      <div class="stars" aria-hidden="true"></div>
+      <div class="stars b" aria-hidden="true"></div>
+      <span class="shoot" aria-hidden="true" style="top:24%;left:58%"></span>
+      <p class="lbl st1"><span class="dot" aria-hidden="true"></span>Insights · {all.length} articles</p>
+      <h1 class="disp st2" id="hero-h1">Field notes from <span class="glow">the pipeline.</span></h1>
+      <p class="lede st3" style="margin-top:22px;max-width:620px;margin-left:auto;margin-right:auto">
+        What we learn running lead generation in the built environment, written for the
+        people who have to make the phone ring. No fluff, no gated PDFs.
+      </p>
+    </section>
+
+    <section id="featured" class="wrap" style="padding-top:20px">
+      <p class="lbl st3"><span class="dot" aria-hidden="true"></span>Latest</p>
+      <a class="feat st3" href={`/insights/${featured.id}`} style="margin-top:18px">
+        <div class="art">
+          <span class="big" aria-hidden="true">01</span>
+          <span class="tag" style="position:relative">{featured.data.crumb ?? featured.data.topic}</span>
+        </div>
+        <div class="bd">
+          <p class="lbl">{fmt(featured.data.date)} · {featured.data.mins} min read</p>
+          <h2 class="disp feath">{featured.data.title}</h2>
+          <p class="lede" style="margin-top:14px;font-size:16px">{featured.data.excerpt}</p>
+          <span class="cbtn" style="margin-top:24px">Read the article →</span>
+        </div>
+      </a>
+    </section>
+
+    <section id="all" class="wrap" style="padding-top:90px">
+      <div class="allhead">
+        <div>
+          <p class="lbl"><span class="dot" aria-hidden="true"></span>All articles</p>
+          <h2 class="disp allh" data-rise>Everything else <span class="glow">worth reading.</span></h2>
+        </div>
+        <span class="lbl" id="shown" style="letter-spacing:.14em">
+          {rest.length} {rest.length === 1 ? 'article' : 'articles'} showing
+        </span>
+      </div>
+
+      <div class="filters" id="filters" style="margin-top:28px" role="group" aria-label="Filter by topic">
+        {topics.map((t, i) => (
+          <button
+            type="button" class={i === 0 ? 'chip on' : 'chip'}
+            data-topic={t} aria-pressed={i === 0 ? 'true' : 'false'}
+          >{t}</button>
+        ))}
+      </div>
+
+      <div class="cardgrid" id="cards" style="margin-top:28px">
+        {rest.map((p, i) => (
+          <a class="card" href={`/insights/${p.id}`} data-topic={p.data.topic}>
+            <div class={`cov c${i % 3}`}>
+              <span class="idx" aria-hidden="true">{String(i + 2).padStart(2, '0')}</span>
+              <span class="tag">{p.data.topic}</span>
+            </div>
+            <div class="cbody">
+              <h3>{p.data.title}</h3>
+              <p>{p.data.excerpt}</p>
+              <div class="meta">
+                <span>{fmt(p.data.date)} · {p.data.mins} min</span>
+                <span class="readmore">Read →</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <p class="lede" id="empty" style="margin-top:28px" hidden>
+        Nothing under that topic yet. <a href="#all" data-topic-reset>Show everything</a>.
+      </p>
+    </section>
+
+    <section class="endcta">
+      <span aria-hidden="true" class="ctaglow"></span>
+      <div class="ctain">
+        <p class="lbl"><span class="dot" aria-hidden="true"></span>Enough reading</p>
+        <h2 class="disp ctah" data-rise>Build the <span class="glow">pipeline.</span></h2>
+        <p class="lede ctab">
+          Five questions, two minutes. We'll come back with a plan built on your numbers,
+          not a brochure.
+        </p>
+        <div class="ctabtns">
+          <a class="cbtn big" href="/start-a-project">Start a project →</a>
+          <a class="cbtn ghost" href="/contact">Just say hello</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .hero { position: relative; padding: 150px 24px 70px; text-align: center; overflow: clip; }
+  .hero::before {
+    content: ''; position: absolute; inset: -40% -20% 0;
+    background: radial-gradient(40% 50% at 50% 0%, rgba(255, 90, 31, .16), transparent 70%);
+  }
+  .hero > * { position: relative; z-index: 2; }
+  .hero .stars, .hero .shoot { position: absolute; z-index: 1; }
+  #hero-h1 { margin-top: 24px; font-size: clamp(38px, 8.4vw, 124px); }
+
+  .feath { margin-top: 14px; font-size: clamp(24px, 2.9vw, 42px); overflow-wrap: break-word; }
+  .allhead { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+  .allh { margin-top: 16px; font-size: clamp(27px, 4vw, 58px); }
+
+  .endcta { position: relative; padding: 130px 24px 120px; text-align: center; overflow: clip; margin-top: 40px; }
+  .ctaglow {
+    position: absolute; inset: 0;
+    background: radial-gradient(44% 46% at 50% 62%, rgba(255, 90, 31, .18), transparent 72%);
+  }
+  .ctain { position: relative; }
+  .ctah { margin-top: 22px; font-size: clamp(36px, 6.6vw, 104px); }
+  .ctab { margin: 22px auto 0; max-width: 540px; }
+  .ctabtns { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .cbtn.big { min-height: 66px; font-size: 16px; }
+  #empty[hidden] { display: none !important; }
+  #empty a { color: var(--acc); text-decoration: underline; text-underline-offset: 3px; }
+</style>
+
+<script>
+  // Topic filter. The cards are all in the page already, so filtering is a
+  // matter of hiding rows — no fetch, no re-render, and it degrades to the
+  // full list when scripting is off.
+  const filters = document.getElementById('filters');
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('#cards .card'));
+  const shown = document.getElementById('shown');
+  const empty = document.getElementById('empty');
+
+  function apply(topic: string) {
+    let n = 0;
+    for (const card of cards) {
+      const on = topic === 'All' || card.dataset.topic === topic;
+      card.hidden = !on;
+      if (on) n += 1;
+    }
+    if (shown) shown.textContent = `${n} ${n === 1 ? 'article' : 'articles'} showing`;
+    if (empty) empty.hidden = n > 0;
+    filters?.querySelectorAll<HTMLButtonElement>('[data-topic]').forEach((b) => {
+      const on = b.dataset.topic === topic;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+  }
+
+  filters?.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-topic]');
+    if (btn?.dataset.topic) apply(btn.dataset.topic);
+  });
+
+  document.querySelector('[data-topic-reset]')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    apply('All');
+  });
+</script>

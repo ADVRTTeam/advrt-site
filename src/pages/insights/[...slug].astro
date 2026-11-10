@@ -1,0 +1,246 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import { site } from '../../data/site';
+import { sectors } from '../../data/sectors';
+import jackFounder from '../../assets/images/jack-founder.jpg';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('insights', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post, posts } }));
+}
+
+interface Props {
+  post: CollectionEntry<'insights'>;
+  posts: CollectionEntry<'insights'>[];
+}
+const { post, posts } = Astro.props;
+const { Content } = await render(post);
+const d = post.data;
+
+/**
+ * The board glows the second half of the headline. Titles here break at the
+ * first colon, question mark or comma; a title with no break stays plain
+ * rather than having an accent dropped on an arbitrary word.
+ */
+const split = /^(.*?[:?,])\s+(.*)$/.exec(d.title);
+const headA = split ? split[1] : d.title;
+const headB = split ? split[2] : '';
+
+const fmt = (date: Date) =>
+  date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+/** Three more articles: same topic first, then the newest of the rest. */
+const others = posts.filter((p) => p.id !== post.id);
+const more = [
+  ...others.filter((p) => p.data.topic === d.topic),
+  ...others.filter((p) => p.data.topic !== d.topic),
+]
+  .sort((a, b) =>
+    (a.data.topic === d.topic ? 0 : 1) - (b.data.topic === d.topic ? 0 : 1)
+    || b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const related = sectors.filter((s) => d.sectors.includes(s.slug));
+const url = new URL(`/insights/${post.id}`, Astro.site).href;
+
+const schema = [
+  {
+    '@type': 'BlogPosting',
+    '@id': `${url}#article`,
+    headline: d.title,
+    description: d.excerpt,
+    datePublished: d.date.toISOString(),
+    dateModified: d.date.toISOString(),
+    inLanguage: 'en-GB',
+    mainEntityOfPage: url,
+    url,
+    articleSection: d.topic,
+    wordCount: post.body?.trim().split(/\s+/).length,
+    author: {
+      '@type': 'Person',
+      name: d.author,
+      jobTitle: d.authorRole,
+      worksFor: { '@id': new URL('/#organisation', Astro.site).href },
+    },
+    publisher: { '@id': new URL('/#organisation', Astro.site).href },
+    isPartOf: { '@id': new URL('/insights#blog', Astro.site).href },
+  },
+  {
+    '@type': 'BreadcrumbList',
+    '@id': `${url}#breadcrumbs`,
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: Astro.site!.href },
+      { '@type': 'ListItem', position: 2, name: 'Insights', item: new URL('/insights', Astro.site).href },
+      { '@type': 'ListItem', position: 3, name: d.title, item: url },
+    ],
+  },
+];
+---
+
+<Base
+  title={`${d.metaTitle ?? d.title} | ADVRT`}
+  description={d.excerpt}
+  path={`/insights/${post.id}`}
+  ogType="article"
+  schema={schema}
+>
+  <Nav />
+
+  <main id="main" class="play">
+    <section class="hero">
+      <div class="stars" aria-hidden="true"></div>
+      <div class="stars b" aria-hidden="true"></div>
+      <span class="shoot" aria-hidden="true" style="top:26%;left:62%"></span>
+      <nav class="crumb st1" aria-label="Breadcrumb">
+        <a href="/">Home</a> / <a href="/insights">Insights</a> / {d.crumb ?? d.topic}
+      </nav>
+      <h1 class="disp st2" id="hero-h1">
+        {headA}{headB && <> <span class="glow">{headB}</span></>}
+      </h1>
+      <div class="st3 bylinerow">
+        <span class="byline">
+          <Image src={jackFounder} alt={`${d.author}, ${d.authorRole}`} width={38} height={38} densities={[1, 2]} />
+          <span style="text-align:left">
+            <span class="lbl" style="display:block;letter-spacing:.14em;color:var(--fg)">{d.author}</span>
+            <span class="lbl" style="display:block;font-size:11px;letter-spacing:.1em">{d.authorRole}</span>
+          </span>
+        </span>
+        <span class="lbl" style="letter-spacing:.14em">
+          <time datetime={d.date.toISOString().slice(0, 10)}>{fmt(d.date)}</time> · {d.mins} min read
+        </span>
+      </div>
+    </section>
+
+    <article class="read prose" style="padding-bottom:20px">
+      {d.takeaways.length > 0 && (
+        <div class="kt" data-rise style="margin-top:20px">
+          <p class="lbl" style="color:var(--acc)">Key takeaways</p>
+          <ul>
+            {d.takeaways.map((t, i) => <li><i>{i + 1}</i>{t}</li>)}
+          </ul>
+        </div>
+      )}
+
+      <Content />
+    </article>
+
+    {related.length > 0 && (
+      <section class="read" style="padding-top:56px">
+        <p class="lbl"><span class="dot" aria-hidden="true"></span>Where this applies</p>
+        <div class="relgrid">
+          {related.map((s) => (
+            <a class="relcard" href={`/${s.slug}`}>
+              <span class="nm">{s.short}</span>
+              <span class="de">{s.short === 'Surveyors' ? 'Instructions, not shared leads' : s.h1a}</span>
+              <span class="go">Read the sector page →</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="endcta">
+      <span aria-hidden="true" class="ctaglow"></span>
+      <div class="ctain">
+        <p class="lbl"><span class="dot" aria-hidden="true"></span>Your turn</p>
+        <h2 class="disp ctah" data-rise>Build the <span class="glow">pipeline.</span></h2>
+        <p class="lede ctab">
+          Tell us about your firm and we'll come back with a plan and a number.
+          No pitch deck, no hostage contracts.
+        </p>
+        <div class="ctabtns">
+          <a class="cbtn big" href="/start-a-project">Start a project →</a>
+          <a class="cbtn ghost" href={site.phoneHref}>Or call {site.phone}</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="author" class="wrap" style="padding-bottom:90px">
+      <p class="lbl"><span class="dot" aria-hidden="true"></span>Written by</p>
+      <div class="author" data-rise style="margin-top:18px">
+        <Image src={jackFounder} alt={`${d.author}, ${d.authorRole}`} width={120} height={120} densities={[1, 2]} />
+        <div>
+          <h2 class="disp" style="font-size:clamp(20px,2.4vw,32px)">{d.author} · {d.authorRole}</h2>
+          <p class="lede" style="margin-top:14px;font-size:16px">
+            Lead generation specialist and Google Partner. {d.author} founded ADVRT and
+            co-founded multiple lead generation brands across the built environment,
+            proving campaigns in the field before any client budget is involved. The data,
+            findings and results from those brands feed every client build, including the
+            systems behind this article.
+          </p>
+          {more.length > 0 && (
+            <div style="margin-top:26px">
+              <p class="lbl">More from {d.author}</p>
+              <div style="margin-top:10px">
+                {more.map((p) => (
+                  <a class="arow" href={`/insights/${p.id}`}>
+                    <span>{p.data.title}</span><span class="go" aria-hidden="true">→</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+          <a class="cbtn ghost" href="/insights" style="margin-top:24px">All articles →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .hero { position: relative; padding: 150px 24px 60px; text-align: center; overflow: clip; }
+  .hero::before {
+    content: ''; position: absolute; inset: -40% -20% 0;
+    background: radial-gradient(40% 50% at 50% 0%, rgba(255, 90, 31, .16), transparent 70%);
+  }
+  .hero > * { position: relative; z-index: 2; }
+  .hero .stars, .hero .shoot { position: absolute; z-index: 1; }
+  #hero-h1 {
+    margin: 22px auto 0; font-size: clamp(28px, 5.4vw, 80px);
+    max-width: 1000px; overflow-wrap: break-word;
+  }
+  .bylinerow {
+    margin-top: 30px; display: flex; gap: 16px; align-items: center;
+    justify-content: center; flex-wrap: wrap;
+  }
+
+  .relgrid {
+    margin-top: 18px; display: grid; gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  }
+  .relcard {
+    display: block; padding: 22px; border-radius: var(--r-sm);
+    border: 1px solid var(--line); background: var(--ink-3);
+    transition: border-color .25s, transform .25s;
+  }
+  .relcard:hover { border-color: rgba(255, 90, 31, .45); transform: translateY(-3px); }
+  .relcard .nm {
+    display: block; font-weight: 800; font-stretch: 104%;
+    text-transform: uppercase; font-size: 18px; line-height: 1.1;
+  }
+  .relcard .de {
+    display: block; margin-top: 8px; font-size: 14px; line-height: 1.5;
+    font-weight: 500; color: var(--fg-4);
+  }
+  .relcard .go {
+    display: block; margin-top: 14px; font-size: 11px; font-weight: 800;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--acc);
+  }
+
+  .endcta { position: relative; padding: 120px 24px 110px; text-align: center; overflow: clip; margin-top: 40px; }
+  .ctaglow {
+    position: absolute; inset: 0;
+    background: radial-gradient(44% 46% at 50% 62%, rgba(255, 90, 31, .18), transparent 72%);
+  }
+  .ctain { position: relative; }
+  .ctah { margin-top: 22px; font-size: clamp(34px, 6.4vw, 100px); }
+  .ctab { margin: 22px auto 0; max-width: 560px; }
+  .ctabtns { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .cbtn.big { min-height: 66px; font-size: 16px; }
+</style>
