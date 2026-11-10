@@ -9,18 +9,25 @@ const SITE = process.env.SITE_URL ?? 'https://advrt-site.netlify.app';
 export default defineConfig({
   site: SITE,
   output: 'static',
-  trailingSlash: 'ignore',
+  // Every link and canonical on this site is written without a trailing
+  // slash. Netlify serves directory-style output at the slashed path and
+  // 301s the bare one, so file-style output is what keeps those links from
+  // all going through a redirect.
+  trailingSlash: 'never',
   compressHTML: true,
   integrations: [
     sitemap({
       // /thank-you is noindex: it exists only as the landing page for a
       // no-JS form post, so it has no business in the sitemap.
-      filter: (page) => !page.endsWith('/thank-you/'),
+      filter: (page) => !page.replace(/\/$/, '').endsWith('/thank-you'),
     }),
   ],
   build: {
     inlineStylesheets: 'auto',
     assets: '_assets',
+    // Emits /surveyors.html rather than /surveyors/index.html, which Netlify
+    // then serves at /surveyors with no redirect.
+    format: 'file',
   },
   image: {
     // Sharp resizes and re-encodes at build time; nothing is processed at runtime.
