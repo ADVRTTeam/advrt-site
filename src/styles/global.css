@@ -540,7 +540,7 @@ section { scroll-margin-top: 84px; }
   box-shadow: 0 0 20px rgba(255, 90, 31, .24); transform: translateY(-2px);
 }
 .fcols { display: grid; gap: 30px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.fcol h4 {
+.fcol h2 {
   font-size: 11px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase;
   color: var(--acc); margin-bottom: 16px;
 }
@@ -1230,4 +1230,115 @@ section { scroll-margin-top: 84px; }
 .prose .stat span {
   display: block; margin-top: 10px; font-size: 12px; font-weight: 700;
   letter-spacing: .12em; text-transform: uppercase; color: var(--fg-4); line-height: 1.65;
+}
+
+/* ============================================================
+   Policies
+   ============================================================ */
+
+.psw { display: flex; flex-wrap: wrap; gap: 8px; }
+.pchip {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 20px;
+  border-radius: var(--r-pill); border: 1px solid var(--line-4); font-size: 13.5px;
+  font-weight: 700; letter-spacing: .02em; text-transform: uppercase; color: var(--fg-2);
+  transition: border-color .2s, color .2s, background .2s, transform .2s, box-shadow .2s;
+}
+.pchip:hover { border-color: var(--line-5); color: var(--fg); transform: translateY(-1px); }
+.pchip.on { background: var(--acc); border-color: var(--acc); color: var(--ink-btn); box-shadow: var(--glow-sm); }
+
+.plyt {
+  display: grid; gap: 40px; align-items: start; margin-top: 34px;
+  grid-template-columns: minmax(0, 240px) minmax(0, 1fr);
+}
+@media (max-width: 900px) { .plyt { grid-template-columns: 1fr; gap: 24px; } }
+.pidx {
+  position: sticky; top: 96px; border-radius: 20px; border: 1px solid var(--line);
+  background: var(--ink-3); padding: 22px; animation: fadeup .45s var(--ease) both;
+}
+@media (max-width: 900px) { .pidx { position: relative; top: 0; } }
+.pidx a {
+  display: flex; gap: 11px; align-items: baseline; padding: 9px 0;
+  font-size: 13.5px; line-height: 1.45; font-weight: 600; color: var(--fg-4);
+  transition: color .2s, transform .2s;
+}
+.pidx a:hover { color: var(--acc); transform: translateX(3px); }
+.pidx a i { font-style: normal; font-size: 10.5px; font-weight: 850; letter-spacing: .1em; color: var(--fg-5); }
+
+.pdoc { animation: fadeup .5s var(--ease) both; }
+.psec { padding: 30px 0; border-top: 1px solid var(--line); }
+.psec:first-child { border-top: 0; padding-top: 4px; }
+.psec h2 {
+  font-weight: 850; font-stretch: 104%; text-transform: uppercase; letter-spacing: -.01em;
+  font-size: clamp(19px, 2.2vw, 28px); line-height: 1.1; scroll-margin-top: 96px;
+  overflow-wrap: break-word;
+}
+.psec p { margin-top: 16px; font-size: 16.5px; line-height: 1.72; font-weight: 450; color: var(--fg-3); max-width: 760px; }
+.psec p b, .psec li b { color: var(--fg); font-weight: 700; }
+.psec p a { color: var(--acc); text-decoration: underline; text-underline-offset: 3px; }
+.psec ul { margin-top: 16px; list-style: none; display: flex; flex-direction: column; gap: 11px; max-width: 760px; }
+.psec li {
+  display: flex; gap: 13px; align-items: flex-start;
+  font-size: 16px; line-height: 1.65; font-weight: 450; color: var(--fg-3);
+}
+.psec li > span { flex: 1; }
+.psec li::before {
+  content: ''; flex: 0 0 7px; width: 7px; height: 7px; margin-top: 9px;
+  border-radius: 50%; background: var(--acc); box-shadow: 0 0 10px var(--acc-60);
+}
+.ptable { margin-top: 18px; border-radius: var(--r-sm); border: 1px solid var(--line); overflow: clip; }
+.ptrow {
+  display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.5fr) minmax(0, .7fr);
+  gap: 18px; padding: 16px 20px; border-top: 1px solid var(--line-2);
+  font-size: 14.5px; line-height: 1.55; font-weight: 500; color: var(--fg-3);
+}
+.ptable > .ptrow:first-child {
+  border-top: 0; background: rgba(236, 234, 227, .04); font-size: 11px;
+  font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--fg-4);
+}
+.ptrow b { color: var(--fg); font-weight: 700; }
+@media (max-width: 700px) { .ptrow { grid-template-columns: 1fr; gap: 6px; } }
+.draft {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 38px; padding: 0 16px;
+  border-radius: var(--r-pill); border: 1px dashed rgba(255, 90, 31, .55);
+  background: rgba(255, 90, 31, .08); font-size: 11px; font-weight: 800;
+  letter-spacing: .12em; text-transform: uppercase; color: #ff8c5a;
+}
+
+/* ============================================================
+   404 and thank-you
+   ============================================================ */
+
+.bign404 {
+  font-weight: 900; font-stretch: 115%; font-size: clamp(110px, 26vw, 380px);
+  line-height: .8; letter-spacing: -.04em; color: var(--acc);
+  text-shadow: 0 0 60px rgba(255, 90, 31, .5), 0 0 160px rgba(255, 90, 31, .3);
+}
+.ghost404 {
+  position: absolute; left: 50%; top: 48%; transform: translate(-50%, -50%);
+  font-weight: 900; font-stretch: 115%; font-size: min(62vw, 860px); line-height: .8;
+  letter-spacing: -.05em; color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 90, 31, .14);
+  z-index: 0; pointer-events: none; white-space: nowrap;
+}
+.dcard {
+  position: relative; display: flex; flex-direction: column; gap: 9px; padding: 26px;
+  border-radius: 20px; border: 1px solid var(--line-3);
+  background: linear-gradient(170deg, #0d0d10, #08080a); text-align: left;
+  transition: border-color .3s, transform .3s, box-shadow .3s;
+}
+.dcard:hover { border-color: rgba(255, 90, 31, .55); transform: translateY(-5px); box-shadow: 0 0 40px rgba(255, 90, 31, .16); }
+.dcard .no { font-size: 11px; font-weight: 850; letter-spacing: .16em; color: var(--acc); }
+.dcard b { font-weight: 800; font-stretch: 104%; text-transform: uppercase; font-size: 19px; line-height: 1.15; }
+.dcard span { font-size: 14px; line-height: 1.6; font-weight: 500; color: var(--fg-4); }
+.dcard .go { margin-top: 6px; font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--acc); }
+.sclist { display: flex; flex-wrap: wrap; gap: 9px; }
+.sclist a {
+  display: inline-flex; align-items: center; min-height: 46px; padding: 0 18px;
+  border-radius: var(--r-pill); border: 1px solid var(--line-4);
+  font-size: 13.5px; font-weight: 700; color: var(--fg-2);
+  transition: border-color .22s, color .22s, transform .22s, box-shadow .22s;
+}
+.sclist a:hover {
+  border-color: var(--acc); color: var(--fg); transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(255, 90, 31, .22);
 }

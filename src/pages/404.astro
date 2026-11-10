@@ -1,0 +1,104 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { sectorNav } from '../data/site';
+
+const destinations = [
+  { no: '01', href: '/', title: 'The homepage', desc: "What we do, who we do it for, and the work we've shipped.", go: 'Go home →' },
+  { no: '02', href: '/#sectors', title: 'Your sector', desc: 'Surveyors, architects, contractors, compliance, training and specialists.', go: 'Pick a sector →' },
+  { no: '03', href: '/insights', title: 'Insights', desc: 'Field notes on lead generation in the built environment.', go: 'Read the articles →' },
+  { no: '04', href: '/start-a-project', title: 'Start a project', desc: 'Five questions, two minutes, then a plan rather than a pitch.', go: 'Start the brief →' },
+];
+---
+
+<Base
+  title="Page not found · ADVRT"
+  description="That page isn't on the plans. Here's where everyone else is heading."
+  path="/404"
+  noindex
+>
+  <Nav />
+
+  <main id="main" class="play">
+    <section class="hero">
+      <div class="stars" aria-hidden="true"></div>
+      <div class="stars b" aria-hidden="true"></div>
+      <span class="shoot" aria-hidden="true" style="top:18%;left:64%"></span>
+      <span class="shoot" aria-hidden="true" style="top:40%;left:30%;animation-delay:6s"></span>
+      <span class="ghost404" aria-hidden="true">404</span>
+      <div class="horizon" aria-hidden="true"></div>
+
+      <p class="lbl st1"><span class="dot" aria-hidden="true"></span>Error 404 · Page not found</p>
+      <p class="bign404 st2" style="margin-top:10px" aria-hidden="true">404</p>
+      <h1 class="disp st3" id="hero-h1">This page <span class="glow">isn't on the plans.</span></h1>
+      <p class="lede st3" style="margin-top:20px;max-width:560px">
+        The link is wrong, the page moved, or it was never built. Nothing is broken at
+        your end. Here's where everyone else is heading.
+      </p>
+      <div class="st4 hero-cta">
+        <a class="cbtn" href="/">Back to home →</a>
+        <a class="cbtn ghost" href="/start-a-project">Start a project</a>
+      </div>
+    </section>
+
+    <section class="wrap" style="padding-top:10px">
+      <p class="lbl"><span class="dot" aria-hidden="true"></span>Popular destinations</p>
+      <div class="dgrid">
+        {destinations.map((d) => (
+          <a class="dcard" href={d.href} data-rise>
+            <span class="no">{d.no}</span>
+            <b>{d.title}</b>
+            <span>{d.desc}</span>
+            <span class="go">{d.go}</span>
+          </a>
+        ))}
+      </div>
+
+      <div class="scrow">
+        <div>
+          <p class="lbl"><span class="dot" aria-hidden="true"></span>Straight to a sector</p>
+          <h2 class="disp sch" data-rise>You were probably after <span class="glow">one of these.</span></h2>
+        </div>
+        <div>
+          <nav class="sclist" aria-label="Sectors">
+            {sectorNav.map((s) => <a href={s.href}>{s.label}</a>)}
+          </nav>
+          <p class="lede" style="margin-top:22px;font-size:15.5px;max-width:560px">
+            Still stuck, or landed here from a link we sent you? Tell us and we'll fix it.
+            <a href="/contact" style="color:var(--acc);font-weight:700">Contact us →</a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .hero {
+    position: relative; min-height: min(100svh, 820px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 130px 24px 180px; overflow: clip;
+  }
+  .hero > * { position: relative; z-index: 2; }
+  .hero .stars,
+  .hero .shoot,
+  .hero .horizon,
+  .hero .ghost404 { position: absolute; z-index: 1; }
+  .horizon { bottom: -148vw; width: 170vw; height: 170vw; }
+  #hero-h1 { margin-top: 18px; font-size: clamp(27px, 5vw, 72px); max-width: 900px; }
+  .hero-cta { margin-top: 32px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+
+  .dgrid {
+    margin-top: 26px; display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  }
+  .scrow {
+    margin-top: 50px; display: grid; gap: 40px; align-items: start;
+    grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  }
+  @media (max-width: 860px) { .scrow { grid-template-columns: 1fr; gap: 24px; } }
+  .sch { margin-top: 16px; font-size: clamp(22px, 2.8vw, 38px); }
+</style>

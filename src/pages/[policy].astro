@@ -1,0 +1,157 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+import { policies, type Policy } from '../data/policies';
+
+export function getStaticPaths() {
+  return policies.map((p) => ({ params: { policy: p.slug }, props: { p } }));
+}
+
+interface Props { p: Policy }
+const { p } = Astro.props;
+
+const slug = (s: string) =>
+  s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+const sections = p.sections.map((s, i) => ({
+  ...s,
+  id: slug(s.heading),
+  no: String(i + 1).padStart(2, '0'),
+}));
+
+const META: Record<string, string> = {
+  privacy: 'How ADVRT Marketing Ltd collects, uses and protects personal data under UK GDPR, what we share, how long we keep it and your rights.',
+  cookies: 'What ADVRT stores on your device, why, and how to turn the optional parts off. Nothing non-essential is set before you consent.',
+  terms: 'The commercial terms that apply to ADVRT projects: scope, fees, what you own on final payment, handover and liability.',
+  accessibility: 'ADVRT builds to WCAG 2.1 level AA. What we hold ourselves to, the known limitations, and how to tell us when we fall short.',
+  complaints: 'How to raise a complaint with ADVRT, who handles it, and how long each step takes.',
+};
+
+const schema = [
+  {
+    '@type': 'WebPage',
+    '@id': new URL(`/${p.slug}#page`, Astro.site).href,
+    url: new URL(`/${p.slug}`, Astro.site).href,
+    name: p.name,
+    description: META[p.slug] ?? p.lede,
+    isPartOf: { '@id': new URL('/#website', Astro.site).href },
+    publisher: { '@id': new URL('/#organisation', Astro.site).href },
+  },
+];
+---
+
+<Base
+  title={`${p.name} · ADVRT`}
+  description={META[p.slug] ?? p.lede}
+  path={`/${p.slug}`}
+  schema={schema}
+>
+  <Nav />
+
+  <main id="main" class="play">
+    <section class="hero">
+      <div class="stars" aria-hidden="true"></div>
+      <div class="stars b" aria-hidden="true"></div>
+      <span class="shoot" aria-hidden="true" style="top:24%;left:64%"></span>
+      <p class="lbl st1"><span class="dot" aria-hidden="true"></span>Legal · {p.name}</p>
+      <h1 class="disp st2" id="hero-h1">{p.head1} <span class="glow">{p.head2}</span></h1>
+      <p class="lede st3" style="margin-top:20px;max-width:640px">{p.lede}</p>
+      <div class="st3 pmeta">
+        <span class="lbl" style="letter-spacing:.14em">{p.updated}</span>
+        <span class="draft">Draft · for legal review before launch</span>
+      </div>
+    </section>
+
+    <section class="wrap" style="padding-top:20px">
+      <nav class="psw" aria-label="Policies">
+        {policies.map((d) => (
+          <a
+            class={d.slug === p.slug ? 'pchip on' : 'pchip'}
+            href={`/${d.slug}`}
+            aria-current={d.slug === p.slug ? 'page' : undefined}
+          >{d.name}</a>
+        ))}
+      </nav>
+
+      <div class="plyt">
+        <aside class="pidx" aria-label="On this page">
+          <p class="lbl" style="color:var(--acc)">On this page</p>
+          <div style="margin-top:10px">
+            {sections.map((s) => (
+              <a href={`#${s.id}`}><i>{s.no}</i>{s.heading}</a>
+            ))}
+          </div>
+        </aside>
+
+        <div class="pdoc">
+          {sections.map((s) => (
+            <section class="psec">
+              <h2 id={s.id}>{s.heading}</h2>
+              {s.paras.map((t) => <p>{t}</p>)}
+              {s.items.length > 0 && (
+                <ul>
+                  {s.items.map((l) => (
+                    <li><span>{l.b && <b>{l.b}</b>}{l.b ? ' ' : ''}{l.t}</span></li>
+                  ))}
+                </ul>
+              )}
+              {s.table && (
+                <div class="ptable">
+                  <div class="ptrow">{s.table.head.map((c) => <span>{c}</span>)}</div>
+                  {s.table.rows.map((r) => (
+                    <div class="ptrow">
+                      <span><b>{r[0]}</b></span>
+                      {r.slice(1).map((c) => <span>{c}</span>)}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+          ))}
+
+          <section class="psec">
+            <h2>Questions about any of this?</h2>
+            <p>
+              Email <a href={`mailto:${site.email}`}>{site.email}</a> or call
+              <a href={site.phoneHref}>{site.phone}</a>. A human replies the same business day.
+            </p>
+            {p.slug === 'cookies' && (
+              <p>
+                You can change your cookie choice at any time.
+                <button type="button" class="pchip" id="consent-reset" style="margin-top:16px">
+                  Change cookie settings
+                </button>
+              </p>
+            )}
+            <div style="margin-top:22px;display:flex;gap:14px;flex-wrap:wrap">
+              <a class="cbtn" href="/contact">Contact us →</a>
+              <a class="cbtn ghost" href="/start-a-project">Start a project</a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .hero {
+    position: relative; padding: 140px 24px 50px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; overflow: clip;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: -40% -20% 0;
+    background: radial-gradient(40% 50% at 50% 0%, rgba(255, 90, 31, .16), transparent 70%);
+  }
+  .hero > * { position: relative; z-index: 2; }
+  .hero .stars, .hero .shoot { position: absolute; z-index: 1; }
+  #hero-h1 { margin-top: 22px; font-size: clamp(36px, 7.4vw, 104px); }
+  .pmeta {
+    margin-top: 22px; display: flex; gap: 12px; align-items: center;
+    flex-wrap: wrap; justify-content: center;
+  }
+</style>

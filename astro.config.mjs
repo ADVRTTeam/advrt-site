@@ -11,7 +11,13 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'ignore',
   compressHTML: true,
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // /thank-you is noindex: it exists only as the landing page for a
+      // no-JS form post, so it has no business in the sitemap.
+      filter: (page) => !page.endsWith('/thank-you/'),
+    }),
+  ],
   build: {
     inlineStylesheets: 'auto',
     assets: '_assets',

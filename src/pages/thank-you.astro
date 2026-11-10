@@ -1,0 +1,101 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+
+/**
+ * Where a native (no-JavaScript) form post lands once the function has
+ * forwarded the enquiry. With JS the forms show their own inline
+ * confirmation and never navigate here.
+ */
+---
+
+<Base
+  title="Thank you · ADVRT"
+  description="Your enquiry is in. We'll be in touch the same business day."
+  path="/thank-you"
+  noindex
+>
+  <Nav />
+
+  <main id="main" class="play">
+    <section class="hero">
+      <div class="stars" aria-hidden="true"></div>
+      <div class="stars b" aria-hidden="true"></div>
+      <span class="shoot" aria-hidden="true" style="top:22%;left:62%"></span>
+      <div class="horizon" aria-hidden="true"></div>
+
+      <span class="okring st1" aria-hidden="true">
+        <svg width="40" height="40" viewBox="0 0 16 16" fill="none" stroke="#0b0b0c" stroke-width="2.4" stroke-dasharray="40" style="animation:drawok .8s .3s ease both"><path d="M2.5 8.5l3.5 3.5 7.5-8"/></svg>
+      </span>
+      <h1 class="disp st2" id="hero-h1">Your enquiry <span class="glow">is in.</span></h1>
+      <p class="lede st3" style="margin-top:22px;max-width:600px">
+        Thanks for getting in touch. You'll get an acknowledgement straight away, and a
+        human replies the same business day. If it's urgent, call us.
+      </p>
+
+      <div class="st3 nextwrap">
+        <p class="flabel" style="margin-bottom:14px">What happens next</p>
+        <ol class="nexts">
+          <li><b>1</b>An acknowledgement lands in your inbox within a few minutes.</li>
+          <li><b>2</b>We read the brief properly before we reply, so we're not starting cold.</li>
+          <li><b>3</b>You get a plan built on your numbers, not a brochure.</li>
+        </ol>
+      </div>
+
+      <div class="st4 hero-cta">
+        <a class="cbtn" href="/">Back to home →</a>
+        <a class="cbtn ghost" href={site.phoneHref}>Call {site.phone}</a>
+      </div>
+    </section>
+
+    <section class="wrap" style="padding-top:10px;padding-bottom:90px">
+      <p class="lbl"><span class="dot" aria-hidden="true"></span>While you wait</p>
+      <div class="dgrid">
+        <a class="dcard" href="/insights" data-rise>
+          <span class="no">01</span><b>Insights</b>
+          <span>Field notes on lead generation in the built environment.</span>
+          <span class="go">Read the articles →</span>
+        </a>
+        <a class="dcard" href="/#work" data-rise>
+          <span class="no">02</span><b>The work</b>
+          <span>Builds we've shipped, and what the first month looked like.</span>
+          <span class="go">See the work →</span>
+        </a>
+        <a class="dcard" href="/#process" data-rise>
+          <span class="no">03</span><b>How we work</b>
+          <span>Five stages, from the pre-spend audit to the handover.</span>
+          <span class="go">See the process →</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .hero {
+    position: relative; min-height: min(96svh, 900px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 130px 24px 150px; overflow: clip;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: -20%;
+    background: radial-gradient(42% 34% at 50% 70%, rgba(255, 90, 31, .18), transparent 70%);
+  }
+  .hero > * { position: relative; z-index: 2; }
+  .hero .stars,
+  .hero .shoot,
+  .hero .horizon { position: absolute; z-index: 1; }
+  .horizon { bottom: -150vw; width: 170vw; height: 170vw; }
+  #hero-h1 { margin-top: 28px; font-size: clamp(34px, 7.4vw, 110px); }
+  .hero-cta { margin-top: 36px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .nextwrap { margin-top: 36px; text-align: left; max-width: 560px; }
+
+  .dgrid {
+    margin-top: 26px; display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  }
+</style>

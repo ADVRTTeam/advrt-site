@@ -29,19 +29,19 @@ import { site, sectorNav, footerCompany, footerLegal } from '../data/site';
 
       <div class="fcols">
         <div class="fcol">
-          <h4>Sectors</h4>
+          <h2>Sectors</h2>
           {sectorNav.map((s) => <a href={s.href}>{s.label}</a>)}
         </div>
         <div class="fcol">
-          <h4>Company</h4>
+          <h2>Company</h2>
           {footerCompany.map((l) => <a href={l.href}>{l.label}</a>)}
         </div>
         <div class="fcol">
-          <h4>Legal</h4>
+          <h2>Legal</h2>
           {footerLegal.map((l) => <a href={l.href}>{l.label}</a>)}
         </div>
         <div class="fcol">
-          <h4>Talk to us</h4>
+          <h2>Talk to us</h2>
           <a href={`mailto:${site.email}`}>{site.email}</a>
           <a href={site.phoneHref}>{site.phone}</a>
           <p class="addr">

@@ -41,6 +41,8 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
         <input id="brief-gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
       </div>
 
+      <h1 class="vis-hidden">Start a project</h1>
+
       <div class="steps" id="steps" aria-label="Step 1 of 5" hidden>
         {stepLabels.map((l, i) => (
           <button
@@ -54,7 +56,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
       <fieldset class="stage" data-step="0" style="margin-top:48px">
         <legend class="vis-hidden">What kind of firm are you?</legend>
         <p class="lbl"><span class="dot" aria-hidden="true"></span>Step 1 of 5 · Two minutes, five questions</p>
-        <h1 class="q" style="margin-top:18px">What kind of <em>firm</em> are you?</h1>
+        <h2 class="q" style="margin-top:18px">What kind of <em>firm</em> are you?</h2>
         <div class="optgrid" style="margin-top:34px">
           {sectorOptions.map((label, i) => (
             <label class="opt">
@@ -71,7 +73,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
       <fieldset class="stage" data-step="1" style="margin-top:48px">
         <legend class="vis-hidden">Which work do you want more of?</legend>
         <p class="lbl"><span class="dot" aria-hidden="true"></span>Step 2 of 5 · Pick as many as you like</p>
-        <h1 class="q" style="margin-top:18px">Which work do you want <em>more of?</em></h1>
+        <h2 class="q" style="margin-top:18px">Which work do you want <em>more of?</em></h2>
         {Object.entries(workBySector).map(([sector, items]) => (
           <div class="workgroup" data-work-for={sector} style="margin-top:34px">
             <p class="flabel wg-label">{sector}</p>
@@ -91,7 +93,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
       <fieldset class="stage" data-step="2" style="margin-top:48px">
         <legend class="vis-hidden">Where does work come from today?</legend>
         <p class="lbl"><span class="dot" aria-hidden="true"></span>Step 3 of 5 · Where you are today</p>
-        <h1 class="q" style="margin-top:18px">Where does work <em>come from</em> today?</h1>
+        <h2 class="q" style="margin-top:18px">Where does work <em>come from</em> today?</h2>
         <div role="group" aria-label="Current lead sources" style="margin-top:34px;display:flex;flex-wrap:wrap;gap:10px">
           {sourceOptions.map((label) => (
             <label class="chip">
@@ -117,7 +119,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
       <fieldset class="stage" data-step="3" style="margin-top:48px">
         <legend class="vis-hidden">Budget and timing</legend>
         <p class="lbl"><span class="dot" aria-hidden="true"></span>Step 4 of 5 · Budget and timing</p>
-        <h1 class="q" style="margin-top:18px">What does <em>ambition</em> look like?</h1>
+        <h2 class="q" style="margin-top:18px">What does <em>ambition</em> look like?</h2>
         <p class="lbl" style="margin-top:34px">Monthly ad budget</p>
         <div role="group" aria-label="Monthly ad budget" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
           {budgetOptions.map((label) => (
@@ -142,7 +144,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
       <fieldset class="stage" data-step="4" style="margin-top:48px">
         <legend class="vis-hidden">Where should we send the plan?</legend>
         <p class="lbl"><span class="dot" aria-hidden="true"></span>Step 5 of 5 · Nearly there</p>
-        <h1 class="q" style="margin-top:18px">Where should we <em>send the plan?</em></h1>
+        <h2 class="q" style="margin-top:18px">Where should we <em>send the plan?</em></h2>
         <div class="fgrid" style="margin-top:34px">
           <div>
             <label class="flabel" for="b-name">Your name *</label>
