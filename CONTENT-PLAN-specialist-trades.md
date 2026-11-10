@@ -1,6 +1,8 @@
 # Content plan — cohort 2: the specialist trades
 
-Drafted 10 November 2026, revised after review. For sign-off, not yet written.
+Drafted 10 November 2026, revised after review. **Written and published on 10
+November 2026** — all twelve pieces are live under `/insights`, each with an
+AIBox cover. See §7 for what shipped and what changed between plan and copy.
 
 The first ten articles argue the ADVRT method: cost per instruction, exclusive
 versus shared leads, attribution, forms, response speed. They are sector-light
@@ -358,10 +360,11 @@ carrying `lead generation for <sector>`.
    out. Does that extend to heat pumps and retrofit, which share the brand?
 2. **Which trades matter commercially.** The data says asbestos, TM44 and fire.
    If ADVRT would rather sell to, say, legionella firms, the order changes.
-3. **Permission to publish the figures.** Every piece quotes real impression
-   counts and positions from ADVRT's own properties. It is the strongest thing
-   here and I would not publish it without a yes. The brands can stay unnamed
-   ("our own trade brands") if you prefer.
+3. ~~**Permission to publish the figures.**~~ **Decided — not published.** The
+   copy as written quotes no impression counts or positions from ADVRT's own
+   properties. The data chose the trades and shaped the arguments; it stays
+   out of the public record. Reasoning in §7. If you want the figures in, they
+   can be added to any piece in minutes.
 4. ~~The three legacy pages in §4, and the Southampton signal.~~ **Decided —
    see §4.** `/lead-generation` kept and built, the other two redirected, the
    local terms let go in favour of the service-provider ones.
@@ -369,3 +372,80 @@ carrying `lead generation for <sector>`.
    from the search data rather than from a briefing. Read it before it is
    promoted anywhere — particularly the five disciplines, where I have made a
    call on who buys each one and what triggers it.
+
+
+---
+
+## 7. What shipped
+
+All twelve pieces, live under `/insights`, in publishing order. Dates run from
+11 November to 18 December 2026 so the cohort releases over five weeks rather
+than appearing in one block.
+
+| # | Slug | Topic | Sectors |
+|---|---|---|---|
+| 1 | `ranking-without-traffic` *(featured)* | Strategy | contractors, compliance, fire-protection |
+| 2 | `fire-safety-head-term-long-tail` | Fire protection | fire-protection, compliance |
+| 3 | `tm44-the-inspection-nobody-markets` | Specialist trades | contractors, compliance |
+| 4 | `asbestos-two-buyers-one-page` | Specialist trades | contractors, compliance |
+| 5 | `legionella-the-open-goal` | Compliance | compliance, contractors |
+| 6 | `c1-c2-c3-eicr-questions` | Compliance | compliance, contractors |
+| 7 | `mees-and-the-commercial-epc` | Compliance | compliance, surveyors |
+| 8 | `ppm-the-survey-that-sells-the-contract` | Specialist trades | built-environment, contractors |
+| 9 | `price-and-regulation-beat-near-me` | Strategy | contractors, compliance, fire-protection |
+| 10 | `how-many-pages-does-a-multi-trade-firm-need` | Landing pages | contractors, compliance, fire-protection |
+| 11 | `what-ai-search-cites-in-your-trade` | Strategy | contractors, compliance, surveyors |
+| 12 | `marketing-a-contract-not-a-job` | Strategy | built-environment, compliance, fire-protection |
+
+### Changed between plan and copy
+
+**No impression counts or positions appear in any piece.** The plan had each
+article quoting real figures from `comsurv.uk` and the other brands. Two things
+changed that. You had not given a yes on publishing them, and on the fire
+protection page the same framing — "2,400+ fire searches a year" — turned out
+to read as evidence that the *market* is tiny, when it was only ever our slice
+of it. Publishing "961 impressions for TM44" would have done exactly the same
+thing to the TM44 piece.
+
+So the data did its job privately: it picked the trades, ranked them, and
+decided what each piece argues. The copy makes the same points qualitatively —
+"more people ask the cost question than the supplier question, and those pages
+rank worse" — which is both true and unfalsifiable in the way a quoted number
+is not. If you want the figures in, say which pieces and they go in.
+
+**The planned piece 10 was rewritten.** It was a companion to cohort 1's
+`one-page-per-service` and would have cannibalised it — two articles chasing
+the same phrases is the thing this cohort is meant to argue against. It became
+`how-many-pages-does-a-multi-trade-firm-need`, which answers a different
+question (where the split line sits for a firm doing a dozen things) and links
+to the original rather than competing with it.
+
+**Piece 11 names no competitors.** The Koalr data identified specific national
+firms winning prompts our brands are absent from. The argument does not need
+the names and naming them invites a dispute we gain nothing from, so it refers
+to "large national consultancies".
+
+**The pillar is now the featured article** on `/insights`, replacing
+`what-a-surveyor-lead-actually-costs`. Standard pillar placement: everything in
+the cohort links back to it.
+
+### Interlinking
+
+Every piece links to at least two siblings and to the sector pages it is tagged
+against, with descriptive anchor text. All internal links resolve — checked
+against the collection and the page list at build time. The related-services
+block and the author box were already automatic from `sectors` and the author
+record.
+
+### Schema
+
+`BlogPosting` and `BreadcrumbList` validate on all 23 article pages, with the
+`Person` node resolving from `src/data/authors.ts`, `wordCount` computed from
+the body and `image` pointing at the per-article share card.
+
+### Covers
+
+Generated through AIBox in the house style — matte grey concrete forms on a
+near-black backdrop, a single `#FF5A1F` accent, lower-right kept dark for the
+card overlay. One per article, 1024px square, 30–61KB each. The box is saved
+and reusable for future cohorts.
