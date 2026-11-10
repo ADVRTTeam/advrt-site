@@ -169,3 +169,53 @@ you've seen the new one.
 - **Company registration number** — for the footer and the policies
 - **GA4 measurement ID** — `PUBLIC_GA4_ID`
 - `ENQUIRY_WEBHOOK_URL` — still outstanding from the first build
+
+---
+
+## 7. Build complete — 10 Nov 2026
+
+All 13 boards are built and live at https://advrt-site.netlify.app.
+
+| Board | Route | Notes |
+|---|---|---|
+| HomeC | `/` | Starfield hero, city SVG, scroll-lit manifesto |
+| SurveyorsC | `/surveyors` | Shared-leads odds calculator, named lab, case panel |
+| ArchitectsC | `/architects` | Pipeline calculator, stages, lab cards |
+| ContractorsC | `/contractors` | As above |
+| ComplianceC | `/compliance` | As above, plus the disciplines section |
+| TrainingC | `/training` | As above, plus the disciplines section |
+| BuiltEnvironmentC | `/built-environment` | As above |
+| BriefC | `/start-a-project` | Five steps, booking step, confirmation |
+| ContactC | `/contact` | |
+| BlogC | `/insights` | Featured card, topic filter |
+| BlogPostC | `/insights/[slug]` | Ten existing articles, re-skinned |
+| PolicyC | `/privacy`, `/cookies`, `/terms`, `/accessibility`, `/complaints` | One route each, not a tab switcher |
+| NotFoundC | `/404` | |
+
+Plus `/thank-you`, which the boards do not cover: it is where a no-JS form post
+lands once the function has forwarded the enquiry.
+
+### Deliberate departures from the boards
+
+1. **Five policy routes, not one tabbed page.** The footer links to each
+   directly and each needs its own canonical.
+2. **A mobile menu.** The boards hide all nav below 860px and offer nothing in
+   its place, so the burger and focus-trapped sheet from the previous build
+   carry over.
+3. **"An industry-specialist team"** in place of the boards' "Ex-RICS media
+   buyers", per Jack's standing instruction. See section 6.
+4. **No GoHighLevel placeholder bar** on the booking step. The boards show a
+   dashed `[GHL] widget embeds here` strip, which is prototype scaffolding; the
+   real picker is in its place until the calendar is wired up.
+5. **A case-study panel on surveyors only**, as the boards have it. The other
+   five close on the lab section.
+6. **An "other sectors" row** on each sector page, numbered 01–05 by position.
+   The board crumbs skip numbers, which would read as a gap in a list of five.
+
+### What the boards did not settle, and now does
+
+- Every page serves at its canonical path with no redirect (`trailingSlash:
+  'never'` plus file-style output).
+- Reduced motion drops the staged entrances outright rather than shortening
+  them.
+- Both forms, the brief wizard included, work with JavaScript turned off.
