@@ -6,7 +6,7 @@
   "description": "ADVRT — paid media and lead generation for the built environment",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/dual-paths.mjs",
     "preview": "astro preview",
     "check": "astro check"
   },
