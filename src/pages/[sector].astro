@@ -1,0 +1,783 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+import { sectors, type Sector } from '../data/sectors';
+import { img } from '../lib/images';
+
+export function getStaticPaths() {
+  return sectors.map((s) => ({ params: { sector: s.slug }, props: { s } }));
+}
+
+interface Props { s: Sector }
+const { s } = Astro.props;
+
+/**
+ * The boards put the case-study panel on the surveyors page only; the other
+ * five close on the lab section. Kept as designed.
+ */
+const showCase = s.slug === 'surveyors';
+const other = sectors.filter((o) => o.slug !== s.slug);
+
+/** Client-side state for the calculator. Read from a JSON tag, not inlined. */
+const calcConfig = s.calc;
+
+const money = (n: number) => '£' + Math.round(n).toLocaleString('en-GB');
+const need0 =
+  s.calc.kind === 'pipeline' ? Math.ceil(s.calc.jobs / (s.calc.win / 100)) : 0;
+
+const schema = [
+  {
+    '@type': 'Service',
+    '@id': new URL(`/${s.slug}#service`, Astro.site).href,
+    name: `${s.short} marketing and lead generation`,
+    description: s.metaDescription,
+    url: new URL(`/${s.slug}`, Astro.site).href,
+    provider: { '@id': new URL('/#organisation', Astro.site).href },
+    areaServed: { '@type': 'Country', name: 'United Kingdom' },
+    audience: { '@type': 'Audience', audienceType: s.short },
+    serviceType: ['Paid search', 'Lead generation', 'Conversion tracking'],
+  },
+  {
+    '@type': 'BreadcrumbList',
+    '@id': new URL(`/${s.slug}#breadcrumbs`, Astro.site).href,
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: Astro.site!.href },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: s.short,
+        item: new URL(`/${s.slug}`, Astro.site).href,
+      },
+    ],
+  },
+  {
+    '@type': 'FAQPage',
+    '@id': new URL(`/${s.slug}#faq`, Astro.site).href,
+    mainEntity: s.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<Base
+  title={s.metaTitle}
+  description={s.metaDescription}
+  path={`/${s.slug}`}
+  schema={schema}
+>
+  <Nav />
+
+  <main id="main">
+    <!-- 01 · HERO -->
+    <section class="hero" id="hero">
+      <div class="stars" aria-hidden="true"></div>
+      <div class="stars b" aria-hidden="true"></div>
+      <span class="shoot" aria-hidden="true" style="top:16%;left:60%"></span>
+      <div class="horizon" aria-hidden="true"></div>
+
+      <p class="lbl st1"><span class="dot" aria-hidden="true"></span>Sectors · {s.crumb}</p>
+      <h1 class="disp st2" id="hero-h1">{s.h1a} <span class="glow">{s.h1b}</span></h1>
+      <p class="lede st3" style="margin-top:26px;max-width:640px">{s.lede}</p>
+      <div class="st4 hero-cta">
+        <a class="cbtn" href="/start-a-project">Start a project →</a>
+        <a class="cbtn ghost" href="#maths">Do the maths</a>
+      </div>
+    </section>
+
+    <!-- 02 · TRUST BAND -->
+    <section class="tband">
+      <div class="wrap">
+        <p class="lbl"><span class="dot" aria-hidden="true"></span>The proof</p>
+        <div class="tgrid">
+          {s.proof.map((p) => (
+            <div class="tcell" data-rise>
+              <b>{p.n}</b><span class="k">{p.k}</span><span class="c">{p.c}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 · DISCIPLINES -->
+    {s.disciplines && (
+      <section id="disciplines" class="wrap" style="padding-top:100px">
+        <p class="lbl"><span class="dot" aria-hidden="true"></span>{s.disciplines.tag}</p>
+        <h2 class="disp h2" data-rise>{s.disciplines.head}</h2>
+        <p class="lede" data-rise style="margin-top:18px;max-width:620px">{s.disciplines.lede}</p>
+
+        <div class="tabbar" role="tablist" aria-label="Disciplines" data-nudge style="margin-top:34px" id="disc-bar">
+          {s.disciplines.items.map((d, i) => (
+            <button
+              type="button" role="tab" id={`disc-t${i}`}
+              class={i === 0 ? 'dchip on' : 'dchip'}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls={`disc-p${i}`}
+              tabindex={i === 0 ? 0 : -1}
+            >{d.name}</button>
+          ))}
+        </div>
+
+        {s.disciplines.items.map((d, i) => (
+          <div
+            class="dpanel" role="tabpanel" id={`disc-p${i}`}
+            aria-labelledby={`disc-t${i}`} hidden={i !== 0}
+          >
+            <div class="dcell"><p class="lbl">Who buys it</p><p>{d.who}</p></div>
+            <div class="dcell"><p class="lbl">What triggers it</p><p>{d.trigger}</p></div>
+            <div class="dcell play">
+              <p class="lbl" style="color:var(--acc)">How we play it</p><p>{d.play}</p>
+            </div>
+          </div>
+        ))}
+      </section>
+    )}
+
+    <!-- 04 · MATHS -->
+    <section id="maths" class="wrap" style={s.disciplines ? 'padding-top:120px' : 'padding-top:100px'}>
+      <p class="lbl"><span class="dot" aria-hidden="true"></span>The maths</p>
+      <h2 class="disp h2" data-rise style="max-width:1020px">{s.p2a} <span class="glow">{s.p2b}</span></h2>
+      <p class="lede" data-rise style="margin-top:18px;max-width:640px">{s.pLede}</p>
+
+      <div class="calc panel" data-rise style="margin-top:36px" id="calc">
+        {s.calc.kind === 'shared' ? (
+          <>
+            <div class="calc-in">
+              <div class="crow">
+                <label for="firms" class="lbl">Firms sent each lead</label>
+                <span class="bign" id="o-firms">{s.calc.firms}</span>
+              </div>
+              <input
+                id="firms" class="range" type="range" min="1" max="6" step="1"
+                value={s.calc.firms} aria-describedby="o-firms"
+              />
+              <div class="crow" style="margin-top:30px">
+                <label for="cpl" class="lbl">You pay per lead</label>
+                <span class="bign" id="o-cpl">£{s.calc.cpl}</span>
+              </div>
+              <input
+                id="cpl" class="range" type="range" min="5" max="60" step="1"
+                value={s.calc.cpl} aria-describedby="o-cpl"
+              />
+              <div class="firms" id="o-firmgrid" aria-hidden="true">
+                {[0, 1, 2, 3, 4, 5].map((i) => (
+                  <span class={i === 0 ? 'firm you' : i < s.calc.firms ? 'firm rival' : 'firm'}>
+                    {i === 0 ? 'You' : i < s.calc.firms ? 'Rival' : ''}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div class="calc-out" aria-live="polite">
+              <div>
+                <p class="lbl">Your odds on each lead</p>
+                <p class="resn" id="o-odds">1 in {s.calc.firms}</p>
+              </div>
+              <div class="csplit">
+                <p class="lbl">Lead spend per job you could win</p>
+                <p class="resn" id="o-perwin">£{s.calc.cpl * s.calc.firms}</p>
+                <p class="cnote">
+                  An enquiry from your own campaign goes to one firm.
+                  <span>Yours.</span>
+                </p>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div class="calc-in">
+              <div class="crow">
+                <label for="jobs" class="lbl">{s.calc.jobsLabel}</label>
+                <span class="bign" id="o-jobs">{s.calc.jobs}</span>
+              </div>
+              <input
+                id="jobs" class="range" type="range"
+                min={s.calc.jobsMin} max={s.calc.jobsMax} step="1"
+                value={s.calc.jobs} aria-describedby="o-jobs"
+              />
+              <div class="crow" style="margin-top:30px">
+                <label for="win" class="lbl">{s.calc.winLabel}</label>
+                <span class="bign" id="o-win">{s.calc.win}%</span>
+              </div>
+              <input
+                id="win" class="range" type="range" min="5" max="80" step="5"
+                value={s.calc.win} aria-describedby="o-win"
+              />
+              <div class="dots" id="o-dots" aria-hidden="true">
+                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
+                  <i class={i < Math.round(s.calc.kind === 'pipeline' ? s.calc.win / 10 : 0) ? 'on' : ''}></i>
+                ))}
+              </div>
+              <p class="work" id="o-work">
+                {Math.round(s.calc.win / 10)} in every 10 enquiries turns into work
+              </p>
+              <div class="crow" style="margin-top:30px">
+                <label for="val" class="lbl">{s.calc.valLabel}</label>
+                <span class="bign" id="o-val">{money(s.calc.val)}</span>
+              </div>
+              <input
+                id="val" class="range" type="range"
+                min={s.calc.valMin} max={s.calc.valMax} step={s.calc.valStep}
+                value={s.calc.val} aria-describedby="o-val"
+              />
+            </div>
+            <div class="calc-out" aria-live="polite">
+              <div>
+                <p class="lbl">{s.calc.needLabel}</p>
+                <p class="resn" id="o-need">{need0}</p>
+                <p class="work" id="o-needmath">
+                  {s.calc.jobs} {s.calc.jobs === 1 ? s.calc.unit : s.calc.unitPlural} ÷ {s.calc.win}% = {need0} enquiries
+                </p>
+              </div>
+              <div class="csplit">
+                <p class="lbl">{s.calc.yearLabel}</p>
+                <p class="resn" id="o-year">{money(s.calc.jobs * s.calc.val * 12)}</p>
+                <p class="work" id="o-yearmath">
+                  {s.calc.jobs} {s.calc.jobs === 1 ? s.calc.unit : s.calc.unitPlural} a month × {money(s.calc.val)} × 12 months
+                </p>
+                <p class="cnote">
+                  That's the gap a pipeline you control is worth.
+                  <span>Every month it isn't running.</span>
+                </p>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    </section>
+
+    <!-- 05 · ADVRTISE -->
+    <section id="advrtise" class="wrap" style="padding-top:120px">
+      <p class="lbl"><span class="dot" aria-hidden="true"></span>Powered by ADVRTISE</p>
+      <h2 class="disp h2" data-rise>{s.buildHead1} <span class="glow">{s.buildHead2}</span></h2>
+      <p class="lede" data-rise style="margin-top:18px;max-width:660px">{s.buildLede}</p>
+
+      <div class="tabbar" role="tablist" aria-label="The ADVRTISE framework" data-nudge style="margin-top:36px" id="tab-bar">
+        {s.tabs.map((t, i) => (
+          <button
+            type="button" role="tab" id={`tab-t${i}`}
+            class={i === 0 ? 'tab on' : 'tab'}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-controls={`tab-p${i}`}
+            tabindex={i === 0 ? 0 : -1}
+          ><b>{t.no}</b>{t.name}</button>
+        ))}
+      </div>
+
+      {s.tabs.map((t, i) => (
+        <div
+          class="tabpanel" role="tabpanel" id={`tab-p${i}`}
+          aria-labelledby={`tab-t${i}`} hidden={i !== 0}
+        >
+          <div>
+            <p class="lbl" style="color:var(--acc)">{t.tag}</p>
+            <h3 class="disp h3">{t.head}</h3>
+            <p class="lede" style="margin-top:14px;font-size:16px">{t.body}</p>
+          </div>
+          <div>{t.points.map((p) => <div class="pt">{p}</div>)}</div>
+        </div>
+      ))}
+    </section>
+
+    <!-- 06 · PROCESS -->
+    {s.stages && (
+      <section id="process" class="wrap" style="padding-top:120px">
+        <p class="lbl"><span class="dot" aria-hidden="true"></span>How it lands</p>
+        <h2 class="disp h2" data-rise>Five stages. <span class="glow">Then the keys are yours.</span></h2>
+
+        <div class="stline" role="tablist" aria-label="Delivery stages" data-nudge id="stg-bar">
+          {s.stages.map((st, i) => (
+            <button
+              type="button" role="tab" id={`stg-t${i}`}
+              class={i === 0 ? 'stg on' : 'stg'}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls={`stg-p${i}`}
+              tabindex={i === 0 ? 0 : -1}
+            ><span class="no">{st.no}</span><span class="nm">{st.name}</span></button>
+          ))}
+        </div>
+
+        {s.stages.map((st, i) => (
+          <div
+            class="stbody" role="tabpanel" id={`stg-p${i}`}
+            aria-labelledby={`stg-t${i}`} hidden={i !== 0}
+          >
+            <p class="lbl" style="color:var(--acc)">Stage {st.no} · {st.name}</p>
+            <p class="lede" style="margin-top:14px;max-width:820px">{st.desc}</p>
+          </div>
+        ))}
+      </section>
+    )}
+
+    <!-- 07 · STACK -->
+    <section class="wrap" style="padding-top:120px">
+      <div class="stackgrid">
+        <div>
+          <p class="lbl"><span class="dot" aria-hidden="true"></span>Plugs into your stack</p>
+          <h2 class="disp h2s" data-rise>
+            Works with what you've got. <span class="glow">Ready for what's next.</span>
+          </h2>
+          <div class="sbar" role="group" aria-label="Show setup" data-nudge style="margin-top:26px" id="stack-bar">
+            <button type="button" class="sbtn on" aria-pressed="true" data-stack="today">Today</button>
+            <button type="button" class="sbtn" aria-pressed="false" data-stack="grow">Ready to grow</button>
+          </div>
+          <h3 class="disp sh" id="stack-head">Leads land where you already work.</h3>
+          <p class="lede" id="stack-body" style="margin-top:12px;font-size:16px;max-width:480px">
+            ADVRTISE integrates with your current tech stack, even if that's just an
+            email inbox. No new software to learn on day one.
+          </p>
+        </div>
+        <div class="smap" aria-live="polite">
+          <div class="ssrc">
+            <span class="lbl" style="color:var(--acc)">ADVRTISE</span>
+            <span class="disp" style="display:block;font-size:19px;margin-top:8px">Qualified enquiry</span>
+          </div>
+          <div class="sline" aria-hidden="true"></div>
+          <div class="sgrid" id="stack-items">
+            <div class="sitem"><span class="k">Simplest</span><span class="v">Your email inbox</span></div>
+            <div class="sitem"><span class="k">Shared</span><span class="v">A spreadsheet</span></div>
+            <div class="sitem"><span class="k">Existing</span><span class="v">Your current CRM</span></div>
+            <div class="sitem"><span class="k">Diary</span><span class="v">Booking software</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 · LAB -->
+    <section class="wrap" style="padding-top:120px">
+      <p class="lbl"><span class="dot" aria-hidden="true"></span>Our own lab</p>
+      <h2 class="disp h2" data-rise style="max-width:1050px">
+        {s.lab.head1} <span class="glow">{s.lab.head2}</span>
+      </h2>
+      <p class="lede" data-rise style="margin-top:18px;max-width:680px">{s.lab.lede}</p>
+
+      {s.lab.kind === 'named' ? (
+        <div class="labrow" data-rise style="margin-top:40px">
+          {s.lab.stats.map((st) => <div><b>{st.n}</b><span>{st.k}</span></div>)}
+        </div>
+      ) : (
+        <div class="labgrid" data-rise>
+          {s.lab.cards.map((c) => (
+            <div class="labc"><span class="k">{c.k}</span><b>{c.h}</b><span>{c.b}</span></div>
+          ))}
+        </div>
+      )}
+    </section>
+
+    <!-- 09 · CASE -->
+    {showCase && (
+      <section class="wrap" style="padding-top:120px">
+        <p class="lbl"><span class="dot" aria-hidden="true"></span>Completed build</p>
+        <div class="casep" data-rise style="margin-top:22px">
+          <Image
+            class="bg" src={img(s.caseStudy.img)} alt={s.caseStudy.alt}
+            widths={[640, 1024, 1440, 1920]}
+            sizes="(max-width: 1280px) 100vw, 1240px"
+            loading="lazy" decoding="async"
+          />
+          <div class="tx">
+            <div>
+              <p class="lbl">{s.caseStudy.client}</p>
+              <h3 class="disp caseh">{s.caseStudy.title}</h3>
+              <p class="lede" style="margin-top:12px;max-width:470px;font-size:15.5px">{s.caseStudy.lede}</p>
+            </div>
+            <div style="text-align:right">
+              <span class="n">{s.caseStudy.stat}</span>
+              <p class="lbl" style="margin-top:10px">Enquiries · month one</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- 10 · FAQ -->
+    <section id="faq" class="wrap" style="padding-top:120px">
+      <p class="lbl"><span class="dot" aria-hidden="true"></span>Straight answers</p>
+      <h2 class="disp h2" data-rise>{s.faqHead}</h2>
+      <div style="margin-top:36px" id="faqs">
+        {s.faqs.map((f, i) => (
+          <div class={i === 0 ? 'faq open' : 'faq'}>
+            <button type="button" class="faq-q" aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`faq-a${i}`}>
+              <span>{f.q}</span>
+              <span class="faq-plus" aria-hidden="true">
+                <svg width="15" height="15" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 0v14M0 7h14"/></svg>
+              </span>
+            </button>
+            <div class={i === 0 ? 'acc open' : 'acc'} id={`faq-a${i}`}>
+              <div class="acc-in">
+                <p class="a">{f.a}</p>
+                {f.link && <a class="faq-link" href="/start-a-project">Start an enquiry →</a>}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- 11 · OTHER SECTORS -->
+    <section class="wrap" style="padding-top:120px">
+      <p class="lbl"><span class="dot" aria-hidden="true"></span>Other sectors we build for</p>
+      <div class="otherg" data-rise>
+        {other.map((o, i) => (
+          <a class="othero" href={`/${o.slug}`}>
+            {/* Numbered by position here. The board crumbs skip numbers
+                (03 belonged to a product that is out of scope), which would
+                read as a gap in a list of five. */}
+            <span class="no">{String(i + 1).padStart(2, '0')}</span>
+            <span class="nm">{o.short}</span>
+            <span class="de">{o.h1a}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- 12 · CTA -->
+    <section class="endcta">
+      <span aria-hidden="true" class="ctaglow"></span>
+      <div class="ctain">
+        <p class="lbl"><span class="dot" aria-hidden="true"></span>Ready to break ground</p>
+        <h2 class="disp ctah" data-rise>{s.ctaHead1} <span class="glow">{s.ctaHead2}</span></h2>
+        <p class="lede ctab">{s.ctaBody}</p>
+        <div class="ctabtns">
+          <a class="cbtn big" href="/start-a-project">Start a project →</a>
+          <a class="cbtn ghost" href={site.phoneHref}>{site.phone}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+
+  <script type="application/json" id="calc-config" is:inline set:html={JSON.stringify(calcConfig)} />
+</Base>
+
+<style>
+  /* ---- Hero ---- */
+  .hero {
+    position: relative; min-height: min(92svh, 920px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 130px 24px 180px; overflow: clip;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: -20%;
+    background: radial-gradient(42% 34% at 50% 74%, rgba(255, 90, 31, .18), transparent 70%),
+                radial-gradient(26% 20% at 22% 18%, rgba(120, 124, 140, .08), transparent 70%);
+  }
+  /* Lift the copy above the atmosphere. Without re-asserting `absolute` on the
+     decorations, `.hero > *` drops them into flow and the hero's height runs away. */
+  .hero > * { position: relative; z-index: 2; }
+  .hero .stars,
+  .hero .shoot,
+  .hero .horizon { position: absolute; z-index: 1; }
+  .horizon { bottom: -148vw; width: 170vw; height: 170vw; }
+  #hero-h1 { margin-top: 28px; font-size: clamp(34px, 7vw, 110px); max-width: 1100px; }
+  .hero-cta { margin-top: 36px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  @media (max-width: 760px) {
+    .hero { padding: 116px 20px 140px; }
+    #hero-h1 { font-size: clamp(29px, 8.6vw, 72px); }
+  }
+
+  /* ---- Shared section headings ---- */
+  .h2 { margin-top: 18px; font-size: clamp(30px, 4.4vw, 68px); }
+  .h2s { margin-top: 18px; font-size: clamp(28px, 3.6vw, 54px); }
+  .h3 { margin-top: 12px; font-size: clamp(23px, 2.6vw, 38px); }
+  .sh { margin-top: 26px; font-size: clamp(20px, 2vw, 28px); }
+
+  /* ---- Calculator chrome ---- */
+  #calc { padding: 0; }
+  .crow { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+  .csplit { margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(236, 234, 227, .12); }
+  .calc-out .resn { margin-top: 12px; }
+  .cnote {
+    margin-top: 16px; font-size: 15.5px; font-weight: 500;
+    line-height: 1.6; color: var(--fg-3);
+  }
+  .cnote span { color: var(--fg); font-weight: 700; }
+  .firms {
+    margin-top: 30px; display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px;
+  }
+
+  /* ---- Stack ---- */
+  .stackgrid {
+    display: grid; gap: 40px; align-items: center;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  }
+  @media (max-width: 900px) { .stackgrid { grid-template-columns: 1fr; } }
+
+  /* ---- Lab cards ---- */
+  .labgrid {
+    margin-top: 36px; display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  }
+
+  /* ---- Case ---- */
+  .caseh { margin-top: 12px; font-size: clamp(24px, 3vw, 46px); max-width: 560px; }
+
+  /* ---- Other sectors ---- */
+  .otherg {
+    margin-top: 28px; display: grid; gap: 10px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  @media (max-width: 1100px) {
+    .otherg { grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); }
+  }
+  .othero {
+    display: block; padding: 24px; border-radius: var(--r-sm);
+    border: 1px solid var(--line); background: var(--ink-3);
+    transition: border-color .25s, transform .25s, background .25s;
+  }
+  .othero:hover { border-color: rgba(255, 90, 31, .45); transform: translateY(-3px); }
+  .othero .no { font-size: 11px; font-weight: 850; letter-spacing: .14em; color: var(--acc); }
+  .othero .nm {
+    display: block; margin-top: 8px; font-weight: 800; font-stretch: 104%;
+    text-transform: uppercase; font-size: 19px; line-height: 1.1;
+  }
+  .othero .de {
+    display: block; margin-top: 8px; font-size: 14px; line-height: 1.55;
+    font-weight: 500; color: var(--fg-4);
+  }
+
+  /* ---- CTA ---- */
+  .endcta { position: relative; padding: 150px 24px 140px; text-align: center; overflow: clip; }
+  .ctaglow {
+    position: absolute; inset: 0;
+    background: radial-gradient(44% 46% at 50% 62%, rgba(255, 90, 31, .18), transparent 72%);
+  }
+  .ctain { position: relative; }
+  .ctah { margin-top: 22px; font-size: clamp(40px, 7.4vw, 120px); }
+  .ctab { margin: 24px auto 0; max-width: 560px; }
+  .ctabtns { margin-top: 36px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .cbtn.big { min-height: 66px; font-size: 16px; }
+</style>
+
+<script>
+  // ---- Hero entrance ------------------------------------------------
+  const hero = document.getElementById('hero');
+  if (hero) {
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(
+        (es) => es.forEach((e) => hero.classList.toggle('play', e.isIntersecting)),
+        { threshold: 0 },
+      ).observe(hero);
+    } else {
+      hero.classList.add('play');
+    }
+  }
+
+  // ---- Tab groups: ADVRTISE, disciplines, delivery stages -----------
+  // One behaviour, three groups: roving tabindex, arrow keys, and the
+  // panels swapped with [hidden] rather than being re-rendered.
+  function wireTabs(barId: string, prefix: string, onClass: string) {
+    const bar = document.getElementById(barId);
+    if (!bar) return;
+    const tabs = Array.from(bar.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const panels = tabs.map((_, i) => document.getElementById(`${prefix}-p${i}`));
+
+    const select = (i: number, focus = false) => {
+      tabs.forEach((t, j) => {
+        const on = i === j;
+        t.className = on ? `${onClass} on` : onClass;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        const p = panels[j];
+        if (p) p.hidden = !on;
+      });
+      if (focus) tabs[i].focus();
+    };
+
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(i));
+      t.addEventListener('keydown', (e) => {
+        const d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1
+          : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1
+          : e.key === 'Home' ? -999
+          : e.key === 'End' ? 999
+          : 0;
+        if (!d) return;
+        e.preventDefault();
+        const next = d === -999 ? 0 : d === 999 ? tabs.length - 1
+          : (i + d + tabs.length) % tabs.length;
+        select(next, true);
+      });
+    });
+  }
+
+  wireTabs('tab-bar', 'tab', 'tab');
+  wireTabs('disc-bar', 'disc', 'dchip');
+  wireTabs('stg-bar', 'stg', 'stg');
+
+  // ---- "This is clickable" pulse ------------------------------------
+  // Fires once per control group, the first time it scrolls into view.
+  if ('IntersectionObserver' in window
+      && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const nudger = new IntersectionObserver((entries) => {
+      for (const en of entries) {
+        if (!en.isIntersecting) continue;
+        const target = en.target.querySelectorAll<HTMLElement>('button')[1];
+        if (target) target.classList.add('nudge');
+        nudger.unobserve(en.target);
+      }
+    }, { threshold: 0.6 });
+    document.querySelectorAll('[data-nudge]').forEach((el) => nudger.observe(el));
+  }
+
+  // ---- Stack toggle -------------------------------------------------
+  const STACK = {
+    today: {
+      head: 'Leads land where you already work.',
+      body: "ADVRTISE integrates with your current tech stack, even if that's just an email inbox. No new software to learn on day one.",
+      items: [
+        ['Simplest', 'Your email inbox'],
+        ['Shared', 'A spreadsheet'],
+        ['Existing', 'Your current CRM'],
+        ['Diary', 'Booking software'],
+      ],
+    },
+    grow: {
+      head: "Better tools when you're ready.",
+      body: 'When volume grows, we can deploy a CRM for contact management, instant replies and automated follow-up, so no enquiry goes cold.',
+      items: [
+        ['CRM', 'Contact management'],
+        ['Speed', 'Instant replies'],
+        ['Nurture', 'Automated follow-up'],
+        ['Visibility', 'Pipeline tracking'],
+      ],
+    },
+  } as const;
+
+  const stackBar = document.getElementById('stack-bar');
+  const stackHead = document.getElementById('stack-head');
+  const stackBody = document.getElementById('stack-body');
+  const stackItems = document.getElementById('stack-items');
+
+  stackBar?.querySelectorAll<HTMLButtonElement>('[data-stack]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.stack as keyof typeof STACK;
+      const data = STACK[key];
+      if (!data) return;
+      stackBar.querySelectorAll<HTMLButtonElement>('[data-stack]').forEach((b) => {
+        const on = b === btn;
+        b.className = on ? 'sbtn on' : 'sbtn';
+        b.setAttribute('aria-pressed', String(on));
+      });
+      if (stackHead) stackHead.textContent = data.head;
+      if (stackBody) stackBody.textContent = data.body;
+      if (stackItems) {
+        stackItems.replaceChildren(
+          ...data.items.map(([k, v]) => {
+            const d = document.createElement('div');
+            d.className = 'sitem';
+            const ks = document.createElement('span');
+            ks.className = 'k';
+            ks.textContent = k;
+            const vs = document.createElement('span');
+            vs.className = 'v';
+            vs.textContent = v;
+            d.append(ks, vs);
+            return d;
+          }),
+        );
+      }
+    });
+  });
+
+  // ---- FAQ accordion ------------------------------------------------
+  document.querySelectorAll<HTMLElement>('#faqs .faq').forEach((row) => {
+    const btn = row.querySelector<HTMLButtonElement>('.faq-q');
+    const acc = row.querySelector<HTMLElement>('.acc');
+    btn?.addEventListener('click', () => {
+      const open = row.classList.contains('open');
+      // One at a time, as on the board.
+      document.querySelectorAll<HTMLElement>('#faqs .faq').forEach((r) => {
+        r.classList.remove('open');
+        r.querySelector('.acc')?.classList.remove('open');
+        r.querySelector('.faq-q')?.setAttribute('aria-expanded', 'false');
+      });
+      if (!open) {
+        row.classList.add('open');
+        acc?.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // ---- Calculator ---------------------------------------------------
+  type Shared = { kind: 'shared'; firms: number; cpl: number };
+  type Pipeline = {
+    kind: 'pipeline'; unit: string; unitPlural: string;
+    jobsLabel: string; jobsMin: number; jobsMax: number; jobs: number;
+    winLabel: string; win: number;
+    valLabel: string; valMin: number; valMax: number; valStep: number; val: number;
+    needLabel: string; yearLabel: string;
+  };
+
+  const cfgEl = document.getElementById('calc-config');
+  const cfg: Shared | Pipeline | null = cfgEl ? JSON.parse(cfgEl.textContent || 'null') : null;
+  const money = (n: number) => '£' + Math.round(n).toLocaleString('en-GB');
+  const text = (id: string, v: string) => {
+    const el = document.getElementById(id);
+    if (el && el.textContent !== v) el.textContent = v;
+  };
+
+  if (cfg?.kind === 'shared') {
+    const firms = document.getElementById('firms') as HTMLInputElement | null;
+    const cpl = document.getElementById('cpl') as HTMLInputElement | null;
+    const grid = document.getElementById('o-firmgrid');
+
+    const paint = () => {
+      const f = Number(firms?.value ?? cfg.firms);
+      const c = Number(cpl?.value ?? cfg.cpl);
+      text('o-firms', String(f));
+      text('o-cpl', '£' + c);
+      text('o-odds', `1 in ${f}`);
+      text('o-perwin', '£' + c * f);
+      grid?.querySelectorAll<HTMLElement>('.firm').forEach((cell, i) => {
+        const cls = i === 0 ? 'firm you' : i < f ? 'firm rival' : 'firm';
+        if (cell.className !== cls) cell.className = cls;
+        const label = i === 0 ? 'You' : i < f ? 'Rival' : '';
+        if (cell.textContent !== label) cell.textContent = label;
+      });
+    };
+
+    firms?.addEventListener('input', paint);
+    cpl?.addEventListener('input', paint);
+  }
+
+  if (cfg?.kind === 'pipeline') {
+    const jobs = document.getElementById('jobs') as HTMLInputElement | null;
+    const win = document.getElementById('win') as HTMLInputElement | null;
+    const val = document.getElementById('val') as HTMLInputElement | null;
+    const dots = document.getElementById('o-dots');
+
+    const paint = () => {
+      const j = Number(jobs?.value ?? cfg.jobs);
+      const w = Number(win?.value ?? cfg.win);
+      const v = Number(val?.value ?? cfg.val);
+      const unit = j === 1 ? cfg.unit : cfg.unitPlural;
+      const need = Math.ceil(j / (w / 100));
+      const tenth = Math.round(w / 10);
+
+      text('o-jobs', String(j));
+      text('o-win', w + '%');
+      text('o-val', money(v));
+      text('o-need', String(need));
+      text('o-needmath', `${j} ${unit} ÷ ${w}% = ${need} enquiries`);
+      text('o-year', money(j * v * 12));
+      text('o-yearmath', `${j} ${unit} a month × ${money(v)} × 12 months`);
+      text('o-work', `${tenth} in every 10 enquiries turns into work`);
+      dots?.querySelectorAll<HTMLElement>('i').forEach((d, i) => {
+        const cls = i < tenth ? 'on' : '';
+        if (d.className !== cls) d.className = cls;
+      });
+    };
+
+    jobs?.addEventListener('input', paint);
+    win?.addEventListener('input', paint);
+    val?.addEventListener('input', paint);
+  }
+</script>
