@@ -38,6 +38,7 @@ export const sectorNav = [
   { label: 'Architects', note: 'Projects', href: '/architects' },
   { label: 'Contractors', note: 'Specialist trades', href: '/contractors' },
   { label: 'Compliance', note: 'Inspections', href: '/compliance' },
+  { label: 'Fire protection', note: 'Contracts', href: '/fire-protection' },
   { label: 'Training', note: 'Course seats', href: '/training' },
   { label: 'Wider built environment', note: 'Specialists', href: '/built-environment' },
 ] as const;

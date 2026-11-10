@@ -273,12 +273,10 @@
 # subject, so expect these queries to fade. See CONTENT-PLAN: keeping them as
 # real pages is a live decision, not an oversight.
 
-# 478 impressions, position 17.2. "lead generation machine" (128), and
-# "lead generation for fire protection companies".
-[[redirects]]
-  from = "/lead-generation"
-  to = "/"
-  status = 301
+# /lead-generation is NOT redirected: it is kept as a real page. It ranks at
+# position 1.7 for "lead generation" and already picks up
+# "lead generation for fire protection companies", which is exactly the
+# audience the site is for.
 
 # 461 impressions, position 12.4. Ranks for town-level "google ads <place>".
 [[redirects]]

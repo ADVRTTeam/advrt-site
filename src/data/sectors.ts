@@ -859,6 +859,246 @@ export const sectors: Sector[] = [
     "ctaBody": "Tell us which disciplines you want more of and where. We'll come back with a plan, not a pitch."
   },
   {
+    "slug": "fire-protection",
+    "short": "Fire protection",
+    "crumb": "Fire protection",
+    "metaTitle": "Marketing for fire protection companies | ADVRT",
+    "metaDescription": "Lead generation for fire protection firms: risk assessments, extinguishers, alarms, emergency lighting and passive fire protection. Exclusive, qualified enquiries.",
+    "h1a": "Contracts, not callouts.",
+    "h1b": "Compliance that recurs.",
+    "lede": "Lead generation for fire protection companies. Fire risk assessments, extinguisher supply and servicing, alarms and emergency lighting, sprinklers and passive protection — enquiries qualified on premises, scope and renewal date before they reach you.",
+    "proof": [
+      {
+        "n": "2,400+",
+        "k": "Fire searches a year",
+        "c": "Measured on our own compliance brand, across 336 distinct queries."
+      },
+      {
+        "n": "0",
+        "k": "Shared with rivals",
+        "c": "Every enquiry exclusive to the firm that paid for it."
+      },
+      {
+        "n": "100%",
+        "k": "Yours to own",
+        "c": "Site, campaigns, tracking and data, handed over in full."
+      }
+    ],
+    "disciplines": {
+      "tag": "Disciplines",
+      "head": "One industry. Five different buyers.",
+      "lede": "Fire protection is sold to a duty holder, a facilities manager and a main contractor, and none of them search the same way. Pick yours to see how we play it.",
+      "items": [
+        {
+          "name": "Risk assessments",
+          "who": "Responsible persons, landlords, managing agents and employers.",
+          "trigger": "The Fire Safety Order, insurance renewal, a new tenancy or an enforcement notice.",
+          "play": "The biggest search cluster in the sector — “fire risk assessment” alone runs at 565 searches a year on our own brand. Own the obligation question and the assessment books itself."
+        },
+        {
+          "name": "Extinguishers",
+          "who": "Office managers, site managers and small business owners.",
+          "trigger": "Annual service due, a failed inspection, a fit-out or a move.",
+          "play": "Buyers arrive asking which type and what it costs, not who to hire. Answer the type and price questions and you are the firm they call."
+        },
+        {
+          "name": "Alarms and detection",
+          "who": "Facilities managers, developers and main contractors.",
+          "trigger": "Install, takeover of a maintenance contract, or a system at end of life.",
+          "play": "Higher value, longer decision. Pages built around system type and building class, with a form that captures premises size before anyone quotes."
+        },
+        {
+          "name": "Emergency lighting",
+          "who": "Facilities and property managers.",
+          "trigger": "Monthly and annual testing regimes, or a compliance gap found at audit.",
+          "play": "Almost always bundled. We use it as the entry point to a wider maintenance contract rather than pricing it alone."
+        },
+        {
+          "name": "Passive protection",
+          "who": "Main contractors, developers and housing associations.",
+          "trigger": "Building Safety Act duties, remediation programmes and fire door inspections.",
+          "play": "Tender-shaped and accreditation-led. Pages lead with third-party certification and completed schemes, because that is what gets you on the list."
+        }
+      ]
+    },
+    "p2a": "Compliance work renews.",
+    "p2b": "So should the pipeline.",
+    "pLede": "A fire contract is rarely one job — it is an assessment, then a service schedule, then the remedial work. Work out what the first enquiry is actually worth once it renews.",
+    "calc": {
+      "kind": "pipeline",
+      "unit": "contract",
+      "unitPlural": "contracts",
+      "jobsLabel": "Contracts you want to win a month",
+      "jobsMin": 1,
+      "jobsMax": 40,
+      "jobs": 6,
+      "winLabel": "Enquiry to contract rate",
+      "win": 35,
+      "valLabel": "First-year contract value",
+      "valMin": 150,
+      "valMax": 40000,
+      "valStep": 50,
+      "val": 1800,
+      "needLabel": "Qualified enquiries you need a month",
+      "yearLabel": "Added revenue a year"
+    },
+    "buildHead1": "Five parts.",
+    "buildHead2": "Nothing leaks.",
+    "buildLede": "Our proprietary lead generation framework, built together and tested on our own spend, so nothing leaks between the search, the click, the form and the call back.",
+    "tabs": [
+      {
+        "no": "01",
+        "name": "Landing pages",
+        "tag": "ADVRTISE / 01",
+        "head": "A page per discipline, and per building type.",
+        "body": "A responsible person looking for a risk assessment and a main contractor looking for passive protection are not the same buyer. Each gets a page that names their obligation, their building and their deadline.",
+        "points": [
+          "One page per discipline and premises type",
+          "Accreditations and third-party certification front and centre",
+          "Your branding, your domain, your property"
+        ]
+      },
+      {
+        "no": "02",
+        "name": "Targeted ads",
+        "tag": "ADVRTISE / 02",
+        "head": "Campaigns built on the obligation, not the trade.",
+        "body": "Search themes follow how fire work is actually bought: the duty, the renewal date and the cost. We target the questions buyers ask before they look for a contractor, in the areas you cover.",
+        "points": [
+          "Search themes by discipline and by duty",
+          "Radius and postcode targeting matched to your coverage",
+          "Domestic and out-of-scope enquiries excluded, not just outbid"
+        ]
+      },
+      {
+        "no": "03",
+        "name": "Tracking",
+        "tag": "ADVRTISE / 03",
+        "head": "Rock-solid tracking and attribution.",
+        "body": "Every enquiry traced back to the search, ad and keyword that caused it, and reported by discipline, so you can see which line of work pays and move budget towards it.",
+        "points": [
+          "Conversion tracking from click to enquiry",
+          "Reporting split by discipline and contract value",
+          "Clean data behind every optimisation decision"
+        ]
+      },
+      {
+        "no": "04",
+        "name": "Quotation forms",
+        "tag": "ADVRTISE / 04",
+        "head": "Forms that qualify a contract, not a callout.",
+        "body": "The form asks premises type, floor area, number of units, current provider and renewal date — so you know whether you are quoting a single extinguisher service or a multi-site maintenance contract before you pick up the phone.",
+        "points": [
+          "Premises type, size and occupancy asked up front",
+          "Current provider and renewal date captured",
+          "Single callouts separated from contract opportunities"
+        ]
+      },
+      {
+        "no": "05",
+        "name": "Handover",
+        "tag": "ADVRTISE / 05",
+        "head": "You get the keys, with full confidence.",
+        "body": "Nothing gets handed over until it works and you know how to run it. Campaigns, lead flow, what to chase and when: all documented, all yours. Prefer we keep driving? Ongoing management and optimisation is available, and included in some packages.",
+        "points": [
+          "A proper walkthrough on your own accounts",
+          "Lead handling: response speed, follow-up, which enquiries to quote first",
+          "You own the site, the campaigns and the data",
+          "We stay on hand to support and scale"
+        ]
+      }
+    ],
+    "stages": [
+      {
+        "no": "01",
+        "name": "Audit",
+        "desc": "We look at the disciplines and contract sizes you want more of, your accreditations, your coverage and where work comes from today."
+      },
+      {
+        "no": "02",
+        "name": "Lead hub",
+        "desc": "We build a page per discipline and premises type and wire up tracking, so every enquiry traces back to the search that caused it."
+      },
+      {
+        "no": "03",
+        "name": "Campaigns",
+        "desc": "Search campaigns go live using structures already proven on our own compliance brand, tuned to your disciplines and patch."
+      },
+      {
+        "no": "04",
+        "name": "Qualify",
+        "desc": "Forms filter on premises, scope, current provider and renewal date. You quote the contracts worth winning."
+      },
+      {
+        "no": "05",
+        "name": "Hand over",
+        "desc": "A full-confidence handover: everything working, documented and walked through, then the keys are yours. We stay on hand to support and scale when you need us."
+      }
+    ],
+    "lab": {
+      "kind": "cards",
+      "head1": "Proven in the field.",
+      "head2": "Then built for you.",
+      "lede": "We run our own compliance lead generation brand with our own money, and fire is its largest category — 2,400 searches a year across 336 distinct queries. What works there gets built into your campaigns, so you skip the learning phase other agencies bill you for.",
+      "cards": [
+        {
+          "k": "01",
+          "h": "Our money first",
+          "b": "We run our own compliance brand on our own budget. Every keyword, form and follow-up is tested where a bad decision costs us, not you."
+        },
+        {
+          "k": "02",
+          "h": "Built for the obligation",
+          "b": "Fire buyers search the duty and the cost long before they search for a contractor. The pages answer the rule, and the form earns the quote."
+        },
+        {
+          "k": "03",
+          "h": "No learning phase on your bill",
+          "b": "Your campaigns start from structures already converting, so you aren't paying Google to teach us the basics of fire compliance."
+        }
+      ]
+    },
+    "caseStudy": {
+      "img": "case-huxley",
+      "alt": "Huxley Chartered Surveyors homepage",
+      "client": "Huxley Surveyors · London and Brighton",
+      "title": "A ground-up build, from a standing start.",
+      "lede": "New lead-gen site, campaigns proven on our own spend, and tracking to the penny.",
+      "stat": "49"
+    },
+    "faqHead": "What fire protection firms ask first.",
+    "faqs": [
+      {
+        "q": "We do assessments, extinguishers and alarms. One campaign or three?",
+        "a": "Three, at least. A responsible person booking a risk assessment and a contractor specifying an alarm system are different people with different budgets and timescales. Each discipline gets its own pages and search themes, and you see which one earns its budget."
+      },
+      {
+        "q": "Most of our work is recurring. Is paid search worth it?",
+        "a": "That is the argument for it, not against. If a first contract renews for years, you can afford to pay more for the enquiry than a firm selling one-off jobs — and the maths section above is how we work out how much."
+      },
+      {
+        "q": "How do you keep domestic callouts out?",
+        "a": "Two ways. Campaigns target commercial premises language rather than every variation of the trade, and the form asks premises type and size before the enquiry reaches you."
+      },
+      {
+        "q": "Where do the leads go?",
+        "a": "Wherever you work today. ADVRTISE integrates with your existing tech stack, even if that's just an email inbox. When you're ready to grow, we can deploy a CRM with contact management and instant replies."
+      },
+      {
+        "q": "Can my own team run it?",
+        "a": "Yes. Every build ends with a full-confidence handover, so you or your team can manage the campaigns and handle the leads properly. If you'd rather we keep optimising, we're here for that too."
+      },
+      {
+        "q": "What does it cost?",
+        "a": "Every build is scoped to your firm, your patch and the work you want more of, so everything is bespoke. Start an enquiry and we'll come back with a plan and a number.",
+        "link": true
+      }
+    ],
+    "ctaHead1": "Fill the",
+    "ctaHead2": "schedule.",
+    "ctaBody": "Tell us which disciplines you want more of and where. We'll come back with a plan, not a pitch."
+  },
+  {
     "slug": "training",
     "short": "Training",
     "crumb": "06 Training",

@@ -56,9 +56,10 @@ export const sectorRows = [
   { no: '01', name: 'Surveyors', href: '/surveyors', desc: 'Instructions from homeowners, buyers and funders, filtered to the work you want.' },
   { no: '02', name: 'Contractors', href: '/contractors', desc: 'High-value work for damp proofing, asbestos, air conditioning and the specialist trades.' },
   { no: '03', name: 'Compliance', href: '/compliance', desc: 'EPCs, EICRs, gas, fire: people who need the certificate this week.' },
-  { no: '04', name: 'Training', href: '/training', desc: 'Course dates filled by learners and employers ready to book.' },
-  { no: '05', name: 'Architects', href: '/architects', desc: "Commissions that fit the portfolio you're building." },
-  { no: '06', name: 'Wider built environment', href: '/built-environment', desc: 'Engineers, planners, consultancies and specialist trades.' },
+  { no: '04', name: 'Fire protection', href: '/fire-protection', desc: 'Risk assessments, extinguishers, alarms and passive protection — contracts, not callouts.' },
+  { no: '05', name: 'Training', href: '/training', desc: 'Course dates filled by learners and employers ready to book.' },
+  { no: '06', name: 'Architects', href: '/architects', desc: "Commissions that fit the portfolio you're building." },
+  { no: '07', name: 'Wider built environment', href: '/built-environment', desc: 'Engineers, planners, consultancies and specialist trades.' },
 ] as const;
 
 export const process = [
