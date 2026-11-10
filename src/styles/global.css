@@ -1427,6 +1427,15 @@ section { scroll-margin-top: 84px; }
    Scoped with :has so a card without a cover keeps the board's treatment. */
 .cov.c1:has(.covimg) .idx { color: var(--acc); opacity: .5; }
 .cov.c1:has(.covimg) .tag {
-  background: rgba(10, 10, 12, .5); color: var(--fg);
+  /* Opaque enough to pass on its own: if the cover ever fails to load, the
+     orange panel shows through and a light chip on orange is 2.6:1. */
+  background: rgba(10, 10, 12, .72); color: var(--fg);
   border-color: rgba(236, 234, 227, .26);
+}
+
+/* The board sets the small eyebrow labels at 10.5px. That is tight on a
+   320px phone, so they go up half a point there — invisible on the design,
+   easier to read in the hand. */
+@media (max-width: 760px) {
+  .sitem .k, .tag { font-size: 11px; }
 }
