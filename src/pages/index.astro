@@ -6,7 +6,7 @@ import Footer from '../components/Footer.astro';
 import CitySkyline from '../components/CitySkyline.astro';
 import { site, nextQuarter } from '../data/site';
 import {
-  manifestoWords, manifestoPlain, proof, cases, sectorRows, process, fit,
+  manifestoWords, manifestoPlain, proof, cases, sectorRows, sectorCountWord, process, fit,
 } from '../data/home';
 import { img } from '../lib/images';
 import { defaultAuthor } from '../data/authors';
@@ -137,7 +137,7 @@ const schema = [
     <section id="sectors" class="wrap" style="padding-top:130px">
       <p class="lbl"><span class="dot" aria-hidden="true"></span>Who we build for</p>
       <h2 class="disp" data-rise style="margin-top:18px;font-size:clamp(34px,4.6vw,72px)">
-        Six ways in. One discipline.
+        {sectorCountWord} ways in. One discipline.
       </h2>
       <div style="margin-top:40px">
         {sectorRows.map((s) => (

@@ -62,6 +62,17 @@ export const sectorRows = [
   { no: '07', name: 'Wider built environment', href: '/built-environment', desc: 'Engineers, planners, consultancies and specialist trades.' },
 ] as const;
 
+/**
+ * Spelled out for the sectors heading, so adding a sector can't leave the
+ * copy claiming the wrong number. Falls back to the digits past the range
+ * the list will realistically ever reach.
+ */
+const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven',
+  'eight', 'nine', 'ten', 'eleven', 'twelve'] as const;
+
+export const sectorCountWord =
+  WORDS[sectorRows.length] ?? String(sectorRows.length);
+
 export const process = [
   {
     no: '01', img: 'process-1-survey', alt: 'Pre-spend audit', name: 'Pre-spend audit',

@@ -1086,10 +1086,6 @@ section { scroll-margin-top: 84px; }
   background: radial-gradient(120% 120% at 20% 10%, rgba(255, 90, 31, .26), transparent 62%), var(--ink-3);
   display: flex; align-items: flex-end; padding: 30px; overflow: clip;
 }
-.feat .art .big {
-  position: absolute; right: -18px; bottom: -54px; font-weight: 900; font-stretch: 115%;
-  font-size: 260px; line-height: .8; color: var(--acc); opacity: .22; letter-spacing: -.05em;
-}
 .feat .bd { padding: 38px; }
 @media (max-width: 760px) { .feat .bd { padding: 26px; } }
 
@@ -1109,17 +1105,10 @@ section { scroll-margin-top: 84px; }
 }
 .card[hidden] { display: none !important; }
 .cov { position: relative; height: 160px; padding: 18px; display: flex; align-items: flex-end; overflow: clip; }
-.cov .idx {
-  position: absolute; top: -30px; right: 4px; font-weight: 900; font-stretch: 115%;
-  font-size: 150px; line-height: 1; letter-spacing: -.04em;
-}
 .cov.c0 { background: radial-gradient(120% 120% at 30% 0%, rgba(255, 90, 31, .2), transparent 62%), #0a0a0c; }
-.cov.c0 .idx { color: var(--acc); opacity: .5; }
 .cov.c1 { background: var(--acc); }
-.cov.c1 .idx { color: var(--ink-btn); opacity: .2; }
 .cov.c1 .tag { background: rgba(11, 11, 12, .22); color: var(--ink-btn); border-color: transparent; }
 .cov.c2 { background: radial-gradient(120% 120% at 70% 0%, rgba(120, 124, 140, .22), transparent 60%), #0a0a0c; }
-.cov.c2 .idx { color: transparent; -webkit-text-stroke: 1.5px rgba(255, 90, 31, .55); }
 .tag {
   position: relative; z-index: 2; display: inline-flex; align-items: center; min-height: 30px;
   padding: 0 12px; border-radius: var(--r-pill); border: 1px solid rgba(236, 234, 227, .26);
@@ -1424,7 +1413,6 @@ section { scroll-margin-top: 84px; }
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(to top, rgba(5, 5, 6, .82) 0%, rgba(5, 5, 6, .14) 58%, transparent 100%);
 }
-.cov .idx { z-index: 2; }
 .cov.c1 .covimg { filter: brightness(.82) saturate(1.05); }
 .feat .art .artimg {
   position: absolute; inset: 0; width: 100%; height: 100%;
@@ -1436,12 +1424,10 @@ section { scroll-margin-top: 84px; }
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(to top, rgba(5, 5, 6, .74), rgba(5, 5, 6, .1) 60%, transparent);
 }
-.feat .art .big { z-index: 2; }
 
-/* With a cover image behind them, the c1 variant's dark-on-orange numeral and
-   chip vanish: the orange panel they were drawn against is now a dark render.
-   Scoped with :has so a card without a cover keeps the board's treatment. */
-.cov.c1:has(.covimg) .idx { color: var(--acc); opacity: .5; }
+/* With a cover image behind it, the c1 variant's dark-on-orange chip vanishes:
+   the orange panel it was drawn against is now a dark render. Scoped with :has
+   so a card without a cover keeps the board's treatment. */
 .cov.c1:has(.covimg) .tag {
   /* Opaque enough to pass on its own: if the cover ever fails to load, the
      orange panel shows through and a light chip on orange is 2.6:1. */

@@ -71,7 +71,6 @@ const schema = [
               loading="eager" fetchpriority="high"
             />
           )}
-          <span class="big" aria-hidden="true">01</span>
           <span class="tag" style="position:relative">{featured.data.crumb ?? featured.data.topic}</span>
         </div>
         <div class="bd">
@@ -113,7 +112,6 @@ const schema = [
                   widths={[340, 680]} sizes="(max-width: 760px) 100vw, 340px" loading="lazy"
                 />
               )}
-              <span class="idx" aria-hidden="true">{String(i + 2).padStart(2, '0')}</span>
               <span class="tag">{p.data.topic}</span>
             </div>
             <div class="cbody">

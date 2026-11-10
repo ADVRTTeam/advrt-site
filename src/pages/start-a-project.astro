@@ -281,7 +281,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
     .stage[data-step] { margin-top: 20px; }
     .q { margin-top: 12px; font-size: clamp(23px, 6.6vw, 34px); }
     .workgroup { margin-top: 18px; }
-    /* Six sector cards in one column is what pushed step 1 past the fold. */
+    /* A single column of sector cards is what pushed step 1 past the fold. */
     .sectorgrid { margin-top: 20px; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
     /* Three cards, two up: one column cost a whole screen on step 3. */
     .sitegrid { margin-top: 10px; gap: 9px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -310,7 +310,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
 
   .workgroup[hidden] { display: none !important; }
   /* With JS only the chosen sector's options are on screen, so naming the
-     sector is redundant. Without JS all six groups show and the name is
+     sector is redundant. Without JS every group shows and the name is
      the only thing telling them apart. */
   .js .wg-label { display: none; }
   fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }

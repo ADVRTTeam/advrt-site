@@ -1,7 +1,8 @@
 /** Brief form options, verbatim from the design canvas. */
 
 export const sectorOptions = [
-  'Surveyors', 'Architects', 'Contractors', 'Compliance', 'Training', 'Wider built environment',
+  'Surveyors', 'Architects', 'Contractors', 'Compliance', 'Fire protection', 'Training',
+  'Wider built environment',
 ] as const;
 
 export const workBySector: Record<string, string[]> = {
@@ -12,12 +13,17 @@ export const workBySector: Record<string, string[]> = {
   Architects: ['Private residential', 'Extensions', 'New-builds', 'Commercial', 'Framework bids'],
   Contractors: [
     'Damp proofing and waterproofing', 'Asbestos surveys and removal',
-    'Air conditioning and ventilation', 'Fire protection', 'Insulation and retrofit',
+    'Air conditioning and ventilation', 'Insulation and retrofit',
     'Direct client work', 'Sub-contract packages',
   ],
   Compliance: [
     'EPCs', 'EICRs', 'Gas safety certificates', 'Fire risk assessments',
     'Asbestos surveys', 'Legionella risk assessments', 'PAT testing',
+  ],
+  'Fire protection': [
+    'Fire risk assessments', 'Extinguisher supply and servicing',
+    'Alarms and detection', 'Emergency lighting', 'Sprinklers and suppression',
+    'Passive protection and fire doors', 'Service contracts',
   ],
   Training: [
     'Health and safety courses', 'Retrofit qualifications', 'Site cards and tests',

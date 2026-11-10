@@ -869,9 +869,9 @@ export const sectors: Sector[] = [
     "lede": "Lead generation for fire protection companies. Fire risk assessments, extinguisher supply and servicing, alarms and emergency lighting, sprinklers and passive protection — enquiries qualified on premises, scope and renewal date before they reach you.",
     "proof": [
       {
-        "n": "2,400+",
-        "k": "Fire searches a year",
-        "c": "Measured on our own compliance brand, across 336 distinct queries."
+        "n": "49",
+        "k": "Enquiries in month one",
+        "c": "On a build running this exact framework."
       },
       {
         "n": "0",
@@ -893,7 +893,7 @@ export const sectors: Sector[] = [
           "name": "Risk assessments",
           "who": "Responsible persons, landlords, managing agents and employers.",
           "trigger": "The Fire Safety Order, insurance renewal, a new tenancy or an enforcement notice.",
-          "play": "The biggest search cluster in the sector — “fire risk assessment” alone runs at 565 searches a year on our own brand. Own the obligation question and the assessment books itself."
+          "play": "The biggest search cluster in the sector, and the one that opens every other line of work. Own the obligation question and the assessment books itself."
         },
         {
           "name": "Extinguishers",
@@ -1039,7 +1039,7 @@ export const sectors: Sector[] = [
       "kind": "cards",
       "head1": "Proven in the field.",
       "head2": "Then built for you.",
-      "lede": "We run our own compliance lead generation brand with our own money, and fire is its largest category — 2,400 searches a year across 336 distinct queries. What works there gets built into your campaigns, so you skip the learning phase other agencies bill you for.",
+      "lede": "We run our own compliance lead generation brand with our own money, and fire is its largest category. Hundreds of distinct queries, tested against real budget and real enquiries. What works there gets built into your campaigns, so you skip the learning phase other agencies bill you for.",
       "cards": [
         {
           "k": "01",

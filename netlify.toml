@@ -7,6 +7,28 @@
   NODE_VERSION = "22"
 
 # ---------------------------------------------------------------------------
+# Post-processing
+#
+# Pretty URLs is Netlify's automatic trailing-slash canonicalisation: with it
+# on, /insights/ is answered with a 301 to /insights even when a file sits at
+# that exact path. The old advrt.co.uk build redirected the other way, so any
+# browser still holding that cached 301 bounces between the two and shows
+# "this page can't be found" before it settles.
+#
+# It runs ahead of the custom rules below, which is why neither a `status =
+# 200` rewrite nor the dual-path output in scripts/dual-paths.mjs could stop
+# it. Turning it off leaves both forms answering 200 from a real file, so a
+# stale redirect in either direction terminates on the first hop. The canonical
+# tag, the sitemap and every internal link still use the bare form, so there is
+# still exactly one indexable URL per page.
+# ---------------------------------------------------------------------------
+[build.processing]
+  skip_processing = false
+
+[build.processing.html]
+  pretty_urls = false
+
+# ---------------------------------------------------------------------------
 # Headers
 #
 # Netlify applies every matching rule, and when two rules set the same header
