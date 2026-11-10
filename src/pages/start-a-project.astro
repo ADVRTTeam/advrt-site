@@ -153,24 +153,16 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
             <input id="b-name" name="name" class="field" type="text" autocomplete="name" required />
           </div>
           <div>
-            <label class="flabel" for="b-firm">Firm</label>
+            <label class="flabel" for="b-firm">Company name</label>
             <input id="b-firm" name="firm" class="field" type="text" autocomplete="organization" />
           </div>
           <div>
-            <label class="flabel" for="b-email">Email *</label>
+            <label class="flabel" for="b-email">Company email *</label>
             <input id="b-email" name="email" class="field" type="email" autocomplete="email" required />
           </div>
           <div>
-            <label class="flabel" for="b-phone">Phone</label>
+            <label class="flabel" for="b-phone">Mobile phone</label>
             <input id="b-phone" name="phone" class="field" type="tel" autocomplete="tel" />
-          </div>
-          <div class="wide">
-            <label class="flabel" for="b-area">Areas you cover</label>
-            <input id="b-area" name="area" class="field" type="text" placeholder="e.g. Hampshire and Dorset" />
-          </div>
-          <div class="wide">
-            <label class="flabel" for="b-notes">Anything else?</label>
-            <textarea id="b-notes" name="notes" class="field notes" rows="3"></textarea>
           </div>
         </div>
         <p class="alert" id="brief-error" role="alert" hidden></p>
@@ -277,11 +269,11 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
   .workgroup { margin-top: 34px; }
   .sectorgrid { margin-top: 34px; }
   .sitegrid { margin-top: 16px; }
-  .fgrid { margin-top: 34px; }
+  /* One field per row: four short fields, asked plainly. */
+  .fgrid { margin-top: 34px; grid-template-columns: minmax(0, 1fr); }
   .chiprow { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 10px; }
   .chiprow.tight { margin-top: 14px; }
   #website-q { margin-top: 38px; }
-  .notes { resize: vertical; min-height: 110px; }
 
   /* ---- Phones: every step fits one screen, no scrolling for the
      options or the Continue button ---- */
@@ -296,8 +288,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
     .chiprow { margin-top: 18px; gap: 8px; }
     .chiprow.tight { margin-top: 10px; }
     #website-q { margin-top: 20px; }
-    .fgrid { margin-top: 18px; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-    .notes { min-height: 64px; }
+    .fgrid { margin-top: 18px; gap: 12px; }
   }
 
   @media (max-width: 760px) and (max-height: 720px) {
@@ -309,8 +300,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
     .chiprow.tight { margin-top: 8px; }
     .workgroup { margin-top: 14px; }
     #website-q { margin-top: 14px; }
-    .fgrid { margin-top: 14px; gap: 9px; }
-    .notes { min-height: 54px; }
+    .fgrid { margin-top: 14px; gap: 10px; }
   }
 
   /* The step's second question, once the first has been answered. */
