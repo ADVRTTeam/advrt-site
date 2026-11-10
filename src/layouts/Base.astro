@@ -109,6 +109,11 @@ const jsonLd = {
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="application/rss+xml" title={`${site.name} — Insights`} href="/insights/rss.xml" />
 
+    {/* Marks the document as scripted before first paint, so styles that
+        wait for JS (the staged hero entrance) can hold their start state
+        without hiding anything from a reader who has JS turned off. */}
+    <script is:inline>document.documentElement.classList.add('js');</script>
+
     <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
   </head>
 

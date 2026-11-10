@@ -1,0 +1,243 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+import { contactTopics } from '../data/brief';
+
+const schema = [
+  {
+    '@type': 'ContactPage',
+    '@id': new URL('/contact#page', Astro.site).href,
+    url: new URL('/contact', Astro.site).href,
+    name: 'Contact ADVRT',
+    about: { '@id': new URL('/#organisation', Astro.site).href },
+  },
+];
+---
+
+<Base
+  title="Contact ADVRT · Marketing for the built environment"
+  description="General enquiries, partnerships, press or client support. Instant acknowledgement, then a reply from a human the same business day."
+  path="/contact"
+  schema={schema}
+>
+  <Nav />
+
+  <main id="main" class="play">
+    <section class="hero">
+      <div class="stars" aria-hidden="true"></div>
+      <div class="stars b" aria-hidden="true"></div>
+      <span class="shoot" aria-hidden="true" style="top:22%;left:66%"></span>
+      <p class="lbl st1"><span class="dot" aria-hidden="true"></span>Contact us</p>
+      <h1 class="disp st2" id="hero-h1">Say <span class="glow">hello.</span></h1>
+      <p class="lede st3" style="margin-top:22px;max-width:580px;margin-left:auto;margin-right:auto">
+        General enquiries, partnerships, press or support. Instant acknowledgement,
+        then a reply from a human the same business day.
+      </p>
+    </section>
+
+    <section class="wrap" style="padding-bottom:110px">
+      <div class="cgrid">
+        <div class="panel st3" style="padding:36px">
+          <form method="POST" action="/api/enquiry" id="contact" novalidate>
+            <input type="hidden" name="form" value="contact" />
+            <input type="hidden" name="page" value="/contact" />
+            <input type="hidden" name="_t" id="contact-t" value="" />
+            <div class="hp" aria-hidden="true">
+              <label for="c-gotcha">Leave this field empty</label>
+              <input id="c-gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <p class="lbl">What's it about?</p>
+            <div role="group" aria-label="Enquiry topic" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:9px">
+              {contactTopics.map((t, i) => (
+                <label class="chip">
+                  <input type="radio" name="topic" value={t} class="vis-hidden" checked={i === 0} />
+                  <span>{t}</span>
+                </label>
+              ))}
+            </div>
+
+            <div class="fgrid cfields">
+              <div>
+                <label class="flabel" for="c-name">Your name *</label>
+                <input id="c-name" name="name" class="field" type="text" autocomplete="name" required />
+              </div>
+              <div>
+                <label class="flabel" for="c-co">Company</label>
+                <input id="c-co" name="company" class="field" type="text" autocomplete="organization" />
+              </div>
+              <div>
+                <label class="flabel" for="c-email">Email *</label>
+                <input id="c-email" name="email" class="field" type="email" autocomplete="email" required />
+              </div>
+              <div>
+                <label class="flabel" for="c-phone">Phone</label>
+                <input id="c-phone" name="phone" class="field" type="tel" autocomplete="tel" />
+              </div>
+              <div class="wide">
+                <label class="flabel" for="c-msg">Message *</label>
+                <textarea
+                  id="c-msg" name="message" class="field" rows="5" required
+                  style="resize:vertical;min-height:150px" placeholder="Tell us what you need."
+                ></textarea>
+              </div>
+            </div>
+
+            <p class="alert" id="contact-error" role="alert" hidden></p>
+
+            <div class="csend">
+              <span class="lbl" style="letter-spacing:.12em;color:var(--fg-5)">No newsletters. No sales sequences.</span>
+              <button type="submit" class="cbtn" id="contact-send">Send message →</button>
+            </div>
+          </form>
+
+          <div class="stage" id="contact-done" style="min-height:440px;display:flex;flex-direction:column;justify-content:center;gap:24px" hidden>
+            <span class="okring" aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 16 16" fill="none" stroke="#0b0b0c" stroke-width="2.4" stroke-dasharray="40" style="animation:drawok .8s .3s ease both"><path d="M2.5 8.5l3.5 3.5 7.5-8"/></svg>
+            </span>
+            <h2 class="disp" style="font-size:clamp(28px,4.4vw,60px)">
+              Message sent, <span class="glow" id="done-name">thanks.</span>
+            </h2>
+            <div>
+              <div class="prom"><i>1</i>An acknowledgement is already on its way to <span id="done-email">your inbox</span>.</div>
+              <div class="prom"><i>2</i>A human replies the same business day. Not a bot, not next week.</div>
+              <div class="prom"><i>3</i>If it's about a project, the brief gets you a plan faster.</div>
+            </div>
+            <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:4px">
+              <a class="cbtn" href="/start-a-project">Start a project →</a>
+              <a class="backlk" href="/insights">Read the insights</a>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div class="panel st4" style="padding:0;overflow:clip">
+            <div class="crow">
+              <span class="lbl">Email</span>
+              <a class="v" href={`mailto:${site.email}`} style="color:var(--acc)">{site.email}</a>
+            </div>
+            <div class="crow">
+              <span class="lbl">Phone</span>
+              <a class="v" href={site.phoneHref}>{site.phone}</a>
+            </div>
+            <div class="crow">
+              <span class="lbl">Registered office</span>
+              <span class="v">
+                {site.address.line1}
+                <small>{site.address.line2}, {site.address.city}, {site.address.postcode}</small>
+              </span>
+            </div>
+            <div class="crow">
+              <span class="lbl">Follow</span>
+              <div style="margin-top:12px;display:flex;gap:9px;flex-wrap:wrap">
+                <a class="soc" href={site.social.linkedin} target="_blank" rel="noopener">LinkedIn →</a>
+                <a class="soc" href={site.social.facebook} target="_blank" rel="noopener">Facebook →</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="fastcard st4">
+            <p class="lbl" style="color:var(--acc)">After a quote?</p>
+            <h2 class="disp" style="margin-top:12px;font-size:clamp(21px,2.2vw,30px)">
+              The project brief gets you a plan fastest.
+            </h2>
+            <p class="lede" style="margin-top:12px;font-size:15px">
+              Five questions, two minutes, then a slot in the diary. You'll have a plan
+              rather than a brochure.
+            </p>
+            <a class="cbtn" href="/start-a-project" style="margin-top:22px">Start a project →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .hero { position: relative; padding: 150px 24px 90px; text-align: center; overflow: clip; }
+  .hero::before {
+    content: ''; position: absolute; inset: -40% -20% 0;
+    background: radial-gradient(40% 50% at 50% 0%, rgba(255, 90, 31, .16), transparent 70%);
+  }
+  .hero > * { position: relative; z-index: 2; }
+  .hero .stars, .hero .shoot { position: absolute; z-index: 1; }
+  #hero-h1 { margin-top: 24px; font-size: clamp(42px, 9vw, 130px); }
+
+  .cgrid {
+    display: grid; gap: 18px; align-items: start;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, .85fr);
+  }
+  @media (max-width: 900px) { .cgrid { grid-template-columns: 1fr; } }
+
+  .cfields { margin-top: 30px; }
+  .csend {
+    margin-top: 28px; display: flex; align-items: center;
+    justify-content: space-between; gap: 14px; flex-wrap: wrap;
+  }
+  #contact[hidden] { display: none !important; }
+</style>
+
+<script>
+  const form = document.getElementById('contact') as HTMLFormElement | null;
+
+  if (form) {
+    const send = document.getElementById('contact-send') as HTMLButtonElement;
+    const error = document.getElementById('contact-error') as HTMLElement;
+    const done = document.getElementById('contact-done') as HTMLElement;
+
+    (document.getElementById('contact-t') as HTMLInputElement).value = String(Date.now());
+
+    const text = (n: string) =>
+      (form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name="${n}"]`)?.value ?? '').trim();
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = text('name');
+      const email = text('email');
+      const message = text('message');
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+      if (name.length < 2 || !emailOk || message.length < 2) {
+        error.textContent = 'Add your name, a valid email and a message.';
+        error.hidden = false;
+        form.querySelector<HTMLInputElement>(
+          name.length < 2 ? '[name="name"]' : !emailOk ? '[name="email"]' : '[name="message"]',
+        )?.focus();
+        return;
+      }
+
+      error.hidden = true;
+      send.disabled = true;
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { accept: 'application/json' },
+        });
+        let body: { ok?: boolean; message?: string } = {};
+        try { body = await res.json(); } catch { /* an error page, not JSON */ }
+        if (!res.ok || body.ok === false) {
+          throw new Error(body.message
+            ?? 'We could not send your message just now. Please email team@advrt.co.uk or call 0800 689 3759.');
+        }
+      } catch (err) {
+        error.textContent = (err as Error).message;
+        error.hidden = false;
+        send.disabled = false;
+        return;
+      }
+
+      document.getElementById('done-name')!.textContent = `${name.split(' ')[0] || 'thanks'}.`;
+      document.getElementById('done-email')!.textContent = email;
+      form.hidden = true;
+      done.hidden = false;
+      done.querySelector('h2')?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    });
+  }
+</script>
