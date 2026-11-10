@@ -1,0 +1,36 @@
+---
+import { Image } from 'astro:assets';
+import { img } from '../lib/images';
+import type { Author } from '../data/authors';
+
+/** The small name-and-photo pill under an article headline. */
+export interface Props {
+  author: Author;
+  date: Date;
+  mins: number;
+}
+const { author, date, mins } = Astro.props;
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+---
+
+<div class="st3 bylinerow">
+  <span class="byline">
+    <Image src={img(author.photo)} alt={author.photoAlt} width={38} height={38} densities={[1, 2]} />
+    <span style="text-align:left">
+      <span class="lbl" style="display:block;letter-spacing:.14em;color:var(--fg)">{author.name}</span>
+      <span class="lbl" style="display:block;font-size:11px;letter-spacing:.1em">{author.role}</span>
+    </span>
+  </span>
+  <span class="lbl" style="letter-spacing:.14em">
+    <time datetime={date.toISOString().slice(0, 10)}>{fmt(date)}</time> · {mins} min read
+  </span>
+</div>
+
+<style>
+  .bylinerow {
+    margin-top: 30px; display: flex; gap: 16px; align-items: center;
+    justify-content: center; flex-wrap: wrap;
+  }
+</style>

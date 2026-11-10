@@ -16,8 +16,8 @@ const insights = defineCollection({
     date: z.coerce.date(),
     /** Reading time in minutes, as shown in the design. */
     mins: z.number().int().positive(),
-    author: z.string().default('Jack'),
-    authorRole: z.string().default('Founder, ADVRT'),
+    /** Author key from src/data/authors.ts. A display name still resolves. */
+    author: z.string().default('jack'),
     /** One article is pulled out as the index's featured card. */
     featured: z.boolean().default(false),
     /** Big word on the featured card's cover, e.g. "Cost per job". */

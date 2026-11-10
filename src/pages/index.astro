@@ -9,7 +9,7 @@ import {
   manifestoWords, manifestoPlain, proof, cases, sectorRows, process, fit,
 } from '../data/home';
 import { img } from '../lib/images';
-import jackFounder from '../assets/images/jack-founder.jpg';
+import { defaultAuthor } from '../data/authors';
 
 const nextQ = nextQuarter();
 
@@ -187,15 +187,15 @@ const schema = [
       <div class="jpanel">
         <div class="ph">
           <Image
-            src={jackFounder} alt="Jack, founder of ADVRT, on stage at a conference"
+            src={img(defaultAuthor.photo)} alt={defaultAuthor.photoAlt}
             width={760} height={950} widths={[520, 760, 1040]}
             sizes="(max-width:860px) 100vw, 44vw" loading="lazy"
           />
         </div>
         <div class="jtx">
           <p class="lbl"><span class="dot" aria-hidden="true"></span>Real people, real accounts</p>
-          <h2 class="disp" style="margin-top:16px;font-size:clamp(40px,5vw,80px)">Jack<span class="glow">.</span></h2>
-          <p class="jrole">Founder of ADVRT · Lead generation specialist · Google Partner</p>
+          <h2 class="disp" style="margin-top:16px;font-size:clamp(40px,5vw,80px)">{defaultAuthor.name}<span class="glow">.</span></h2>
+          <p class="jrole">{defaultAuthor.credentials}</p>
           <p class="lede" style="margin-top:16px;font-size:16px">
             Co-founder of several lead generation brands whose data, findings and results
             feed every client build. Everything is handed over with full confidence: you own

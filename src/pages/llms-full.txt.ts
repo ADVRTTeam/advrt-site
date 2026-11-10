@@ -2,6 +2,7 @@ import { getCollection } from 'astro:content';
 import type { APIContext } from 'astro';
 import { site } from '../data/site';
 import { sectors } from '../data/sectors';
+import { resolveAuthor } from '../data/authors';
 
 /**
  * llms-full.txt — the prose behind llms.txt: every article in full, plus the
@@ -103,7 +104,7 @@ export async function GET({ site: base }: APIContext) {
       '',
       `URL: ${origin}/insights/${p.id}`,
       `Published: ${p.data.date.toISOString().slice(0, 10)} · ${p.data.mins} min read · ${p.data.topic}`,
-      `Author: ${p.data.author}, ${p.data.authorRole}`,
+      `Author: ${resolveAuthor(p.data.author).name}, ${resolveAuthor(p.data.author).role}`,
       '',
       p.data.excerpt,
       '',

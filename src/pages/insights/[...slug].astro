@@ -6,8 +6,10 @@ import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import { site } from '../../data/site';
 import { sectors } from '../../data/sectors';
-import jackFounder from '../../assets/images/jack-founder.jpg';
 import { imgOrNull } from '../../lib/images';
+import { resolveAuthor } from '../../data/authors';
+import Byline from '../../components/Byline.astro';
+import AuthorBox from '../../components/AuthorBox.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('insights', ({ data }) => !data.draft);
@@ -21,6 +23,7 @@ interface Props {
 const { post, posts } = Astro.props;
 const { Content } = await render(post);
 const d = post.data;
+const author = resolveAuthor(d.author);
 
 /**
  * The board glows the second half of the headline. Titles here break at the
@@ -75,8 +78,11 @@ const schema = [
     wordCount: post.body?.trim().split(/\s+/).length,
     author: {
       '@type': 'Person',
-      name: d.author,
-      jobTitle: d.authorRole,
+      '@id': new URL(`/#author-${author.key}`, Astro.site).href,
+      name: author.name,
+      jobTitle: author.role,
+      description: author.bio,
+      ...(author.sameAs.length ? { sameAs: author.sameAs } : {}),
       worksFor: { '@id': new URL('/#organisation', Astro.site).href },
     },
     publisher: { '@id': new URL('/#organisation', Astro.site).href },
@@ -115,18 +121,7 @@ const schema = [
       <h1 class="disp st2" id="hero-h1">
         {headA}{headB && <> <span class="glow">{headB}</span></>}
       </h1>
-      <div class="st3 bylinerow">
-        <span class="byline">
-          <Image src={jackFounder} alt={`${d.author}, ${d.authorRole}`} width={38} height={38} densities={[1, 2]} />
-          <span style="text-align:left">
-            <span class="lbl" style="display:block;letter-spacing:.14em;color:var(--fg)">{d.author}</span>
-            <span class="lbl" style="display:block;font-size:11px;letter-spacing:.1em">{d.authorRole}</span>
-          </span>
-        </span>
-        <span class="lbl" style="letter-spacing:.14em">
-          <time datetime={d.date.toISOString().slice(0, 10)}>{fmt(d.date)}</time> · {d.mins} min read
-        </span>
-      </div>
+      <Byline author={author} date={d.date} mins={d.mins} />
     </section>
 
     <article class="read prose" style="padding-bottom:20px">
@@ -173,35 +168,7 @@ const schema = [
       </div>
     </section>
 
-    <section id="author" class="wrap" style="padding-bottom:90px">
-      <p class="lbl"><span class="dot" aria-hidden="true"></span>Written by</p>
-      <div class="author" data-rise style="margin-top:18px">
-        <Image src={jackFounder} alt={`${d.author}, ${d.authorRole}`} width={120} height={120} densities={[1, 2]} />
-        <div>
-          <h2 class="disp" style="font-size:clamp(20px,2.4vw,32px)">{d.author} · {d.authorRole}</h2>
-          <p class="lede" style="margin-top:14px;font-size:16px">
-            Lead generation specialist and Google Partner. {d.author} founded ADVRT and
-            co-founded multiple lead generation brands across the built environment,
-            proving campaigns in the field before any client budget is involved. The data,
-            findings and results from those brands feed every client build, including the
-            systems behind this article.
-          </p>
-          {more.length > 0 && (
-            <div style="margin-top:26px">
-              <p class="lbl">More from {d.author}</p>
-              <div style="margin-top:10px">
-                {more.map((p) => (
-                  <a class="arow" href={`/insights/${p.id}`}>
-                    <span>{p.data.title}</span><span class="go" aria-hidden="true">→</span>
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
-          <a class="cbtn ghost" href="/insights" style="margin-top:24px">All articles →</a>
-        </div>
-      </div>
-    </section>
+    <AuthorBox author={author} more={more.map((p) => ({ id: p.id, title: p.data.title }))} />
   </main>
 
   <Footer />
@@ -218,10 +185,6 @@ const schema = [
   #hero-h1 {
     margin: 22px auto 0; font-size: clamp(28px, 5.4vw, 80px);
     max-width: 1000px; overflow-wrap: break-word;
-  }
-  .bylinerow {
-    margin-top: 30px; display: flex; gap: 16px; align-items: center;
-    justify-content: center; flex-wrap: wrap;
   }
 
   .relgrid {

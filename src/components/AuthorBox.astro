@@ -1,0 +1,48 @@
+---
+import { Image } from 'astro:assets';
+import { img } from '../lib/images';
+import type { Author } from '../data/authors';
+
+/**
+ * The "Written by" panel at the foot of an article. Everything it shows
+ * comes from src/data/authors.ts, so a new portrait or a changed job title
+ * updates every post at once.
+ */
+export interface Props {
+  author: Author;
+  /** Other articles by the same author, already chosen by the caller. */
+  more?: { id: string; title: string }[];
+}
+const { author, more = [] } = Astro.props;
+---
+
+<section id="author" class="wrap" style="padding-bottom:90px">
+  <p class="lbl"><span class="dot" aria-hidden="true"></span>Written by</p>
+  <div class="author" data-rise style="margin-top:18px">
+    <Image src={img(author.photo)} alt={author.photoAlt} width={120} height={120} densities={[1, 2]} />
+    <div>
+      <h2 class="disp abname">{author.name} · {author.role}</h2>
+      <p class="lede abbio">{author.bio}</p>
+
+      {more.length > 0 && (
+        <div style="margin-top:26px">
+          <p class="lbl">More from {author.name}</p>
+          <div style="margin-top:10px">
+            {more.map((p) => (
+              <a class="arow" href={`/insights/${p.id}`}>
+                <span>{p.title}</span><span class="go" aria-hidden="true">→</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <a class="cbtn ghost" href="/insights" style="margin-top:24px">All articles →</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .abname { font-size: clamp(20px, 2.4vw, 32px); }
+  .abbio { margin-top: 14px; font-size: 16px; }
+</style>
