@@ -177,3 +177,129 @@
 # redirects — which matters because browsers that saw an earlier build cached
 # its permanent redirect from the bare path to the slashed one.
 # ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+# Legacy advrt.co.uk URLs
+#
+# The old site ranks for a lot that the new one would otherwise 404. Twelve
+# months of Search Console (pulled 10 Nov 2026) shows these paths carrying
+# real impressions, so each is sent to its closest match rather than dropped.
+# Impressions and average position are noted so the trade-off is visible.
+#
+# These only bite once advrt.co.uk points here; on the netlify.app origin
+# nothing requests them.
+# ---------------------------------------------------------------------------
+
+# Direct topical matches — the equity lands somewhere that answers the query.
+
+# 1,040 impressions, position 20.7. Ranks for "google ads training",
+# "google ads certification training provider in uk". The training sector
+# page is the closest thing the new site has.
+[[redirects]]
+  from = "/blog-posts/google-ads-for-uk-training-providers"
+  to = "/training"
+  status = 301
+
+# 776 impressions, position 31.8 — and its best query is
+# "lead generation for training providers" at position 9.3, which is exactly
+# the intent the new positioning wants.
+[[redirects]]
+  from = "/blog-posts/leveraging-social-media-advertising-for-training-course-leads"
+  to = "/training"
+  status = 301
+
+# 189 impressions, position 9.6. A training-provider case study.
+[[redirects]]
+  from = "/case-studies/703-leads-in-30-days-for-high-ticket-training-provider"
+  to = "/training"
+  status = 301
+
+# 659 impressions across two rows, position ~8.
+[[redirects]]
+  from = "/get-in-touch"
+  to = "/contact"
+  status = 301
+
+# 237 impressions, position 9.4.
+[[redirects]]
+  from = "/blog-posts"
+  to = "/insights"
+  status = 301
+
+# Everything else under the old blog, including posts below the reporting
+# threshold.
+[[redirects]]
+  from = "/blog-posts/*"
+  to = "/insights"
+  status = 301
+
+[[redirects]]
+  from = "/case-studies"
+  to = "/#work"
+  status = 301
+
+[[redirects]]
+  from = "/case-studies/*"
+  to = "/#work"
+  status = 301
+
+[[redirects]]
+  from = "/portfolio"
+  to = "/#work"
+  status = 301
+
+[[redirects]]
+  from = "/our-service"
+  to = "/#process"
+  status = 301
+
+# Policies.
+[[redirects]]
+  from = "/privacy-policy"
+  to = "/privacy"
+  status = 301
+
+[[redirects]]
+  from = "/privacy-cookie-policy"
+  to = "/privacy"
+  status = 301
+
+[[redirects]]
+  from = "/cookie-policy"
+  to = "/cookies"
+  status = 301
+
+# Partial matches — the destination is the right company but not the same
+# subject, so expect these queries to fade. See CONTENT-PLAN: keeping them as
+# real pages is a live decision, not an oversight.
+
+# 478 impressions, position 17.2. "lead generation machine" (128), and
+# "lead generation for fire protection companies".
+[[redirects]]
+  from = "/lead-generation"
+  to = "/"
+  status = 301
+
+# 461 impressions, position 12.4. Ranks for town-level "google ads <place>".
+[[redirects]]
+  from = "/google-ads"
+  to = "/"
+  status = 301
+
+# 333 impressions, position 7.1.
+[[redirects]]
+  from = "/facebook-ads"
+  to = "/"
+  status = 301
+
+# 100 impressions — an old lead magnet.
+[[redirects]]
+  from = "/give-me-the-sauce"
+  to = "/"
+  status = 301
+
+# 69 impressions, position 11.9.
+[[redirects]]
+  from = "/10-common-mistakes-businesses-make-on-instagram"
+  to = "/insights"
+  status = 301

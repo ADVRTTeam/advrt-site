@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
-import { sectors, type Sector } from '../data/sectors';
+import { sectors, anchorFor, type Sector } from '../data/sectors';
 import { img } from '../lib/images';
 
 export function getStaticPaths() {
@@ -433,6 +433,7 @@ const schema = [
             <span class="no">{String(i + 1).padStart(2, '0')}</span>
             <span class="nm">{o.short}</span>
             <span class="de">{o.h1a}</span>
+            <span class="goph">{anchorFor(o)} →</span>
           </a>
         ))}
       </div>
@@ -549,6 +550,12 @@ const schema = [
   .othero .de {
     display: block; margin-top: 8px; font-size: 14px; line-height: 1.55;
     font-weight: 500; color: var(--fg-4);
+  }
+  /* Carries the phrase the destination targets, so the anchor text agrees
+     with the page's own title. */
+  .othero .goph {
+    display: block; margin-top: 12px; font-size: 11px; font-weight: 800;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--acc);
   }
 
   /* ---- CTA ---- */

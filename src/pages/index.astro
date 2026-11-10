@@ -90,7 +90,10 @@ const schema = [
       <div class="proofgrid">
         {proof.map((p) => (
           <div>
-            <b data-count-to={p.to} data-prefix={p.prefix ?? ''} data-suffix={p.suffix ?? ''}>
+            <b
+              class:list={{ long: ((p.prefix ?? '') + p.to + (p.suffix ?? '')).length > 3 }}
+              data-count-to={p.to} data-prefix={p.prefix ?? ''} data-suffix={p.suffix ?? ''}
+            >
               {(p.prefix ?? '') + p.to + (p.suffix ?? '')}
             </b>
             <span>{p.label}<br />{p.sub}</span>
@@ -315,10 +318,20 @@ const schema = [
   .proofgrid > div { padding: 46px 36px; border-left: 1px solid var(--line); }
   .proofgrid > div:first-child { border-left: 0; }
   .proofgrid b {
-    display: block; font-weight: 850; font-stretch: 104%;
+    /* A common height so the labels line up across the row even though the
+       figures are set at different sizes, with the digits sitting on one
+       baseline rather than floating. */
+    display: flex; align-items: flex-end;
+    min-height: clamp(50px, 4.6vw, 78px);
+    font-weight: 850; font-stretch: 104%;
     font-size: clamp(50px, 4.6vw, 78px); line-height: 1; color: var(--acc);
     text-shadow: 0 0 28px var(--acc-40);
   }
+  /* The figures are sized from the viewport, but the cells stop growing at
+     the 1240px wrap — so past that width a long value like "£10m+" kept
+     growing into its neighbour: 286px of text in a 217px cell at 1920.
+     Anything longer than three characters gets a ceiling that fits. */
+  .proofgrid b.long { font-size: clamp(40px, 3.1vw, 54px); }
   .proofgrid span {
     display: block; margin-top: 12px; font-size: 12px; font-weight: 700;
     letter-spacing: .16em; text-transform: uppercase; color: var(--fg-4); line-height: 1.7;

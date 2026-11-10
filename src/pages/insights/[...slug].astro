@@ -5,7 +5,7 @@ import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import { site } from '../../data/site';
-import { sectors } from '../../data/sectors';
+import { sectors, anchorFor } from '../../data/sectors';
 import { imgOrNull } from '../../lib/images';
 import { resolveAuthor } from '../../data/authors';
 import Byline from '../../components/Byline.astro';
@@ -106,6 +106,7 @@ const schema = [
   path={`/insights/${post.id}`}
   ogType="article"
   ogImage={ogImage}
+  article={{ published: d.date, author: author.name, section: d.topic }}
   schema={schema}
 >
   <Nav />
@@ -145,7 +146,7 @@ const schema = [
             <a class="relcard" href={`/${s.slug}`}>
               <span class="nm">{s.short}</span>
               <span class="de">{s.short === 'Surveyors' ? 'Instructions, not shared leads' : s.h1a}</span>
-              <span class="go">Read the sector page →</span>
+              <span class="go">{anchorFor(s)} →</span>
             </a>
           ))}
         </div>

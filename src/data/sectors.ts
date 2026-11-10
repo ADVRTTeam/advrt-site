@@ -1304,4 +1304,13 @@ export const sectors: Sector[] = [
   }
 ];
 
+/**
+ * The phrase a sector should be linked with — the subject of its own title
+ * tag, e.g. "Marketing for specialist contractors". Internal links use it as
+ * anchor text so what points at the page agrees with what the page claims.
+ */
+export function anchorFor(sector: Sector): string {
+  return sector.metaTitle.replace(/\s*\|\s*ADVRT\s*$/, '').trim();
+}
+
 export const bySlug = new Map(sectors.map((s) => [s.slug, s]));

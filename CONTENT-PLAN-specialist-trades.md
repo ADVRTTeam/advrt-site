@@ -1,6 +1,6 @@
 # Content plan — cohort 2: the specialist trades
 
-Drafted 10 November 2026. For review, not yet written.
+Drafted 10 November 2026, revised after review. For sign-off, not yet written.
 
 The first ten articles argue the ADVRT method: cost per instruction, exclusive
 versus shared leads, attribution, forms, response speed. They are sector-light
@@ -9,222 +9,316 @@ earning its traffic from the way that trade's buyers actually search.
 
 ---
 
-## 1. Where the numbers come from
+## 0. Two rules this plan is written under
 
-Everything below is grounded in twelve months of Google Search Console data
-from ADVRT's own lead generation brands, pulled 10 November 2026:
+**Spray foam and insulation removal are out of scope.** ADVRT has an exclusive
+agreement with a lead buyer in that market, and publishing marketing advice
+aimed at his competitors would breach the spirit of it. Nothing derived from
+`gogreenquote.com` appears below — no spray foam, no loft insulation removal.
+I have also left out heat pumps and retrofit, which sit on the same brand; if
+the exclusivity is narrower than that, say so and they can come back, because
+`heat pump quotes` is real demand (285 impressions).
 
-| Property | What it sells | Role here |
+**The audience is the firms, not their customers.** The search data is what an
+*end buyer* types — the landlord who needs a TM44, the duty holder facing a
+Reg 4 obligation. ADVRT's readers are the firms that serve them. So the data is
+the subject, never the audience. Every piece reads as:
+
+> "Here is what your buyers typed into Google last year. Here is where that
+> demand went. Here is why your website did not catch it."
+
+Nothing in this cohort should rank for `tm44 inspection near me`. It should
+rank for `tm44 leads`, `air conditioning inspection marketing`, and be the
+piece an air conditioning company's owner finds when they go looking for growth.
+
+---
+
+## 1. On search volume: what I could and could not get
+
+You asked for Google Keyword Planner volume through Windsor. **It is not
+reachable, for two separate reasons, and I would rather say so than present
+estimates as if they were measured.**
+
+1. **No Google Ads account is connected to Windsor.** Only Search Console is.
+   The connector returns: *"No google_ads accounts are configured for
+   jackadvrtcouk."*
+2. **Even connected, it would not give Keyword Planner volume.** Windsor's
+   `google_ads` connector is a *reporting* connector — impressions, clicks,
+   cost and conversions for keywords you are already bidding on. Keyword
+   Planner's monthly search-volume estimates come from a different Google Ads
+   API service that Windsor does not surface. Nor is Semrush, Ahrefs or SE
+   Ranking connected, any of which would.
+
+**What I used instead, and why it is arguably better.** Twelve months of Google
+Search Console impressions from ADVRT's own brands. An impression means the
+query was searched *and* the site was eligible to appear — so for a site
+sitting at position 20–80, impressions are a real, conservative floor under
+actual volume, measured on real UK searches rather than modelled.
+
+**If you want true volume alongside it**, pick one:
+
+- **Connect Google Ads to Windsor** — gives the search-term report from ADVRT's
+  own campaigns: the exact queries that triggered ads, with impressions and
+  conversions. Better intent data than Keyword Planner, though still not
+  "volume". Connect at `onboard.windsor.ai?datasource=google_ads`.
+- **Connect Semrush, Ahrefs or SE Ranking** — all supported by Windsor, all
+  give keyword volume directly. This is the one I would choose.
+- **Pull Keyword Planner by hand** in the Google Ads UI and paste the numbers;
+  I will fold them in.
+
+---
+
+## 2. Where the numbers come from
+
+| Property | What it sells | Used for |
 |---|---|---|
-| `comsurv.uk` | Commercial surveying and compliance | Asbestos, TM44, fire, legionella, EICR, EPC demand |
-| `gogreenquote.com` | Insulation removal and green retrofit | Spray foam, loft insulation, heat pumps |
+| `comsurv.uk` | Commercial surveying and compliance | Asbestos, TM44, fire, legionella, EICR, EPC, PPM |
 | `greenwashrooms.co.uk` | Washroom services | Recurring-contract services |
-| `advrt.co.uk` | The agency itself | What ADVRT currently ranks for |
+| `advrt.co.uk` | The agency itself | What ADVRT ranks for today |
+| ~~`gogreenquote.com`~~ | ~~Insulation removal~~ | **Excluded — see §0** |
 
-Plus Koalr's AI-search tracking on the first three, which shows which prompts
-competitors get cited for and ADVRT's brands do not.
-
-**This is first-party data about real buyers in these trades.** No keyword tool
-estimates, no guesses. That is the whole editorial advantage: ADVRT can write
-"here is what 12 months of live data says about your market" and mean it.
+Plus Koalr's AI-search tracking, which shows which prompts competitors are
+cited for and ADVRT's brands are not.
 
 ### The headline finding
 
-Across every non-branded query on the three lead-gen brands, **clicks are
-almost exactly zero** against thousands of impressions, at average positions
-between 17 and 80. The demand is measurable and nobody is capturing it. That
-finding *is* an article, and it is the spine of the cohort.
+Across every non-branded query on the lead-gen brands, **clicks are almost
+exactly zero** against thousands of impressions, at average positions between
+17 and 80. The demand is measurable and nobody is capturing it. That finding
+*is* an article, and it is the spine of the cohort.
 
 ### Demand by discipline
 
-Impressions are 12-month totals for that brand, non-branded queries only.
+12-month totals, non-branded queries only.
 
 | Discipline | Impressions | Avg position | Read |
 |---|---:|---:|---|
-| **Asbestos** (surveys, duty to manage, refurb/demolition) | ~3,000 | 17–31 | Biggest single cluster. Compliance-driven, deadline-driven. |
-| **Spray foam / insulation removal** | ~2,400 | 17–47 | Mortgage-blocked sellers. Highest urgency of any trade here. |
-| **Fire safety** (risk assessments, extinguishers) | 2,417 | 15–89 | Broadest query set — 336 distinct queries. |
+| **Asbestos** | ~3,000 | 17–31 | Biggest cluster. Compliance- and deadline-driven. |
+| **Fire safety** | 2,417 | 15–89 | Widest query set — 336 distinct queries. |
 | **Air conditioning / TM44** | 961 | 16–50 | A legal inspection almost nobody markets against. |
 | **Legionella / water hygiene** | 669 | 27–90 | Worst positions on the list. Wide open. |
-| **Commercial valuation / dilapidations** | ~2,500 | 20–84 | Surveyor territory, already covered by cohort 1. |
-| **Electrical / EICR** | 197 | 20–95 | Small but high-intent; C1/C2/C3 codes are a content gap. |
+| **Planned maintenance / PPM** | ~370 | 38–78 | Contract work, not job work. |
+| **Electrical / EICR** | 197 | 20–95 | Small, high-intent. C1/C2/C3 is a clear gap. |
 | **Commercial EPC / MEES** | 111 | 12–89 | Small now, regulation-driven growth ahead. |
 
 ### What those buyers are actually asking
 
-Grouped by intent, within the compliance trades:
-
 | Intent | Queries | Impressions | Avg position |
 |---|---:|---:|---:|
-| Price / quote (`legionella risk assessment cost`, `tm44 inspection cost`) | 67 | 574 | 53.0 |
+| Price / quote (`legionella risk assessment cost`) | 67 | 574 | 53.0 |
 | Compliance obligation (`is legionella testing a legal requirement`) | 43 | 292 | 56.7 |
-| Who do I hire (`spray foam removal companies`, `best…`) | 27 | 67 | 30.3 |
+| Who do I hire (`best…`, `…companies`) | 27 | 67 | 30.3 |
 
-**Price and obligation questions outnumber "who do I hire" by three to one**,
-and they sit far worse in the rankings. Buyers in these trades research the
-rule and the cost before they ever look for a contractor. Any firm answering
-those two questions well gets to the buyer first — and that is precisely what
-ADVRT should be telling them, with evidence.
-
----
-
-## 2. Who these articles are for
-
-A point worth nailing down before anything is written, because it is easy to
-get wrong.
-
-The search data above comes from **end buyers** — the landlord who needs a
-TM44, the seller whose lender has flagged spray foam. ADVRT's readers are the
-**firms that serve them**: the asbestos surveyor, the air conditioning
-contractor, the insulation removal company.
-
-So the data is the subject, not the audience. Every piece reads as:
-
-> "Here is what your buyers typed into Google last year. Here is where that
-> demand goes. Here is why your website is not catching it."
-
-That framing is unusual, defensible, and impossible for a generic agency to
-copy, because it needs the data.
+**Price and obligation questions outnumber "who do I hire" by three to one**
+and rank about twenty positions worse. Buyers research the rule and the cost
+long before they look for a contractor — which is the single most useful thing
+ADVRT can tell these firms, with evidence.
 
 ---
 
 ## 3. The cohort
 
-Twelve pieces, in the order I would publish them.
+Twelve pieces, in publishing order.
 
-### Tier 1 — the trades with the clearest data (publish first)
+### Tier 1 — clearest data, publish first
 
 **1. The £0 click problem: 12 months of search data from our own trade brands**
-*Pillar · ~1,800 words · all trades*
-The spine piece. Thousands of impressions, near-zero clicks, positions 17 to
-80, across asbestos, fire, legionella and air conditioning. What it costs a
-firm to be on page three for a query a buyer types with their card out.
-Every other piece in the cohort links back here.
+*Pillar · ~1,800 words · all trades.* Thousands of impressions, near-zero
+clicks, positions 17 to 80. What it costs to be on page three for a query a
+buyer types with their card out. Everything else links back here.
 Target: `why isn't my website getting leads`, `page 2 google no traffic`.
 
-**2. Spray foam removal: the most urgent lead in the built environment**
-*~1,500 words · insulation / damp remediation*
-`spray foam removal companies` — 836 impressions at position 17. A buyer whose
-mortgage is blocked is not price shopping; they want paperwork and a date.
-Why that changes the page, the form and the follow-up.
-Hooks: `which mortgage lenders accept spray foam insulation` (182 impressions,
-position 31) — the question nobody in the trade answers.
-Target: `spray foam removal leads`, `insulation removal marketing`.
-
-**3. TM44: a legal inspection almost nobody markets**
-*~1,300 words · air conditioning and ventilation*
-961 impressions across 51 TM44 variants, best position 16. Every air
-conditioning system over 12kW needs one every five years, and the firms that
-do them are invisible for the term. The easiest win in the cohort.
+**2. TM44: a legal inspection almost nobody markets**
+*~1,300 words · air conditioning and ventilation.* 961 impressions across 51
+TM44 variants, best position 16. Every system over 12kW needs one every five
+years and the firms that do them are invisible for the term. Easiest win here.
 Target: `tm44 leads`, `air conditioning inspection marketing`.
 
-**4. Asbestos surveys: the biggest search cluster in compliance**
-*~1,600 words · asbestos*
-~3,000 impressions. Two distinct buyers — the duty holder with a Reg 4
-obligation, and the developer who needs a refurbishment and demolition survey
-before work starts. They need different pages, and most firms give them one.
+**3. Asbestos surveys: the biggest search cluster in compliance**
+*~1,600 words.* ~3,000 impressions. Two distinct buyers — the duty holder with
+a Reg 4 obligation and the developer who needs a refurbishment and demolition
+survey before work starts. They need different pages; most firms give them one.
 Target: `asbestos survey leads`, `asbestos marketing`.
 
-**5. Legionella: the worst-ranked, best-margin compliance work we track**
-*~1,300 words · water hygiene*
-669 impressions at positions 27 to 90 — the worst on the list.
+**4. Legionella: the worst-ranked compliance work we track**
+*~1,300 words · water hygiene.* 669 impressions at positions 27 to 90.
 `legionella risk assessment cost` alone is 152 impressions at position 76.
-`is legionella testing a legal requirement` is 37 at position 35, which is a
-buyer who does not yet know they have to.
+`is legionella testing a legal requirement` is a buyer who does not yet know
+they are obliged.
 Target: `legionella risk assessment leads`, `water hygiene marketing`.
 
-### Tier 2 — the broad trades
-
-**6. Fire safety: 336 ways people ask for the same two services**
-*~1,500 words · fire*
-The widest query set we hold. `fire risk assessment` at 565 impressions, then
-a long tail about extinguisher types, servicing costs and review frequency.
-How to structure a site when the head term is competitive and the tail is not.
+**5. Fire safety: 336 ways people ask for the same two services**
+*~1,500 words.* `fire risk assessment` at 565 impressions, then a long tail on
+extinguisher types, servicing cost and review frequency. How to structure a
+site when the head term is competitive and the tail is not.
 Target: `fire risk assessment leads`, `fire safety marketing`.
 
-**7. C1, C2, C3: the EICR questions your buyers ask before they call**
-*~1,100 words · electrical*
-A small cluster at terrible positions (79 to 95), all about interpreting a
-report. People Google the code on a report they have already had. Answering it
-is how an electrical contractor becomes the firm they call for the remedial
-work.
+### Tier 2 — the smaller trades
+
+**6. C1, C2, C3: the EICR questions your buyers ask before they call**
+*~1,100 words · electrical.* A cluster at positions 79 to 95, all about
+interpreting a report someone has already had. Answering it is how a contractor
+becomes the firm they call for the remedial work.
 Target: `electrical contractor leads`, `eicr marketing`.
 
-**8. MEES and the commercial EPC: a regulation-shaped pipeline**
-*~1,200 words · EPC assessors*
-The smallest cluster today (111 impressions) and the one with a legislated
-growth curve. `commercial epc upgrade strategy`, `minimum epc rating
+**7. MEES and the commercial EPC: a regulation-shaped pipeline**
+*~1,200 words · EPC assessors.* The smallest cluster today and the one with a
+legislated growth curve: `commercial epc upgrade strategy`, `minimum epc rating
 commercial uk`, `new epc regulations 2025 commercial property`.
 Target: `commercial epc leads`, `mees marketing`.
 
-### Tier 3 — the cross-cutting pieces
+**8. PPM: selling the survey that sells the contract**
+*~1,200 words · facilities and maintenance.* `planned preventative maintenance`
+and `ppm survey` at positions 38 to 78. The survey is a loss-leader for a
+multi-year contract, which changes what the page and the form should do.
+Target: `ppm leads`, `facilities maintenance marketing`.
+
+### Tier 3 — cross-cutting
 
 **9. Why price and regulation questions beat "near me" in the trades**
-*~1,200 words · all trades*
-The intent split: 67 price queries and 43 obligation queries against 27
-who-do-I-hire queries, with the first two ranked ~20 positions worse. The case
-for cost and compliance pages over another location page.
+*~1,200 words.* The intent split above. The case for cost and compliance pages
+over another location page.
 
 **10. One page per specialism, not a services list**
-*~1,100 words · all trades*
-A companion to cohort 1's landing page article, with trade evidence: a damp
-survey and an air conditioning install are bought by different people for
-different reasons and cannot share a page.
+*~1,100 words.* Companion to cohort 1's landing-page article, with trade
+evidence: a damp survey and an air conditioning install are bought by different
+people for different reasons and cannot share a page.
 
-**11. What AI search is already citing in your trade — and what it isn't**
-*~1,400 words · all trades*
-From the Koalr tracking. On insulation, `gov.uk` is cited on 15 tracked
-prompts and ADVRT's own brand is missing from 4 of them. On commercial
-surveying, Savills, Knight Frank and Workman win prompts the brand is absent
-from entirely. What gets a specialist firm cited.
+**11. What AI search already cites in your trade — and what it doesn't**
+*~1,400 words.* From Koalr. On commercial surveying, Savills, Knight Frank and
+Workman win prompts ADVRT's brand is absent from entirely. What gets a
+specialist firm cited.
 Target: `AI search built environment`, `geo for contractors`.
 
 **12. Recurring contracts: marketing a service nobody searches for twice**
-*~1,200 words · washroom, PPM, maintenance contracts*
-From Green Washrooms and the PPM queries. When the work is a contract rather
-than a job, the search behaviour inverts: one decision, then years of silence.
+*~1,200 words · washroom, PPM, maintenance.* When the work is a contract rather
+than a job, search behaviour inverts: one decision, then years of silence.
 
 ---
 
-## 4. How this slots into the site
+## 4. Protecting the rankings you already have
 
-- **Topics.** Cohort 1's filter chips are Strategy, Landing pages, Tracking,
-  Lead handling, Compliance, Training, Forms. This cohort needs trade-shaped
-  topics. I would add: **Asbestos, Fire safety, Air conditioning, Water
-  hygiene, Insulation, Electrical, EPC**. They are driven from frontmatter, so
-  they appear on `/insights` automatically.
-- **Sector cross-links.** Each piece sets `sectors: ['contractors']` or
-  `['compliance']`, which already renders the "Where this applies" block and
-  gives the sector pages inbound links.
-- **Covers.** The AIBox box that produced cohort 1's covers is saved and
-  reusable — same house style, roughly 16 credits an image.
-- **Cadence.** Two a week for six weeks, Tier 1 first. Tier 1 alone is five
-  pieces against ~10,000 impressions of evidenced demand.
+This is the part with a deadline on it. **The moment advrt.co.uk points at the
+new site, every old URL 404s unless it is handled.** Twelve months of Search
+Console shows what is at stake.
 
-## 5. What I need from you before writing
+### Done — redirects are in `netlify.toml`
 
-1. **Which trades matter most commercially.** The data says asbestos, spray
-   foam and TM44. If ADVRT would rather sell to, say, fire safety firms, the
-   order changes.
-2. **Permission to publish the numbers.** Every piece quotes real impression
+Topical matches, where the destination genuinely answers the query:
+
+| Old path | Impressions | Pos | → | Why |
+|---|---:|---:|---|---|
+| `/blog-posts/google-ads-for-uk-training-providers` | 1,040 | 20.7 | `/training` | Ranks for `google ads training`, `google ads certification training provider in uk` |
+| `/blog-posts/leveraging-social-media-advertising-for-training-course-leads` | 776 | 31.8 | `/training` | Best query is `lead generation for training providers` at **position 9.3** |
+| `/get-in-touch` | 659 | 8.0 | `/contact` | Same page, new name |
+| `/blog-posts` | 237 | 9.4 | `/insights` | Same page, new name |
+| `/case-studies/703-leads-…-training-provider` | 189 | 9.6 | `/training` | Training case study |
+| `/cookie-policy` | 155 | 10.9 | `/cookies` | |
+| `/privacy-policy` + `/privacy-cookie-policy` | 148 | ~7.5 | `/privacy` | |
+| `/portfolio`, `/case-studies`, `/case-studies/*` | ~190 | ~9.5 | `/#work` | |
+| `/our-service` | 80 | 7.6 | `/#process` | |
+| `/blog-posts/*` (catch-all) | ~480 | — | `/insights` | Covers posts below the reporting threshold |
+
+### Needs your decision — three pages that rank for work the new site doesn't sell
+
+| Old path | Impressions | Pos | Ranks for |
+|---|---:|---:|---|
+| `/lead-generation` | 478 | 17.2 | `lead generation machine` (128), `lead generation for fire protection companies` |
+| `/google-ads` | 461 | 12.4 | Town-level `google ads <place>` — Preston, Royston, Aldridge… |
+| `/facebook-ads` | 333 | 7.1 | `scroll sauce`, `digital hot sauce` and similar |
+
+They are currently redirected to `/` so nothing 404s, **but be clear about what
+that buys.** A 301 passes authority; it does not preserve a ranking when the
+destination is about something else. Google will serve `/` for
+`google ads preston` for a while, see the mismatch, and drop it.
+
+So the honest choice is:
+
+- **(a) Accept the loss.** These are generic-agency and location terms that
+  pull against the specialist positioning. They send the wrong traffic and
+  would muddy what the site is about.
+- **(b) Keep them as real pages.** `/google-ads`, `/facebook-ads` and
+  `/lead-generation` as genuine service pages, written in the new voice and
+  pointed at the built environment. Preserves the rankings and gives the sector
+  pages somewhere to link from. Costs three more pages and slightly dilutes the
+  "one discipline" story.
+
+**My recommendation: (b) for `/lead-generation`, (a) for the other two.**
+`lead generation` is on-message, already ranks for `lead generation for fire
+protection companies`, and a page about lead generation for the built
+environment belongs on this site anyway. `google ads preston` and `scroll
+sauce` do not — chasing them means maintaining content for an audience ADVRT
+has deliberately stopped serving.
+
+### The homepage
+
+The two homepage rows carry **95,244 and 110,610 impressions** between them, at
+positions 2.9 and 58.7, for terms like `marketing agency southampton` (6,188
+impressions, position 9.6, 23 clicks) and `digital marketing agency southampton`
+(8,576, position 17.4).
+
+The new homepage says nothing about Southampton or about being a marketing
+agency in general. **Those rankings will fade** unless the page keeps some
+local and generic signal. Options, in order of how much I would do:
+
+1. **Footer and schema already carry the Southampton address** — that is a real
+   local signal and it is in place.
+2. **Add a line of homepage copy** that names Southampton naturally. One
+   sentence is probably enough to hold a position-9 ranking that already has
+   authority behind it.
+3. **Keep a `/marketing-agency-southampton` page.** Effective, and the furthest
+   from the new positioning. I would not, unless the local work still matters
+   commercially.
+
+I have not done 2 or 3 — both change the site's message and that is your call.
+
+---
+
+## 5. SEO practice — what is in place, and what I changed today
+
+**Already in place:** canonical on every page; one `h1` per page; no
+heading-level jumps; `sitemap-index.xml` with `/thank-you` excluded as
+noindex; generated `robots.txt` that follows `SITE_URL`; `llms.txt` and
+`llms-full.txt`; RSS; Open Graph and Twitter cards on every page; per-article
+share images; JSON-LD for `Organization`, `WebSite`, `ProfessionalService`,
+`Service`, `BreadcrumbList`, `FAQPage`, `BlogPosting`, `Person`, `ContactPage`
+and `WebPage`; every sector page titled `Marketing for <sector>` with the lede
+carrying `lead generation for <sector>`.
+
+**Changed today:**
+
+- **Legacy redirects** — the table in §4.
+- **Descriptive internal anchor text.** Every internal link to a sector page
+  used to say just "Surveyors". Links from articles and from the sector
+  cross-links now carry the phrase that page targets — "Marketing for
+  specialist contractors" — so what points at a page agrees with what the page
+  claims. Driven from one helper, `anchorFor()`, so the anchor and the title
+  can never drift apart.
+- **Article Open Graph** — `article:published_time`, `article:modified_time`,
+  `article:author` and `article:section` were missing.
+- **Organization logo** as a proper `ImageObject` node, referenced by `@id`.
+
+**Worth doing next, in order:**
+
+1. **Google Search Console for the new property.** Submit the sitemap on day
+   one and baseline `marketing for surveyors` and the five siblings — there is
+   currently *no impression volume at all* against any of them, so everything
+   from here is measurable gain.
+2. **Decide §4's three pages** before the domain is pointed.
+3. **`dateModified`** currently mirrors `datePublished`. Once articles start
+   being revised, wire it to a real `updated` frontmatter field.
+
+---
+
+## 6. What I need from you before writing
+
+1. **Confirm the exclusivity boundary.** Spray foam and insulation removal are
+   out. Does that extend to heat pumps and retrofit, which share the brand?
+2. **Which trades matter commercially.** The data says asbestos, TM44 and fire.
+   If ADVRT would rather sell to, say, legionella firms, the order changes.
+3. **Permission to publish the figures.** Every piece quotes real impression
    counts and positions from ADVRT's own properties. It is the strongest thing
    here and I would not publish it without a yes. The brands can stay unnamed
-   ("our own trade brands") if you would rather.
-3. **Whether the £0 click framing is too blunt.** It is true and it is a good
-   hook, but it also says ADVRT's own brands are not ranking. My read is that
-   is fine — the piece is about the gap being large, and ADVRT is the one
-   measuring it — but it is your call.
-
-## 6. What the data says about advrt.co.uk itself
-
-Not part of the cohort, but it came out of the same pull and you should see it.
-
-The site currently ranks for generic agency terms, not built-environment ones:
-`marketing agency southampton` (6,188 impressions, position 9.6, 23 clicks),
-`digital marketing agency southampton` (8,576, position 17.4, 6 clicks),
-`southampton digital marketing agency` (4,594, position 19.3, 0 clicks).
-
-There is **no impression volume at all** against anything like "marketing for
-surveyors" or "lead generation for contractors". The new sector pages are the
-first assets that could earn it, and this cohort is what would feed them. Worth
-tracking those terms from launch so there is a baseline.
+   ("our own trade brands") if you prefer.
+4. **The three legacy pages in §4**, and whether the homepage should keep a
+   Southampton signal.
