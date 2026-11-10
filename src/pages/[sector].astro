@@ -492,7 +492,13 @@ const schema = [
 
   /* ---- Calculator chrome ---- */
   #calc { padding: 0; }
-  .crow { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+  /* Wraps when it has to: at 320px "Average contract value" and £12,000 do
+     not fit on one line, and the figure was pushing the panel off screen. */
+  .crow {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 4px 16px; flex-wrap: wrap;
+  }
+  .crow .bign { min-width: 0; }
   .csplit { margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(236, 234, 227, .12); }
   .calc-out .resn { margin-top: 12px; }
   .cnote {

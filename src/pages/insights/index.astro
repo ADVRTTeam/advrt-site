@@ -1,8 +1,10 @@
 ---
+import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
+import { imgOrNull } from '../../lib/images';
 
 const all = (await getCollection('insights', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -62,6 +64,13 @@ const schema = [
       <p class="lbl st3"><span class="dot" aria-hidden="true"></span>Latest</p>
       <a class="feat st3" href={`/insights/${featured.id}`} style="margin-top:18px">
         <div class="art">
+          {imgOrNull(`insight-${featured.id}`) && (
+            <Image
+              class="artimg" src={imgOrNull(`insight-${featured.id}`)!} alt=""
+              widths={[480, 760, 1024]} sizes="(max-width: 860px) 100vw, 620px"
+              loading="eager" fetchpriority="high"
+            />
+          )}
           <span class="big" aria-hidden="true">01</span>
           <span class="tag" style="position:relative">{featured.data.crumb ?? featured.data.topic}</span>
         </div>
@@ -98,6 +107,12 @@ const schema = [
         {rest.map((p, i) => (
           <a class="card" href={`/insights/${p.id}`} data-topic={p.data.topic}>
             <div class={`cov c${i % 3}`}>
+              {imgOrNull(`insight-${p.id}`) && (
+                <Image
+                  class="covimg" src={imgOrNull(`insight-${p.id}`)!} alt=""
+                  widths={[340, 680]} sizes="(max-width: 760px) 100vw, 340px" loading="lazy"
+                />
+              )}
               <span class="idx" aria-hidden="true">{String(i + 2).padStart(2, '0')}</span>
               <span class="tag">{p.data.topic}</span>
             </div>

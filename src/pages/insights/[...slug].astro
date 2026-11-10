@@ -1,12 +1,13 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import { site } from '../../data/site';
 import { sectors } from '../../data/sectors';
 import jackFounder from '../../assets/images/jack-founder.jpg';
+import { imgOrNull } from '../../lib/images';
 
 export async function getStaticPaths() {
   const posts = await getCollection('insights', ({ data }) => !data.draft);
@@ -47,6 +48,17 @@ const more = [
 const related = sectors.filter((s) => d.sectors.includes(s.slug));
 const url = new URL(`/insights/${post.id}`, Astro.site).href;
 
+/**
+ * Each article shares with its own cover rather than the site-wide card.
+ * The sources are square, so they are cropped to the 1.91:1 that the social
+ * networks expect.
+ */
+const coverSrc = imgOrNull(`insight-${post.id}`);
+const cover = coverSrc
+  ? await getImage({ src: coverSrc, width: 1200, height: 630, fit: 'cover', format: 'jpeg', quality: 86 })
+  : null;
+const ogImage = cover ? new URL(cover.src, Astro.site).href : undefined;
+
 const schema = [
   {
     '@type': 'BlogPosting',
@@ -59,6 +71,7 @@ const schema = [
     mainEntityOfPage: url,
     url,
     articleSection: d.topic,
+    ...(ogImage ? { image: ogImage } : {}),
     wordCount: post.body?.trim().split(/\s+/).length,
     author: {
       '@type': 'Person',
@@ -86,6 +99,7 @@ const schema = [
   description={d.excerpt}
   path={`/insights/${post.id}`}
   ogType="article"
+  ogImage={ogImage}
   schema={schema}
 >
   <Nav />

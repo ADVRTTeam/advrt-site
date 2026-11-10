@@ -15,6 +15,11 @@ for (const [path, mod] of Object.entries(files)) {
   byName.set(name, mod.default);
 }
 
+/** Same lookup, but for images that may not exist (an article without a cover). */
+export function imgOrNull(name: string): ImageMetadata | null {
+  return byName.get(name) ?? null;
+}
+
 export function img(name: string): ImageMetadata {
   const found = byName.get(name);
   if (!found) {

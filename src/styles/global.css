@@ -751,14 +751,23 @@ section { scroll-margin-top: 84px; }
 
 /* ---- Calculator -------------------------------------------- */
 .calc { display: grid; gap: 0; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
+/* Grid items default to min-width: auto, which stopped these two columns
+   shrinking below their content and pushed the panel 44px past the screen
+   on a phone. */
+.calc-in, .calc-out { min-width: 0; }
 .calc-in { padding: 34px; }
 .calc-out {
   padding: 34px; border-left: 1px solid var(--line-2);
   background: radial-gradient(130% 130% at 50% 0%, rgba(255, 90, 31, .1), transparent 60%), var(--ink-2);
 }
 .range {
-  width: 100%; margin-top: 14px; appearance: none; -webkit-appearance: none;
-  height: 4px; border-radius: 4px; background: rgba(236, 234, 227, .14); outline: none;
+  /* The track reads as 4px, but the element itself is 28px tall so there is
+     something to actually grab on a touch screen. `background-clip` keeps the
+     paint inside the content box, so the padding is hit area and nothing else. */
+  width: 100%; margin-top: 8px; appearance: none; -webkit-appearance: none;
+  box-sizing: content-box; height: 4px; padding-block: 12px;
+  border-radius: 4px; background: rgba(236, 234, 227, .14);
+  background-clip: content-box; outline: none; touch-action: pan-y;
 }
 .range::-webkit-slider-thumb {
   -webkit-appearance: none; width: 26px; height: 26px; border-radius: 50%;
@@ -769,9 +778,13 @@ section { scroll-margin-top: 84px; }
   background: var(--acc); box-shadow: 0 0 18px var(--acc-60); cursor: pointer;
 }
 .range:focus-visible { outline: 2px solid var(--acc); outline-offset: 6px; }
-.bign { font-weight: 850; font-stretch: 104%; font-size: clamp(40px, 3.4vw, 56px); line-height: 1; letter-spacing: -.02em; }
+/* Floors scale with the viewport, not with a fixed minimum: at 320px a
+   figure like £150,000 at 40px is wider than the panel. */
+.bign { font-weight: 850; font-stretch: 104%; font-size: clamp(28px, 8vw, 56px); line-height: 1; letter-spacing: -.02em; }
 .resn {
-  font-weight: 850; font-stretch: 104%; font-size: clamp(54px, 5vw, 84px);
+  /* Sized so the largest figure a slider can produce still fits its column:
+     the contractors maths tops out at £45,000,000 a year. */
+  font-weight: 850; font-stretch: 104%; font-size: clamp(34px, 6vw, 72px);
   line-height: .95; letter-spacing: -.02em; color: var(--acc);
   text-shadow: 0 0 34px rgba(255, 90, 31, .45);
 }
@@ -1378,4 +1391,42 @@ section { scroll-margin-top: 84px; }
 .sclist a:hover {
   border-color: var(--acc); color: var(--fg); transform: translateY(-2px);
   box-shadow: 0 0 20px rgba(255, 90, 31, .22);
+}
+
+/* ---- Insight cover art -------------------------------------
+   The covers are dark 3D renders, so they sit under the numeral and the
+   topic chip rather than behind a scrim. The numerals stay legible because
+   each render keeps its subject to one side. */
+.cov .covimg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: 60% 50%;
+  z-index: 0; transition: transform .5s var(--ease), filter .4s;
+  filter: brightness(.92);
+}
+.card:hover .cov .covimg { transform: scale(1.04); filter: brightness(1); }
+.cov::after {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(to top, rgba(5, 5, 6, .82) 0%, rgba(5, 5, 6, .14) 58%, transparent 100%);
+}
+.cov .idx { z-index: 2; }
+.cov.c1 .covimg { filter: brightness(.82) saturate(1.05); }
+.feat .art .artimg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: 55% 50%; z-index: 0;
+  transition: transform .6s var(--ease);
+}
+.feat:hover .art .artimg { transform: scale(1.03); }
+.feat .art::after {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(to top, rgba(5, 5, 6, .74), rgba(5, 5, 6, .1) 60%, transparent);
+}
+.feat .art .big { z-index: 2; }
+
+/* With a cover image behind them, the c1 variant's dark-on-orange numeral and
+   chip vanish: the orange panel they were drawn against is now a dark render.
+   Scoped with :has so a card without a cover keeps the board's treatment. */
+.cov.c1:has(.covimg) .idx { color: var(--acc); opacity: .5; }
+.cov.c1:has(.covimg) .tag {
+  background: rgba(10, 10, 12, .5); color: var(--fg);
+  border-color: rgba(236, 234, 227, .26);
 }
