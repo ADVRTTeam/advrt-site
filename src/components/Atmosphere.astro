@@ -1,0 +1,63 @@
+---
+/**
+ * Site-wide atmosphere: the film grain overlay and the pointer-following
+ * glow. Both are fixed, decorative and aria-hidden.
+ *
+ * The grain is a static SVG data-URI, so it costs one paint and never
+ * repaints on scroll. The glow is transform-only, so it stays on the
+ * compositor, and it idles itself when the pointer stops moving rather
+ * than holding a rAF loop open for the life of the page.
+ */
+---
+
+<div class="grain" aria-hidden="true"></div>
+<div class="cglow" id="cglow" aria-hidden="true"></div>
+
+<script>
+  const glow = document.getElementById('cglow');
+
+  // Skip entirely where the element is display:none (coarse pointers) or
+  // the visitor has asked for less motion.
+  if (glow && matchMedia('(hover: hover)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let tx = innerWidth / 2;
+    let ty = innerHeight * 0.35;
+    let gx = tx;
+    let gy = ty;
+    let raf = 0;
+    let idleTimer: ReturnType<typeof setTimeout> | undefined;
+
+    const frame = () => {
+      gx += (tx - gx) * 0.06;
+      gy += (ty - gy) * 0.06;
+      glow.style.transform = `translate(${gx.toFixed(1)}px,${gy.toFixed(1)}px)`;
+      // Keep going only while there is still distance to close.
+      if (Math.abs(tx - gx) > 0.5 || Math.abs(ty - gy) > 0.5) {
+        raf = requestAnimationFrame(frame);
+      } else {
+        raf = 0;
+      }
+    };
+
+    const wake = () => {
+      if (!raf) raf = requestAnimationFrame(frame);
+    };
+
+    addEventListener(
+      'pointermove',
+      (e) => {
+        tx = e.clientX;
+        ty = e.clientY;
+        wake();
+        // Stop chasing shortly after the pointer settles.
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+          cancelAnimationFrame(raf);
+          raf = 0;
+        }, 1200);
+      },
+      { passive: true },
+    );
+
+    glow.style.transform = `translate(${gx}px,${gy}px)`;
+  }
+</script>

@@ -1,13 +1,14 @@
 /**
- * Site-wide constants, taken verbatim from the design canvas.
- * Change these in one place rather than across templates.
+ * Site-wide constants, taken verbatim from the night-system boards.
+ * The company and trade-mark detail is new in this design.
  */
 
 export const site = {
   name: 'ADVRT',
+  legalName: 'ADVRT Marketing Ltd',
   tagline: 'Marketing for the built environment',
   description:
-    'Specialist paid media and lead generation for surveyors, architects, contractors, compliance firms, training providers and the wider built environment.',
+    'The specialist growth partner for surveyors, contractors, compliance firms, training providers and the wider built environment.',
   email: 'team@advrt.co.uk',
   phone: '0800 689 3759',
   phoneHref: 'tel:+448006893759',
@@ -22,50 +23,57 @@ export const site = {
     linkedin: 'https://www.linkedin.com/in/jackadvrt/',
     facebook: 'https://www.facebook.com/advrtagency',
   },
-  copyright: 'ADVRT® 2026',
+  /* NOTE: company registration number still needed from ADVRT — see
+     OUTSTANDING.md. The footer and policies both want it. */
+  companyNumber: '',
+  legalLine:
+    '© ADVRT 2026 · ADVRT Marketing Ltd, registered in England and Wales · Registered office: Tagus House, 9 Ocean Way, Southampton, SO14 3TJ',
+  trademarkLine:
+    'ADVRT® is a registered UK trade mark of ADVRT Marketing Ltd. ADVRTISE™ is a proprietary brand and methodology of ADVRT Marketing Ltd.',
 } as const;
 
-/** Primary in-page nav for the home page. */
-export const homeNav = [
-  { id: 'sectors', label: 'Sectors', href: '/#sectors' },
-  { id: 'process', label: 'Process', href: '/#process' },
-  { id: 'work', label: 'Work', href: '/#work' },
-  { id: 'about', label: 'About', href: '/#about' },
+/** The Sectors dropdown. `note` is the small label on the right of each row. */
+export const sectorNav = [
+  { label: 'Surveyors', note: 'Instructions', href: '/surveyors' },
+  { label: 'Architects', note: 'Projects', href: '/architects' },
+  { label: 'Contractors', note: 'Order book', href: '/contractors' },
+  { label: 'Compliance', note: 'Inspections', href: '/compliance' },
+  { label: 'Training', note: 'Course seats', href: '/training' },
+  { label: 'Wider built environment', note: 'Specialists', href: '/built-environment' },
 ] as const;
 
-/** The two sectors that live behind the nav's "More services" panel. */
-export const moreServices = [
-  { label: 'Architects', desc: 'Commissions that fit your portfolio', href: '/architects' },
-  {
-    label: 'Wider built environment',
-    desc: 'Engineers, planners, consultancies, trades',
-    href: '/built-environment',
-  },
-] as const;
-
-/** Mobile menu for the home page. */
-export const homeMenu = [
-  { label: 'Sectors', href: '/#sectors', no: '03' },
-  { label: 'Process', href: '/#process', no: '04' },
-  { label: 'Work', href: '/#work', no: '06' },
-  { label: 'About', href: '/#about', no: '07' },
-  { label: 'Contact', href: '/#contact', no: '09' },
-] as const;
-
-/** Footer sector links, in canvas order. */
-export const footerSectors = [
-  { label: 'Surveyors', href: '/surveyors' },
-  { label: 'Architects', href: '/architects' },
-  { label: 'Contractors', href: '/contractors' },
-  { label: 'Compliance', href: '/compliance' },
-  { label: 'Training', href: '/training' },
-  { label: 'Wider built environment', href: '/built-environment' },
-] as const;
-
-export const footerAgency = [
-  { label: 'Process', href: '/#process' },
+/** Primary nav, left to right, beside the logo. */
+export const primaryNav = [
   { label: 'Work', href: '/#work' },
-  { label: 'About', href: '/#about' },
+  { label: 'Process', href: '/#process' },
   { label: 'Insights', href: '/insights' },
+  { label: 'Contact', href: '/contact' },
+] as const;
+
+export const footerCompany = [
+  { label: 'Home', href: '/' },
+  { label: 'Our work', href: '/#work' },
+  { label: 'How we work', href: '/#process' },
+  { label: 'Insights', href: '/insights' },
+  { label: 'Contact us', href: '/contact' },
   { label: 'Start a project', href: '/start-a-project' },
 ] as const;
+
+export const footerLegal = [
+  { label: 'Privacy policy', href: '/privacy' },
+  { label: 'Cookie policy', href: '/cookies' },
+  { label: 'Terms of business', href: '/terms' },
+  { label: 'Accessibility', href: '/accessibility' },
+  { label: 'Complaints', href: '/complaints' },
+] as const;
+
+/** "Now booking Q<n> <year>" — next quarter, computed at build time. */
+export function nextQuarter(now = new Date()): string {
+  let q = Math.floor(now.getMonth() / 3) + 2;
+  let year = now.getFullYear();
+  if (q > 4) {
+    q = 1;
+    year += 1;
+  }
+  return `Q${q} ${year}`;
+}

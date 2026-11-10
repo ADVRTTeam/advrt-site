@@ -1,180 +1,108 @@
-/** Home page content, verbatim from the design canvas. */
+/** Home page content, from the night-system home board. */
 
-export const tickerWords = [
-  'surveyors.', 'architects.', 'contractors.', 'compliance.', 'trainers.', 'engineers.', 'planners.',
-] as const;
+/**
+ * The manifesto. Words prefixed with `*` light up in the accent colour as
+ * the reader scrolls; the rest turn from off to on.
+ */
+export const manifesto =
+  "The built environment runs on long cycles, high-value work and trust earned over decades. " +
+  "Generic agencies treat a *£2m *development *enquiry like an e-commerce click. *We *never *will. " +
+  "We've spent our careers inside this industry, and we prove every strategy with " +
+  "*our *own *money before yours is ever involved.";
 
-export const marqueeWords = [
-  'Surveyors', 'Architects', 'Contractors', 'Compliance', 'Training', 'Engineers', 'Planners',
-] as const;
+/** Split once at build time so the page ships plain spans. */
+export const manifestoWords = manifesto.split(' ').map((raw) => {
+  const accent = raw.startsWith('*');
+  return { text: accent ? raw.slice(1) : raw, accent };
+});
 
-export const sectors = [
-  {
-    no: '01',
-    name: 'Surveyors',
-    desc: 'Instructions from homeowners, buyers and funders, filtered to the valuation, building-survey and monitoring work you actually want.',
-    enquiries: 'Level 2 and Level 3 surveys, Help to Buy, independent and probate valuations, monitoring instructions.',
-    chips: ['Google Search', 'Two-stage qualification', 'Lead-hub site', 'Call tracking'],
-    href: '/surveyors',
-    cta: 'Explore surveyors',
-  },
-  {
-    no: '02',
-    name: 'Contractors',
-    desc: 'A steady pipeline of tender-ready enquiries and sub-contract relationships in the trades and regions you prioritise.',
-    enquiries: 'Tender invitations, direct client enquiries, sub-contract packages by trade and region.',
-    chips: ['Tender-ready funnels', 'Regional search', 'Qualification', 'Custom CRM'],
-    href: '/contractors',
-    cta: 'Explore contractors',
-  },
-  {
-    no: '03',
-    name: 'Compliance',
-    desc: 'EPC assessors, electrical and gas safety inspectors, fire risk assessors and specialist surveyors: diaries filled with landlords, agents and businesses who need the certificate.',
-    enquiries: 'EPCs, EICRs, gas safety certificates, fire risk assessments, asbestos and legionella surveys.',
-    chips: ['Discipline pages', 'Local search', 'Instant quote forms', 'Repeat reminders'],
-    href: '/compliance',
-    cta: 'Explore compliance',
-  },
-  {
-    no: '04',
-    name: 'Training',
-    desc: 'Training providers for the built environment: health and safety, retrofit, site cards and technical courses, with every date filled by learners and employers ready to book.',
-    enquiries: 'Course bookings, employer group bookings, funded learner enquiries, refresher training.',
-    chips: ['Course pages', 'Search and social', 'Booking forms', 'Date-led campaigns'],
-    href: '/training',
-    cta: 'Explore training',
-  },
-] as const;
+export const manifestoPlain = manifesto.replace(/\*/g, '');
 
-export const process = [
-  {
-    no: '01',
-    tag: 'Survey',
-    name: 'Pre-spend audit',
-    img: 'process-1-survey',
-    alt: 'An orange laser line surveying an empty concrete plot',
-    desc: 'We survey the ground first: tracking, attribution, lead questionnaires and compliance. Foundations before spend.',
-    chips: ['Tracking', 'Compliance', 'Baselines'],
-  },
-  {
-    no: '02',
-    tag: 'Foundations',
-    name: 'Lead hub and tracking',
-    img: 'process-2-foundations',
-    alt: 'A concrete foundation slab with one orange rebar cage',
-    desc: 'A dedicated lead-hub site wired for conversion and full tracking: the base every campaign stands on.',
-    chips: ['Lead-hub site', 'Tracking', 'Analytics'],
-  },
-  {
-    no: '03',
-    tag: 'Build',
-    name: 'Proven campaigns',
-    img: 'process-3-build',
-    alt: 'An orange crane hook lowering a floor slab onto a tower',
-    desc: 'Paid campaigns already proven on our own spend. High-intent enquiries from day one, not learning on your budget.',
-    chips: ['Paid social', 'Search / PPC', 'Creative'],
-  },
-  {
-    no: '04',
-    tag: 'Fit-out',
-    name: 'Qualification and CRM',
-    img: 'process-4-fitout',
-    alt: 'Grey cubes filtered through a gate, only orange cubes pass',
-    desc: 'Every enquiry arrives job-ready. Leads are scored and filtered before they reach a CRM built around your pipeline.',
-    chips: ['Qualification', 'Scoring', 'Custom CRM'],
-  },
-  {
-    no: '05',
-    tag: 'Handover',
-    name: 'Walkthrough and handover',
-    img: 'process-5-handover',
-    alt: 'An orange key in front of a finished building',
-    desc: 'Everything working, documented and walked through, then you get the keys. We stay on hand to support and scale.',
-    chips: ['Full-confidence handover', 'You own it', 'Ongoing support'],
-  },
+export const proof = [
+  { to: 49, label: 'Enquiries in month one', sub: 'Huxley Surveyors' },
+  { to: 10, prefix: '£', suffix: 'm+', label: 'Ad spend managed', sub: 'Built environment only' },
+  { to: 6, label: 'Sectors served', sub: 'One discipline' },
+  { to: 0, label: 'Enquiries shared', sub: 'with other firms. Ever.' },
 ] as const;
 
 export const cases = [
   {
-    sector: 'Surveyors',
-    client: 'Huxley Surveyors · London and Brighton',
-    title: 'A ground-up lead generation build, from scratch.',
-    stat: '49',
-    statLabel: 'Enquiries in the first month',
     img: 'case-huxley',
     alt: 'Huxley Chartered Surveyors homepage',
-    chips: ['Lead-gen site build', 'Google Ads', 'Tracking'],
+    client: 'Huxley Surveyors · London and Brighton',
+    title: 'A ground-up build, from a standing start.',
+    lede: 'New lead-gen site, campaigns proven on our own spend, and tracking to the penny.',
+    stat: '49',
   },
   {
-    sector: 'Surveyors',
-    client: 'Foundation Surveyors · North London',
-    title: 'Landing pages that sit on their existing website.',
-    stat: '26',
-    statLabel: 'Residential survey enquiries in the first month',
-    img: 'case-foundation',
-    alt: 'Foundation Chartered Surveyors Level 2 survey landing page',
-    chips: ['Bespoke landing pages', 'Google Ads', 'Tracking', 'CRM integration'],
-  },
-  {
-    sector: 'Surveyors',
-    client: 'Nicholas & Co Surveyors · North London',
-    title: 'A dedicated landing page package with targeted ads.',
-    stat: '32',
-    statLabel: 'Residential and commercial enquiries in the first month',
     img: 'case-nicholas',
-    alt: 'Nicholas and Co Chartered Surveyors commercial survey landing page',
-    chips: ['Landing page package', 'Targeted ads', 'Ongoing maintenance'],
+    alt: 'Nicholas and Co Chartered Surveyors landing page',
+    client: 'Nicholas & Co Surveyors · North London',
+    title: 'A landing page package with targeted ads.',
+    lede: 'Residential and commercial, with ongoing maintenance keeping it sharp.',
+    stat: '32',
+  },
+  {
+    img: 'case-foundation',
+    alt: 'Foundation Chartered Surveyors landing page',
+    client: 'Foundation Surveyors · North London',
+    title: 'A bespoke build on their existing site.',
+    lede: 'Custom landing pages engineered into their current site, with ads, tracking and CRM integration built around it.',
+    stat: '26',
   },
 ] as const;
 
-export const edge = [
+export const sectorRows = [
+  { no: '01', name: 'Surveyors', href: '/surveyors', desc: 'Instructions from homeowners, buyers and funders, filtered to the work you want.' },
+  { no: '02', name: 'Contractors', href: '/contractors', desc: 'Tender-ready enquiries in the trades and regions you prioritise.' },
+  { no: '03', name: 'Compliance', href: '/compliance', desc: 'EPCs, EICRs, gas, fire: people who need the certificate this week.' },
+  { no: '04', name: 'Training', href: '/training', desc: 'Course dates filled by learners and employers ready to book.' },
+  { no: '05', name: 'Architects', href: '/architects', desc: "Commissions that fit the portfolio you're building." },
+  { no: '06', name: 'Everyone else', href: '/built-environment', desc: 'Engineers, planners, consultancies and specialist trades.' },
+] as const;
+
+export const process = [
+  {
+    no: '01', img: 'process-1-survey', alt: 'Pre-spend audit', name: 'Pre-spend audit',
+    desc: 'Tracking, attribution, lead questionnaires and compliance. We survey the ground before a pound is spent.',
+  },
+  {
+    no: '02', img: 'process-2-foundations', alt: 'Lead hub', name: 'Lead hub and tracking',
+    desc: 'A dedicated lead-hub site wired for conversion, with attribution that traces every instruction to the click that started it.',
+  },
+  {
+    no: '03', img: 'process-3-build', alt: 'Campaigns', name: 'Proven campaigns',
+    desc: 'Paid campaigns already proven on our own lead generation brands. High-intent enquiries from day one, not learning on your budget.',
+  },
+  {
+    no: '04', img: 'process-4-fitout', alt: 'Qualification', name: 'Qualification and CRM',
+    desc: 'Two-stage forms that qualify, score and filter, so every enquiry arrives job-ready in a pipeline built around yours.',
+  },
+  {
+    no: '05', img: 'process-5-handover', alt: 'Handover', name: 'Full-confidence handover',
+    desc: 'Everything working, documented and walked through, then the keys are yours. We stay on hand to support and scale.',
+  },
+] as const;
+
+/**
+ * Row 03's heading is "Ex-RICS media buyers" on the board. Jack asked for
+ * that claim to come off the public site, so it reads as the team's
+ * specialism instead. Recorded in SCOPE-night-system.md.
+ */
+export const fit = [
   {
     no: '01',
-    tag: 'Experience',
-    name: 'Decades in the built environment',
-    desc: "Our media buyers have spent decades marketing specifically for surveyors, architects, contractors and compliance firms. We already speak your buyers' language.",
+    name: 'One industry, not one of many',
+    desc: "Every account we run is in property, construction or compliance. We already speak your buyers' language, and your competitors' weaknesses are our day job.",
   },
   {
     no: '02',
-    tag: 'Own-spend R&D',
-    name: 'We test on our own budget',
-    desc: 'We run our own lead-generation websites using our own money: a live lab where new strategies are proven before they ever touch a client account.',
+    name: 'We prove it in the field first',
+    desc: 'We run our own lead generation brands as a live lab. Strategies are proven on our spend before they ever touch a client account.',
   },
   {
     no: '03',
-    tag: 'Speed to results',
-    name: 'Plug into what already works',
-    desc: 'You inherit strategies that are already running and optimised. No ramp-up on your spend, no learning curve billed to you.',
+    name: 'An industry-specialist team',
+    desc: "Campaigns are run by people who've spent careers inside the built environment, not a grad rotated off a shoe brand on Monday.",
   },
 ] as const;
-
-export const ownership = [
-  {
-    name: 'Full-confidence handover',
-    desc: 'Nothing gets signed off until you know how to run it: the campaigns, the leads, fast replies, proper follow-up, which enquiries to chase.',
-  },
-  {
-    name: 'You own everything',
-    desc: 'The lead-hub site, the campaigns and every scrap of data sit in your accounts. Hand it to your team whenever you like.',
-  },
-  {
-    name: 'Total transparency',
-    desc: 'You see exactly where every pound of spend goes and which sources convert. No black boxes, ever.',
-  },
-  {
-    name: 'Support on tap',
-    desc: "No hostage contracts. We're on hand to optimise, scale and support for as long as it's useful to you.",
-  },
-] as const;
-
-/** "Now booking Q<n> <year>" — next quarter, computed at build time. */
-export function nextQuarter(now = new Date()): string {
-  let q = Math.floor(now.getMonth() / 3) + 2;
-  let year = now.getFullYear();
-  if (q > 4) {
-    q = 1;
-    year += 1;
-  }
-  return `Q${q} ${year}`;
-}

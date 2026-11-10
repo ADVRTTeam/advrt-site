@@ -1,0 +1,110 @@
+---
+/**
+ * Cookie consent, UK GDPR / PECR.
+ *
+ * Nothing non-essential runs before an explicit opt-in: GA4 is injected
+ * only after "Accept", never on page load. Accept and Reject are given
+ * equal visual weight, as the ICO expects.
+ *
+ * The banner only renders when PUBLIC_GA4_ID is set. With no analytics
+ * there are no non-essential cookies, so showing a consent prompt would
+ * be asking permission for nothing.
+ */
+const ga4 = import.meta.env.PUBLIC_GA4_ID ?? '';
+---
+
+{ga4 && (
+  <>
+    <div class="consent" id="consent" role="dialog" aria-label="Cookies" aria-live="polite" hidden>
+      <div class="consent-in">
+        <div>
+          <p class="lbl" style="color:var(--acc)">Cookies</p>
+          <p class="consent-tx">
+            We'd like to set analytics cookies to see which pages and campaigns bring
+            enquiries. Nothing is set unless you agree, and we never sell your data.
+            <a href="/cookies">Read the cookie policy</a>.
+          </p>
+        </div>
+        <div class="consent-btns">
+          <button type="button" class="cbtn ghost" id="consent-no">Reject</button>
+          <button type="button" class="cbtn" id="consent-yes">Accept</button>
+        </div>
+      </div>
+    </div>
+
+    <script define:vars={{ ga4 }}>
+      (() => {
+        const KEY = 'advrt-consent';
+        const el = document.getElementById('consent');
+
+        function loadGa() {
+          if (window.__gaLoaded) return;
+          window.__gaLoaded = true;
+          const s = document.createElement('script');
+          s.async = true;
+          s.src = `https://www.googletagmanager.com/gtag/js?id=${ga4}`;
+          document.head.appendChild(s);
+          window.dataLayer = window.dataLayer || [];
+          function gtag() { window.dataLayer.push(arguments); }
+          window.gtag = gtag;
+          gtag('js', new Date());
+          // IP anonymisation is the default in GA4; no ad personalisation.
+          gtag('config', ga4, { anonymize_ip: true, allow_google_signals: false });
+        }
+
+        let stored = null;
+        try { stored = localStorage.getItem(KEY); } catch {}
+
+        if (stored === 'yes') {
+          loadGa();
+        } else if (stored !== 'no' && el) {
+          // Let the page settle before asking.
+          setTimeout(() => { el.hidden = false; }, 900);
+        }
+
+        const set = (v) => {
+          try { localStorage.setItem(KEY, v); } catch {}
+          if (el) el.hidden = true;
+          if (v === 'yes') loadGa();
+        };
+
+        document.getElementById('consent-yes')?.addEventListener('click', () => set('yes'));
+        document.getElementById('consent-no')?.addEventListener('click', () => set('no'));
+
+        // The cookie policy page offers a way to change the choice.
+        document.getElementById('consent-reset')?.addEventListener('click', () => {
+          try { localStorage.removeItem(KEY); } catch {}
+          if (el) el.hidden = false;
+        });
+      })();
+    </script>
+
+    <style>
+      .consent {
+        position: fixed; left: 14px; right: 14px; bottom: 14px; z-index: 90;
+        border-radius: var(--r-md); border: 1px solid rgba(236, 234, 227, .14);
+        background: rgba(11, 11, 14, .96); backdrop-filter: blur(18px) saturate(1.6);
+        box-shadow: 0 34px 80px -24px rgba(0, 0, 0, .95);
+        animation: fadeup .4s var(--ease) both;
+      }
+      .consent[hidden] { display: none !important; }
+      .consent-in {
+        max-width: var(--wrap); margin: 0 auto; padding: 20px 24px;
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 24px; flex-wrap: wrap;
+      }
+      .consent-tx {
+        margin-top: 8px; max-width: 620px; font-size: 14.5px; line-height: 1.6;
+        font-weight: 450; color: var(--fg-3);
+      }
+      .consent-tx a { color: var(--acc); text-decoration: underline; text-underline-offset: 3px; }
+      .consent-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+      .consent-btns .cbtn { min-height: 48px; padding: 0 24px; font-size: 13.5px; }
+      @media (max-width: 620px) {
+        .consent-in { padding: 18px; }
+        .consent-btns { width: 100%; }
+        .consent-btns .cbtn { flex: 1 1 0; justify-content: center; }
+      }
+    </style>
+  </>
+)}

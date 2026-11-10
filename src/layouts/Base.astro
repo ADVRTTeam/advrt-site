@@ -1,20 +1,21 @@
 ---
 import '../styles/global.css';
 import { site } from '../data/site';
+import Atmosphere from '../components/Atmosphere.astro';
+import Consent from '../components/Consent.astro';
 
 export interface Props {
   title: string;
   description: string;
   /** Path-only canonical, e.g. "/surveyors". Defaults to the current URL. */
   path?: string;
-  /** Absolute or imported OG image URL. Falls back to the site default. */
   ogImage?: string;
   ogType?: 'website' | 'article';
   /** Extra JSON-LD graph nodes for this page. */
   schema?: Record<string, unknown>[];
-  /** Set on pages that should not be indexed. */
   noindex?: boolean;
-  bodyClass?: string;
+  /** Hide the grain and glow — used by nothing yet, but pages can opt out. */
+  bare?: boolean;
 }
 
 const {
@@ -25,16 +26,18 @@ const {
   ogType = 'website',
   schema = [],
   noindex = false,
-  bodyClass,
+  bare = false,
 } = Astro.props;
 
-const canonical = new URL(path ?? Astro.url.pathname, Astro.site).href.replace(/\/$/, '') || Astro.site!.href;
+const canonical =
+  new URL(path ?? Astro.url.pathname, Astro.site).href.replace(/\/$/, '') || Astro.site!.href;
 const ogUrl = ogImage ?? new URL('/og-default.png', Astro.site).href;
 
 const organisation = {
   '@type': 'Organization',
   '@id': new URL('/#organisation', Astro.site).href,
   name: site.name,
+  legalName: site.legalName,
   url: Astro.site!.href,
   description: site.description,
   email: site.email,
@@ -76,9 +79,8 @@ const jsonLd = {
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
-    {/* The display font is brand-critical and used above the fold, so it is
-        preloaded. One self-hosted file: no third-party DNS, no render-blocking
-        stylesheet from a font CDN. */}
+    {/* Brand-critical and used above the fold, so preloaded. One
+        self-hosted file: no third-party DNS, nothing render-blocking. */}
     <link
       rel="preload"
       href="/fonts/archivo-latin-variable.woff2"
@@ -87,7 +89,7 @@ const jsonLd = {
       crossorigin="anonymous"
     />
 
-    <meta name="theme-color" content="#0b0b0c" />
+    <meta name="theme-color" content="#050506" />
     <meta name="color-scheme" content="dark" />
 
     <meta property="og:type" content={ogType} />
@@ -110,8 +112,10 @@ const jsonLd = {
     <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
   </head>
 
-  <body class={bodyClass}>
+  <body>
     <a class="skip" href="#main">Skip to content</a>
+    {!bare && <Atmosphere />}
     <slot />
+    <Consent />
   </body>
 </html>

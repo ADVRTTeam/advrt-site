@@ -1,101 +1,60 @@
 ---
 import { Image } from 'astro:assets';
 import logo from '../assets/images/advrt-logo.png';
-import { site, footerSectors, footerAgency } from '../data/site';
-
-export interface Props {
-  /** "full" is the home-page footer; "slim" is the one-line footer used elsewhere. */
-  variant?: 'full' | 'slim';
-  /** Extra links for the slim footer, before the email. */
-  slimLinks?: { label: string; href: string }[];
-}
-
-const { variant = 'slim', slimLinks } = Astro.props;
-
-const defaultSlim = [
-  { label: 'Home', href: '/' },
-  { label: 'Insights', href: '/insights' },
-  { label: 'Start a project', href: '/start-a-project' },
-  { label: 'Contact us', href: '/contact' },
-];
-// Insights is always present, wherever a caller's list places the rest.
-const given = slimLinks ?? defaultSlim;
-const slim = given.some((l) => l.href === '/insights')
-  ? given
-  : [...given.slice(0, 1), { label: 'Insights', href: '/insights' }, ...given.slice(1)];
+import { site, sectorNav, footerCompany, footerLegal } from '../data/site';
 ---
 
-{variant === 'full' ? (
-  <footer class="foot">
-    <div class="wrap foot-grid">
-      <div class="foot-brand" style="display:flex;flex-direction:column;gap:18px">
-        <Image src={logo} alt="ADVRT" height={30} densities={[1, 2]} loading="lazy" style="height:30px;width:auto;align-self:flex-start" />
-        <p style="max-width:340px;font-size:16px;line-height:1.55;color:var(--on-ink-3)">
-          Paid media and lead generation for the built environment.
+<footer class="sfoot">
+  <div class="wrap">
+    <div class="ftop">
+      <div>
+        <a href="/" aria-label="ADVRT home" style="display:inline-flex">
+          <Image src={logo} alt="ADVRT" height={22} densities={[1, 2]} loading="lazy" style="height:22px;width:auto" />
+        </a>
+        <p class="fbio">
+          We design <b>bespoke lead generation systems</b> for the built environment.
+          Landing pages, campaigns, tracking and qualification, engineered together and
+          handed over so you own the whole thing outright.
         </p>
-        <address style="font-style:normal;font-size:15px;line-height:1.55;color:var(--on-ink-3)">
-          {site.address.line1}, {site.address.line2}, {site.address.city}, {site.address.postcode}<br />
-          <a href={site.phoneHref} style="color:var(--on-ink);font-weight:700">{site.phone}</a>
-        </address>
-      </div>
-
-      <div>
-        <div class="label" style="color:var(--acc);margin-bottom:12px">Sectors</div>
-        <div style="display:flex;flex-direction:column">
-          {footerSectors.map((l) => <a class="flink" href={l.href}>{l.label}</a>)}
+        <p class="fbio" style="margin-top:14px">
+          We work with <b>surveyors, architects, contractors, compliance and inspection
+          firms, training providers</b> and the specialist consultancies around them.
+          One system, built on data from our own lead generation brands.
+        </p>
+        <div class="fsoc">
+          <a href={site.social.linkedin} target="_blank" rel="noopener">LinkedIn →</a>
+          <a href={site.social.facebook} target="_blank" rel="noopener">Facebook →</a>
         </div>
       </div>
 
-      <div>
-        <div class="label" style="color:var(--acc);margin-bottom:12px">Agency</div>
-        <div style="display:flex;flex-direction:column">
-          {footerAgency.map((l) => <a class="flink" href={l.href}>{l.label}</a>)}
+      <div class="fcols">
+        <div class="fcol">
+          <h4>Sectors</h4>
+          {sectorNav.map((s) => <a href={s.href}>{s.label}</a>)}
         </div>
-      </div>
-
-      <div>
-        <div class="label" style="color:var(--acc);margin-bottom:12px">Contact</div>
-        <div style="display:flex;flex-direction:column">
-          <a class="flink" href="/contact">Contact us</a>
-          <a class="flink" href={`mailto:${site.email}`}>{site.email}</a>
-          <a class="flink" href={site.social.linkedin} rel="noopener">LinkedIn</a>
-          <a class="flink" href={site.social.facebook} rel="noopener">Facebook</a>
+        <div class="fcol">
+          <h4>Company</h4>
+          {footerCompany.map((l) => <a href={l.href}>{l.label}</a>)}
+        </div>
+        <div class="fcol">
+          <h4>Legal</h4>
+          {footerLegal.map((l) => <a href={l.href}>{l.label}</a>)}
+        </div>
+        <div class="fcol">
+          <h4>Talk to us</h4>
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+          <a href={site.phoneHref}>{site.phone}</a>
+          <p class="addr">
+            {site.address.line1}<br />{site.address.line2}<br />
+            {site.address.city}<br />{site.address.postcode}
+          </p>
         </div>
       </div>
     </div>
 
-    <div class="wrap label"
-      style="margin-top:64px;padding-top:22px;border-top:2px solid var(--ink-3);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--on-ink-4)">
-      <span>{site.copyright}</span>
-      <span class="legal-links">
-        <a href="/privacy">Privacy</a><span aria-hidden="true">·</span><a href="/terms">Terms</a>
-      </span>
+    <div class="fbot">
+      <span>{site.legalLine}</span>
+      <span>{site.trademarkLine}</span>
     </div>
-  </footer>
-) : (
-  <footer class="foot slim">
-    <div class="wrap label"
-      style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;color:var(--on-ink-4)">
-      <a href="/" aria-label="ADVRT home" style="display:flex;align-items:center;min-height:44px">
-        <Image src={logo} alt="ADVRT" height={24} densities={[1, 2]} loading="lazy" style="height:24px;width:auto" />
-      </a>
-      <div style="display:flex;gap:22px;flex-wrap:wrap">
-        {slim.map((l) => <a class="flink" href={l.href}>{l.label}</a>)}
-        <a class="flink" href={`mailto:${site.email}`}>{site.email}</a>
-      </div>
-      <span>{site.copyright}</span>
-    </div>
-  </footer>
-)}
-
-<style>
-  /* Keep the separator tight against both links so it reads as
-     "Privacy · Terms" rather than a stray dot, while the links stay a
-     comfortable height to tap. */
-  .legal-links { display: inline-flex; align-items: center; }
-  .legal-links a { padding: 10px 10px; display: inline-flex; align-items: center; }
-  .legal-links a:first-child { padding-left: 0; }
-  .legal-links a:last-child { padding-right: 0; }
-  .legal-links a:hover { color: var(--acc); }
-  .legal-links span { opacity: .6; }
-</style>
+  </div>
+</footer>
