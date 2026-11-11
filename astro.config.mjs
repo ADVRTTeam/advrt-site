@@ -1,10 +1,15 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// Deployed to a netlify.app subdomain for review. When advrt.co.uk is pointed
-// at this site, change SITE to 'https://www.advrt.co.uk' — it drives canonical
-// URLs, OG tags, the sitemap and the RSS feed.
-const SITE = process.env.SITE_URL ?? 'https://advrt-site.netlify.app';
+// Live on advrt.co.uk since November 2026. This drives canonical URLs, OG
+// tags, the sitemap, the RSS feed, robots.txt, llms.txt and every JSON-LD
+// @id, so it has to be the domain people actually reach the site on.
+//
+// SITE_URL on the Netlify project overrides it. The fallback is the live
+// domain rather than the netlify.app one on purpose: if the variable is ever
+// lost, a build still canonicalises to the right host instead of quietly
+// telling Google the real domain is a copy of the preview subdomain.
+const SITE = process.env.SITE_URL ?? 'https://advrt.co.uk';
 
 export default defineConfig({
   site: SITE,
