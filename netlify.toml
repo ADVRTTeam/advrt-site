@@ -59,20 +59,34 @@
     #
     # IMPORTANT, and the main cost of running a strict CSP alongside GTM:
     # this policy governs every tag the container fires. Adding a tag in the
-    # GTM interface is NOT enough on its own — if it loads from a host that is
-    # not listed here, the browser blocks it and the tag silently does nothing.
-    # GA4 works because its hosts are already listed. A Google Ads conversion
-    # tag needs googleadservices.com and googletagmanager.com; a Meta pixel
-    # needs connect.facebook.net in script-src and facebook.com in img-src;
-    # LinkedIn needs snap.licdn.com. Add the host here and deploy at the same
-    # time as the tag goes live, or test it and wonder why nothing fires.
+    # GTM interface is NOT enough on its own — if it sends to a host that is
+    # not listed here, the browser blocks it and the tag silently does
+    # nothing, with no sign of a problem in the GTM interface itself.
+    #
+    # That is not hypothetical. On the first deploy of this container GA4 was
+    # blocked outright: GA4 through GTM does not only use
+    # google-analytics.com, it also sends to www.google.com/g/collect and
+    # stats.g.doubleclick.net, and with ad_storage granted the conversion
+    # linker adds ad.doubleclick.net. All of those are listed above now, in
+    # both connect-src and img-src, because each endpoint is tried as a fetch
+    # and then as an image pixel.
+    #
+    # Hosts the common additions need, for when one is switched on:
+    #   Google Ads conversion   googleadservices.com, googletagmanager.com
+    #   Meta pixel              connect.facebook.net (script-src),
+    #                           facebook.com (img-src and connect-src)
+    #   LinkedIn Insight        snap.licdn.com, px.ads.linkedin.com
+    #   Microsoft / Bing UET    bat.bing.com
+    # Add the host here and deploy at the same time as the tag goes live, and
+    # check the console for a CSP refusal afterwards rather than trusting the
+    # GTM preview, which does not enforce this policy.
     #
     # Note the payment=() above: the GHL embed asks for allow="payment" by
     # default, and this policy overrides it. The discovery call is free, so
     # that is the right default — but if the calendar is ever set to take a
     # deposit, the Payment Request API will fail silently until this becomes
     # payment=(self "https://api.leadconnectorhq.com").
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://link.msgsndr.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com; font-src 'self'; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com; frame-src https://api.leadconnectorhq.com; frame-ancestors 'self'; form-action 'self'; base-uri 'self'; object-src 'none'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://link.msgsndr.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://stats.g.doubleclick.net https://ad.doubleclick.net; font-src 'self'; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://www.google.com https://stats.g.doubleclick.net https://ad.doubleclick.net; frame-src https://api.leadconnectorhq.com; frame-ancestors 'self'; form-action 'self'; base-uri 'self'; object-src 'none'"
 
 # Build assets carry a content hash in the filename, so they can never go
 # stale. Cache them for a year.
