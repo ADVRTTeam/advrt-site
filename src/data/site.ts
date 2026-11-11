@@ -19,6 +19,18 @@ export const site = {
     postcode: 'SO14 3TJ',
     country: 'GB',
   },
+  /**
+   * Google Tag Manager container. Unlike the enquiry webhook, this is public
+   * by design — it appears in the page source of every site that uses it — so
+   * it lives in the repository rather than in an environment variable.
+   *
+   * GTM is the only tag host on this site: GA4, ads conversions and anything
+   * else are configured inside the container, not added to the code here.
+   * It loads only after consent (see src/components/Consent.astro).
+   *
+   * Empty string disables it.
+   */
+  gtmId: 'GTM-TQT8RCN',
   social: {
     linkedin: 'https://www.linkedin.com/in/jackadvrt/',
     facebook: 'https://www.facebook.com/advrtagency',

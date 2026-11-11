@@ -197,6 +197,7 @@ export const policies: Policy[] = [
         "heading": "Third parties",
         "paras": [
           "Where optional cookies are enabled, data may be processed by Google and Meta as independent controllers under their own privacy terms. We do not enable these before consent is given.",
+          "We use Google Tag Manager to load those optional tags. It is loaded only after you accept, never before, and the tags it loads are limited to measurement: we do not use it for advertising personalisation or remarketing audiences.",
           "Our booking calendar is provided by LeadConnector (GoHighLevel). It loads only when you reach the booking step of the enquiry form, never on an ordinary page view. When it loads it sets storage on your device to remember your details between steps, and it may load tracking used by the calendar provider. If you would rather not use it, call or email us and we will arrange a time that way."
         ],
         "items": [],

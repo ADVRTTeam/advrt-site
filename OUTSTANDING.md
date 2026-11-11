@@ -122,22 +122,40 @@ The privacy policy is not optional: the site collects personal data through two
 forms.
 
 The cookie policy says cookie names and durations are "confirmed in the consent
-banner on the live site" — worth making that true once GA4 is switched on.
+banner on the live site". Analytics is now live through GTM, so that sentence
+needs to become true or be reworded.
 
 ## 5. Analytics and consent
 
-**Status:** built, unconfigured. `src/components/Consent.astro` renders nothing
-at all unless `PUBLIC_GA4_ID` is set, because with no analytics there are no
-non-essential cookies and asking permission for nothing is worse than not
-asking.
+**Status:** live, 11 November 2026. Google Tag Manager container
+`GTM-TQT8RCN` is the tag host, set in `src/data/site.ts` — a container ID is
+public by design, so it is in the repository rather than an environment
+variable.
 
-Set `PUBLIC_GA4_ID` in Netlify and **redeploy** — it is a build-time variable,
-unlike the webhook ones. GA4 is then injected only after an explicit Accept,
-with `anonymize_ip` on and Google Signals off. Accept and Reject carry equal
-visual weight, as the ICO expects. The cookie policy page offers a "Change
-cookie settings" button that clears the stored choice.
+GA4 (`G-D79TGTL0CK`) is already configured inside the container, so the code
+does not load GA4 itself: `PUBLIC_GA4_ID` is ignored whenever a container is
+set, because running both would double-count every session. **Do not set
+`PUBLIC_GA4_ID`.**
 
-The Content-Security-Policy in `netlify.toml` already allows the GA4 hosts.
+Nothing reaches Google before an explicit Accept — verified: a visitor who has
+not chosen, and a visitor who rejects, make zero third-party requests. Consent
+Mode v2 defaults are pushed on every page load with everything denied, so a tag
+added to the container later cannot start from a more permissive state than the
+banner granted.
+
+`ad_personalization` stays denied even after Accept. The banner asks to measure
+which pages and campaigns produce enquiries, which is measurement, not
+remarketing. **If remarketing audiences are ever wanted, the banner copy and
+the cookie policy have to say so first** — it is a consent question, not a
+switch.
+
+**The one real cost of a strict CSP with GTM:** adding a tag in the GTM
+interface is not enough on its own. The policy in `netlify.toml` governs every
+tag the container fires, so a tag loading from a host that is not listed is
+blocked by the browser and silently does nothing. GA4 works because its hosts
+are listed. Google Ads, Meta and LinkedIn tags each need their host adding and
+deploying at the same time the tag goes live. The directive block in
+`netlify.toml` names which host each one needs.
 
 ## 6. Article copy
 
