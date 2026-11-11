@@ -6,7 +6,7 @@ import Footer from '../components/Footer.astro';
 import CitySkyline from '../components/CitySkyline.astro';
 import { site, nextQuarter } from '../data/site';
 import {
-  manifestoWords, manifestoPlain, proof, cases, sectorRows, sectorCountWord, process, fit,
+  manifestoWords, proof, cases, sectorRows, sectorCountWord, process, fit,
 } from '../data/home';
 import { img } from '../lib/images';
 import { defaultAuthor } from '../data/authors';
@@ -74,11 +74,14 @@ const schema = [
       <div class="pin">
         <div class="wrap">
           <p class="lbl"><span class="dot" aria-hidden="true"></span>Why we exist</p>
-          {/* The accessible name carries the whole sentence, so the reveal is
-              never the only way to read it. */}
-          <p class="mtx" id="mtx" aria-label={manifestoPlain}>
+          {/* One word per span so the reveal can light them in sequence. They
+              are ordinary inline text with a trailing space, so the paragraph
+              reads as one sentence in the accessibility tree and needs no
+              name of its own — which is just as well, since aria-label is
+              prohibited on a paragraph and was failing the audit here. */}
+          <p class="mtx" id="mtx">
             {manifestoWords.map((w) => (
-              <span class:list={['w', { hot: w.accent }]} aria-hidden="true">{w.text}{' '}</span>
+              <span class:list={['w', { hot: w.accent }]}>{w.text}{' '}</span>
             ))}
           </p>
         </div>

@@ -43,7 +43,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
 
       <h1 class="vis-hidden">Start a project</h1>
 
-      <div class="steps" id="steps" aria-label="Step 1 of 5" hidden>
+      <div class="steps" id="steps" role="group" aria-label="Step 1 of 5" hidden>
         {stepLabels.map((l, i) => (
           <button
             type="button" class={i === 0 ? 'pstep on' : 'pstep'}
