@@ -16,6 +16,22 @@ variables are not: they live on the project. So anywhere below that says
 "redeploy", the step is a push, and anywhere that says "set a variable", the
 step is the Netlify UI followed by a push.
 
+## 0b. The weekly content run needs scheduling from the UI
+
+`.claude/skills/weekly-content/` is written and committed. What is missing is
+the routine that fires it every Monday, and it cannot be created from a Claude
+Code session: scheduled tasks made that way cannot carry account connectors on
+this organisation, so the run would start with no Search Console and no image
+generation.
+
+Create it in the claude.ai routines UI with the Windsor.ai and AIBox connectors
+attached. The schedule, settings and the exact prompt are in
+`.claude/skills/weekly-content/SCHEDULING.md`.
+
+It starts in REVIEW mode — output arrives as a pull request. After about a
+month of output worth trusting, change the mode line in the skill to AUTOPILOT
+and it pushes to `main`, which deploys.
+
 ## 1. Enquiry webhook
 
 **Status:** configured and tested, 11 November 2026. `ENQUIRY_WEBHOOK_URL` is
