@@ -18,17 +18,30 @@ step is the Netlify UI followed by a push.
 
 ## 1. Enquiry webhook
 
-**Status:** built, unconfigured. `netlify/functions/enquiry.mjs` returns 503 and
-both forms show the phone number and email address, so nothing is lost silently.
+**Status:** configured and tested, 11 November 2026. `ENQUIRY_WEBHOOK_URL` is
+set on the Netlify project and points at the GoHighLevel inbound webhook.
+`ENQUIRY_WEBHOOK_TOKEN` is unset and not needed — the GoHighLevel hook URL
+carries its own capability token.
 
-Set in **Netlify → Site configuration → Environment variables**:
+**The URL is deliberately not in this repository.** This repo is public, and a
+GoHighLevel inbound hook URL is a capability: anyone holding it can post
+arbitrary leads into the CRM. It lives only in the Netlify environment.
 
-| Variable | Purpose |
-|---|---|
-| `ENQUIRY_WEBHOOK_URL` | Where enquiries are POSTed |
-| `ENQUIRY_WEBHOOK_TOKEN` | Optional, sent as `Authorization: Bearer …` |
+**Two things worth tightening**, neither of which this project's plan allowed
+through the API — both are a few clicks in **Netlify → Project configuration →
+Environment variables**:
 
-Read at runtime, so no redeploy is needed.
+- **Mark it secret.** It currently stores with `is_secret: false`, so the value
+  is readable in the Netlify UI and would appear in build logs if anything ever
+  echoed it.
+- **Scope it to Functions.** It is currently scoped to builds, functions,
+  post-processing and runtime. Only the function reads it. The build scope is
+  not a leak — the name has no `PUBLIC_` prefix, so Astro will not inline it
+  into client code, and nothing reads it at build time — but there is no reason
+  for it to be there.
+
+Env vars are injected into functions at deploy time, so a change to either
+needs a new deploy (a push) before the function sees it.
 
 **To verify once set:** submit a test brief and a test contact message, and
 confirm both land in the CRM with their `form` and `source.page` fields intact.
