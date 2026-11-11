@@ -90,6 +90,21 @@
 
 # Build assets carry a content hash in the filename, so they can never go
 # stale. Cache them for a year.
+# /thank-you is where a no-JS form post lands. It carries a noindex meta tag;
+# this header says the same thing independently of HTML parsing, so the page
+# is still excluded if a crawler takes the markup differently or the file is
+# ever served some other way. The page stays crawlable on purpose — a crawler
+# blocked by robots.txt cannot read either directive.
+[[headers]]
+  for = "/thank-you"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/thank-you/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
 [[headers]]
   for = "/_assets/*"
   [headers.values]
