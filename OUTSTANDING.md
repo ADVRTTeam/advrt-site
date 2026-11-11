@@ -3,6 +3,19 @@
 Everything here is built and waiting on information or a decision, not on code.
 Updated for the night-system rebuild, 10 November 2026.
 
+## 0. How deploys work
+
+Pushing to `main` builds and publishes to production. The Netlify project was
+linked to `ADVRTTeam/advrt-site` on 11 November 2026 — until then it had never
+been connected to the repo at all, and every deploy since the site was stood up
+had come from a zip upload, which is why pushes appeared to do nothing.
+
+Build command and publish directory come from `netlify.toml`, so they are
+versioned with the code rather than typed into the Netlify UI. Environment
+variables are not: they live on the project. So anywhere below that says
+"redeploy", the step is a push, and anywhere that says "set a variable", the
+step is the Netlify UI followed by a push.
+
 ## 1. Enquiry webhook
 
 **Status:** built, unconfigured. `netlify/functions/enquiry.mjs` returns 503 and
