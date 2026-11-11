@@ -37,14 +37,42 @@ The brief posts twice — `form: "brief"` when the five steps are sent, then
 
 ## 2. GoHighLevel booking widget
 
-**Status:** the board marked this `[GHL] GoHighLevel booking widget embeds
-here`. Built as the designed day/time picker, which submits the chosen slot with
-the brief. The day chips are generated at runtime from the next five weekdays,
-so they never go stale on a static build.
+**Status:** live. Calendar `aRbzQfigd3sq1fSPs2PD`, embedded on the booking step
+of `/start-a-project`, replacing the mock day/time picker.
 
-Swapping in the real calendar means replacing the picker in the step-5 fieldset
-of `src/pages/start-a-project.astro` and adding the GHL host to `frame-src` in
-`netlify.toml`, which currently allows no frames at all.
+It mounts only when someone reaches that step, not on page load — the widget
+writes to local storage and fingerprints the visitor, so it has no business
+running for people who never open the brief. Name, email and phone from step 5
+are passed as query parameters and arrive prefilled.
+
+The brief is already POSTed to the enquiry webhook before the calendar appears,
+so an enquiry is captured whether or not a call gets booked. The old
+`form: "brief-call"` post is gone: GoHighLevel creates the appointment itself,
+and the embed emits no booking event we could listen for — the parent script
+only handles iframe sizing, query-param forwarding and contact stickiness. So
+our button on that step says "I'll book later" and never claims a booking.
+
+**Three things worth a decision:**
+
+1. **The calendar asks for budget again, with different bands.** Ours are Under
+   £1k / £1k–£2k / £2k–£5k / £5k+ / Not sure yet. The calendar's are Less than
+   £500 / £500–£1000 / £1000–£2000 / More than £2000. Two different answers to
+   the same question land in the CRM, and it is a second ask at the worst
+   moment. Recommend deleting that question from the calendar form in
+   GoHighLevel — the brief already captures it.
+2. **It is light-themed inside a dark page.** Deliberate for now, as a white
+   card on the dark surface. If the calendar's own styling supports a dark
+   theme, matching it would read better.
+3. **The widget loads Meta's pixel inside its iframe**, along with Cloudflare
+   Turnstile and Google Fonts. That is GoHighLevel's frame rather than ours, so
+   the site's consent banner does not gate it. The cookie policy now says the
+   calendar loads third-party tracking, but whether that is acceptable without
+   consent is a question for whoever reviews the policies.
+
+CSP in `netlify.toml` allows `api.leadconnectorhq.com` in `frame-src` and
+`link.msgsndr.com` in `script-src`. Note the `payment=()` in Permissions-Policy:
+the embed asks for `allow="payment"` and this overrides it. Fine for a free
+discovery call; if the calendar ever takes a deposit, that line needs changing.
 
 ## 3. Company registration number
 

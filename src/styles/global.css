@@ -1001,6 +1001,15 @@ section { scroll-margin-top: 84px; }
   overflow: clip; background: var(--ink-3);
 }
 .bookwrap > .bk { padding: 26px 24px 28px; }
+/* The booking calendar is a third-party iframe we do not control the inside
+   of. It gets the same rounded, bordered surface as the rest of the brief so
+   it reads as part of the page rather than pasted onto it. */
+.calshell {
+  border-radius: 20px; border: 1px solid var(--line-3);
+  overflow: clip; background: var(--ink-3); min-height: 620px;
+}
+.calshell:empty { display: none; }
+.calshell noscript { display: block; padding: 26px 24px 28px; }
 .recap { display: flex; flex-wrap: wrap; gap: 8px; }
 .recap span {
   display: inline-flex; align-items: center; min-height: 34px; padding: 0 13px;

@@ -48,11 +48,20 @@
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
     Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=()"
     Cross-Origin-Opener-Policy = "same-origin"
-    # Fonts, styles and scripts are all self-hosted. The only third party is
-    # GA4, which the consent banner injects after an explicit opt-in and
-    # which therefore has to be allowed here. Add a GoHighLevel embed host to
-    # frame-src when the booking calendar goes in.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com; frame-src 'none'; frame-ancestors 'self'; form-action 'self'; base-uri 'self'; object-src 'none'"
+    # Fonts, styles and scripts are all self-hosted. Two third parties are
+    # allowed: GA4, which the consent banner injects after an explicit opt-in,
+    # and the GoHighLevel booking calendar on /start-a-project — its iframe
+    # (api.leadconnectorhq.com) and the embed script that sizes it
+    # (link.msgsndr.com). The script loads icons from stcdn.leadconnectorhq.com
+    # only for the popup launcher, which the inline embed does not use, so that
+    # host stays out of img-src.
+    #
+    # Note the payment=() above: the GHL embed asks for allow="payment" by
+    # default, and this policy overrides it. The discovery call is free, so
+    # that is the right default — but if the calendar is ever set to take a
+    # deposit, the Payment Request API will fail silently until this becomes
+    # payment=(self "https://api.leadconnectorhq.com").
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://link.msgsndr.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com; frame-src https://api.leadconnectorhq.com; frame-ancestors 'self'; form-action 'self'; base-uri 'self'; object-src 'none'"
 
 # Build assets carry a content hash in the filename, so they can never go
 # stale. Cache them for a year.

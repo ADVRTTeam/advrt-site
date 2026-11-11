@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 import { site } from '../data/site';
 import {
   sectorOptions, workBySector, sourceOptions, siteOptions,
-  budgetOptions, timingOptions, callTimes, stepLabels,
+  budgetOptions, timingOptions, stepLabels,
 } from '../data/brief';
 import logo from '../assets/images/advrt-logo.png';
 
@@ -186,24 +186,17 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
         </p>
         <div class="recap" id="recap" style="margin-top:22px" aria-label="Your brief at a glance"></div>
 
-        <div class="bookwrap" style="margin-top:28px">
-          <div class="bk">
-            <p class="flabel">Pick a day</p>
-            <div role="group" aria-label="Day" id="days" style="display:flex;flex-wrap:wrap;gap:10px"></div>
-            <p class="flabel" style="margin-top:26px">Pick a time</p>
-            <div role="group" aria-label="Time" style="display:flex;flex-wrap:wrap;gap:10px">
-              {callTimes.map((t) => (
-                <label class="chip">
-                  <input type="radio" name="callTime" value={t} class="vis-hidden" />
-                  <span>{t}</span>
-                </label>
-              ))}
-            </div>
-            <p style="margin-top:20px;font-size:13.5px;font-weight:600;color:var(--fg-4)">
-              30 minutes · phone or video · confirmation lands on WhatsApp
+        <div class="calshell" id="cal" data-phone={site.phone} style="margin-top:28px">
+          <noscript>
+            <p class="lede" style="font-size:16px">
+              The booking calendar needs JavaScript. Call <a href={site.phoneHref}>{site.phone}</a>
+              or email <a href={`mailto:${site.email}`}>{site.email}</a> and we'll find a time.
             </p>
-          </div>
+          </noscript>
         </div>
+        <p style="margin-top:18px;font-size:13.5px;font-weight:600;color:var(--fg-4)">
+          30 minutes · phone or video · nothing to prepare
+        </p>
         <p class="alert" id="call-error" role="alert" hidden></p>
       </fieldset>
 
@@ -231,17 +224,13 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
           <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8"/></svg>
           Brief received
         </span>
-        <span class="stepflag done" style="animation-delay:.15s" id="done-slot">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8"/></svg>
-          Discovery call booked
-        </span>
       </div>
       <div>
         <p class="flabel" style="margin-bottom:14px">What happens next</p>
         <ol class="nexts">
-          <li><b>1</b>You'll get a WhatsApp message shortly confirming your call time, with joining instructions.</li>
-          <li><b>2</b>We review your brief before the call, so we're not starting cold.</li>
-          <li><b>3</b>On the call: your numbers, your patch, and the plan we'd build. No pitch deck.</li>
+          <li><b>1</b>We read your brief and come back to you, usually the same working day.</li>
+          <li><b>2</b>If a call suits you better, the calendar is still open — go back and pick a time.</li>
+          <li><b>3</b>When we talk: your numbers, your patch, and the plan we'd build. No pitch deck.</li>
         </ol>
       </div>
       <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:8px">
@@ -333,7 +322,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
     const callError = document.getElementById('call-error') as HTMLElement;
     const done = document.getElementById('done') as HTMLElement;
     const recap = document.getElementById('recap')!;
-    const dayWrap = document.getElementById('days')!;
+    const cal = document.getElementById('cal')!;
 
     const LAST = 4;        // the contact step, which sends the brief
     const BOOKING = 5;
@@ -362,7 +351,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
       if (i === 2) return multi('sources').length > 0 && !!val('website');
       if (i === 3) return !!val('budget') && !!val('timing');
       if (i === 4) return text('name').length > 1 && emailOk();
-      if (i === 5) return !!val('callDay') && !!val('callTime');
+      if (i === 5) return true;   // the calendar owns this step
       return true;
     };
 
@@ -372,7 +361,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
       'Next: budget and timing',
       'Next: your details',
       'Then: book your call',
-      '30 minutes, no pitch deck',
+      'Or finish — the brief is already in',
     ];
 
     function paint() {
@@ -401,7 +390,11 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
         b.disabled = n > i;
       });
       back.hidden = i === 0 || i >= BOOKING;
-      nextLabel.textContent = i === LAST ? 'Send brief' : i === BOOKING ? 'Confirm my call' : 'Continue';
+      // On the booking step the calendar does the booking, so our button
+      // cannot claim to. It becomes the way out for anyone who would rather
+      // not book — the brief is already sent by then either way.
+      next.classList.toggle('ghost', i === BOOKING);
+      nextLabel.textContent = i === LAST ? 'Send brief' : i === BOOKING ? "I'll book later" : 'Continue';
       briefError.hidden = true;
       callError.hidden = true;
       paint();
@@ -479,30 +472,48 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
     stepBtns.forEach((b, i) => b.addEventListener('click', () => { if (i <= step) show(i); }));
 
     // ---- Booking step ------------------------------------------------
-    // Built at runtime so the dates are never stale on a static build.
-    function buildDays() {
-      if (dayWrap.childElementCount) return;
-      const labels: string[] = [];
-      for (let i = 1; labels.length < 5 && i < 14; i++) {
-        const d = new Date(Date.now() + i * 86400000);
-        if (d.getDay() === 0 || d.getDay() === 6) continue;
-        labels.push(d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }));
-      }
-      dayWrap.replaceChildren(
-        ...labels.map((label) => {
-          const l = document.createElement('label');
-          l.className = 'chip';
-          const input = document.createElement('input');
-          input.type = 'radio';
-          input.name = 'callDay';
-          input.value = label;
-          input.className = 'vis-hidden';
-          const s = document.createElement('span');
-          s.textContent = label;
-          l.append(input, s);
-          return l;
-        }),
-      );
+    // The GoHighLevel calendar. Mounted on first arrival rather than on page
+    // load: the widget writes to localStorage and fingerprints the visitor, so
+    // it has no business running for the many people who never open the brief,
+    // and it keeps a third-party script off the critical path.
+    const CAL_ID = 'aRbzQfigd3sq1fSPs2PD';
+    let calMounted = false;
+
+    function mountCalendar() {
+      if (calMounted) return;
+      calMounted = true;
+
+      // Carry what we already asked for, so nobody types their name twice.
+      // Unknown parameters are ignored by the widget, so a rename upstream
+      // costs us the prefill and nothing else.
+      const parts = text('name').split(/\s+/);
+      const params = new URLSearchParams();
+      if (parts[0]) params.set('first_name', parts[0]);
+      if (parts.length > 1) params.set('last_name', parts.slice(1).join(' '));
+      if (text('email')) params.set('email', text('email'));
+      if (text('phone')) params.set('phone', text('phone'));
+      const query = params.toString();
+
+      const frame = document.createElement('iframe');
+      frame.src = `https://api.leadconnectorhq.com/widget/booking/${CAL_ID}${query ? `?${query}` : ''}`;
+      frame.id = `${CAL_ID}_${Date.now()}`;
+      frame.title = 'Book a discovery call';
+      frame.setAttribute('allow', 'payment');
+      frame.setAttribute('scrolling', 'no');
+      frame.style.cssText = 'width:100%;border:none;overflow:hidden;min-height:620px;display:block';
+      cal.replaceChildren(frame);
+
+      // The embed script finds the iframe already in the document and takes
+      // over its height from there, so it is added second.
+      const tag = document.createElement('script');
+      tag.src = 'https://link.msgsndr.com/js/form_embed.js';
+      tag.async = true;
+      tag.addEventListener('error', () => {
+        callError.textContent =
+          `The calendar didn't load. Your brief is already with us — call ${cal.dataset.phone} if you'd like to talk sooner.`;
+        callError.hidden = false;
+      });
+      document.body.appendChild(tag);
     }
 
     function buildRecap() {
@@ -559,7 +570,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
         try {
           await post({ form: 'brief', stage: 'brief' });
           briefSent = true;
-          buildDays();
+          mountCalendar();
           buildRecap();
           show(BOOKING);
           scrollTo({ top: 0, behavior: 'smooth' });
@@ -572,28 +583,14 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
         return;
       }
 
-      // Booking step.
-      const day = val('callDay');
-      const time = val('callTime');
-      if (!day || !time) {
-        callError.textContent = 'Pick a day and a time for your call.';
-        callError.hidden = false;
-        next.disabled = false;
-        return;
-      }
+      // Booking step. The calendar books the call inside its own iframe and
+      // confirms it there, and it tells us nothing — the embed script handles
+      // resizing and contact stickiness, and emits no booking event we could
+      // listen for. So this button never claims a call was booked; it is the
+      // way out for someone who would rather not, and the brief is in either
+      // way.
       callError.hidden = true;
-      try {
-        await post({ form: 'brief-call', stage: 'call', callSlot: `${day}, ${time}` });
-      } catch (err) {
-        // The brief itself is already in, so a failed booking never blocks
-        // the confirmation — but say what happened.
-        callError.textContent = (err as Error).message;
-        callError.hidden = false;
-        if (!briefSent) { next.disabled = false; return; }
-      }
-
       document.getElementById('done-name')!.textContent = `${text('name').split(' ')[0] || 'thanks'}.`;
-      document.getElementById('done-slot')!.append(` · ${day}, ${time}`);
       form.hidden = true;
       done.hidden = false;
       pfill.style.width = '100%';
