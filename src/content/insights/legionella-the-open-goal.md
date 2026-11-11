@@ -4,7 +4,7 @@ metaTitle: 'Marketing for legionella and water hygiene firms'
 excerpt: 'Of all the compliance disciplines we track, water hygiene has the worst search positions and the least competition. Those two facts are related.'
 topic: 'Compliance'
 crumb: 'Water hygiene · Strategy'
-date: 2026-11-24
+date: 2026-11-06
 mins: 6
 sectors:
   - 'compliance'

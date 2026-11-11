@@ -4,7 +4,7 @@ metaTitle: 'TM44 inspections: marketing for air conditioning firms'
 excerpt: 'Every air conditioning system over 12kW needs a TM44 inspection every five years. The firms that carry them out are close to invisible for the term.'
 topic: 'Specialist trades'
 crumb: 'Air conditioning · Strategy'
-date: 2026-11-17
+date: 2026-11-08
 mins: 6
 sectors:
   - 'contractors'

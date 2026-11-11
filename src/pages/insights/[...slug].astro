@@ -7,12 +7,13 @@ import Footer from '../../components/Footer.astro';
 import { site } from '../../data/site';
 import { sectors, anchorFor } from '../../data/sectors';
 import { imgOrNull } from '../../lib/images';
+import { liveInsights } from '../../lib/posts';
 import { resolveAuthor } from '../../data/authors';
 import Byline from '../../components/Byline.astro';
 import AuthorBox from '../../components/AuthorBox.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('insights', ({ data }) => !data.draft);
+  const posts = await liveInsights();
   return posts.map((post) => ({ params: { slug: post.id }, props: { post, posts } }));
 }
 

@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import { liveInsights } from '../lib/posts';
 import type { APIContext } from 'astro';
 import { site } from '../data/site';
 import { sectors } from '../data/sectors';
@@ -13,7 +14,7 @@ export async function GET({ site: base }: APIContext) {
   const origin = base!.href.replace(/\/$/, '');
   const u = (path: string) => `${origin}${path}`;
 
-  const posts = (await getCollection('insights', ({ data }) => !data.draft)).sort(
+  const posts = (await liveInsights()).sort(
     (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
   );
 

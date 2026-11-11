@@ -1,10 +1,11 @@
 import rss from '@astrojs/rss';
+import { liveInsights } from '../../lib/posts';
 import { getCollection } from 'astro:content';
 import type { APIContext } from 'astro';
 import { site } from '../../data/site';
 
 export async function GET(context: APIContext) {
-  const posts = (await getCollection('insights', ({ data }) => !data.draft)).sort(
+  const posts = (await liveInsights()).sort(
     (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
   );
 

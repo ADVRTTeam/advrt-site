@@ -4,7 +4,7 @@ metaTitle: 'PPM and facilities maintenance marketing'
 excerpt: 'Planned maintenance is sold as a contract, not a job. That changes what the page should do, what the form should ask and how fast you have to move.'
 topic: 'Specialist trades'
 crumb: 'Maintenance · Strategy'
-date: 2026-12-04
+date: 2026-11-03
 mins: 6
 sectors:
   - 'built-environment'

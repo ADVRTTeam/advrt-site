@@ -4,7 +4,7 @@ metaTitle: 'Site structure for multi-trade specialist contractors'
 excerpt: 'Splitting every service into its own page is right until it is not. Here is where the line sits, and what to do with the work that falls below it.'
 topic: 'Landing pages'
 crumb: 'Landing pages · Strategy'
-date: 2026-12-11
+date: 2026-11-01
 mins: 6
 sectors:
   - 'contractors'

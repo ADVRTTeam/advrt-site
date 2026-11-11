@@ -4,7 +4,7 @@ metaTitle: 'Marketing recurring service contracts in the trades'
 excerpt: 'When the work is a contract rather than a job, search behaviour inverts: one decision, then years of silence. That changes everything about the funnel.'
 topic: 'Strategy'
 crumb: 'Specialist trades · Strategy'
-date: 2026-12-15
+date: 2026-10-30
 mins: 6
 sectors:
   - 'built-environment'

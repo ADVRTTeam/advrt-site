@@ -4,7 +4,7 @@ metaTitle: 'AI search citations for specialist trade firms'
 excerpt: 'Assistants answering trade questions cite national consultancies and directories. The specialists doing the work are largely absent, and that is fixable.'
 topic: 'Strategy'
 crumb: 'Specialist trades · Strategy'
-date: 2026-12-18
+date: 2026-10-31
 mins: 6
 sectors:
   - 'contractors'

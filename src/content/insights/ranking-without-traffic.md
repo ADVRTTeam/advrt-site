@@ -4,7 +4,7 @@ metaTitle: 'Ranking without traffic in the specialist trades'
 excerpt: 'Most specialist trade websites do rank. They rank on page three, for the questions their buyers actually type, and it earns them nothing.'
 topic: 'Strategy'
 crumb: 'Specialist trades · Strategy'
-date: 2026-11-11
+date: 2026-11-10
 mins: 8
 featured: true
 coverWord: 'Page three'

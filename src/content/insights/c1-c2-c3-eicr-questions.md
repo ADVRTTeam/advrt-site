@@ -4,7 +4,7 @@ metaTitle: 'EICR marketing for electrical contractors'
 excerpt: 'A landlord holding an unsatisfactory EICR is a buyer with a deadline. Most electrical contractors have no page that speaks to them.'
 topic: 'Compliance'
 crumb: 'Electrical · Strategy'
-date: 2026-11-27
+date: 2026-11-05
 mins: 6
 sectors:
   - 'compliance'

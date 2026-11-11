@@ -4,7 +4,7 @@ metaTitle: 'Marketing for fire safety and fire protection firms'
 excerpt: 'Fire risk assessment is the head term everyone fights over. The money is in the hundreds of narrower questions nobody has bothered to answer.'
 topic: 'Fire protection'
 crumb: 'Fire protection · Strategy'
-date: 2026-11-13
+date: 2026-11-09
 mins: 7
 sectors:
   - 'fire-protection'

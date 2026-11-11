@@ -4,7 +4,7 @@ metaTitle: 'MEES and commercial EPC marketing for assessors'
 excerpt: 'Commercial EPC demand is small today and legislated to grow. That makes it the rare search market worth building for before it arrives.'
 topic: 'Compliance'
 crumb: 'EPC · Strategy'
-date: 2026-12-01
+date: 2026-11-04
 mins: 6
 sectors:
   - 'compliance'

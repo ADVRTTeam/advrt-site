@@ -4,7 +4,7 @@ metaTitle: 'Price and regulation keywords in trade marketing'
 excerpt: 'Across every compliance discipline we track, cost and obligation questions outnumber “who do I hire” searches — and rank far worse.'
 topic: 'Strategy'
 crumb: 'Specialist trades · Strategy'
-date: 2026-12-08
+date: 2026-11-02
 mins: 6
 sectors:
   - 'contractors'
