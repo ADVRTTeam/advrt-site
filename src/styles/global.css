@@ -427,6 +427,23 @@ section { scroll-margin-top: 84px; }
 .city .bld { transform-box: fill-box; transform-origin: 50% 100%; transform: scaleY(0); }
 .play .city .bld { animation: bpop .9s var(--ease) both; }
 .city .win { fill: var(--acc); opacity: .35; animation: twinkle 4.5s ease-in-out infinite; }
+/* Depth. Further buildings sit in more atmosphere, so they are lighter and
+   their outline is weaker; the ones nearest the centre are darkest and
+   crispest. Without this every silhouette is the same colour and the whole
+   skyline flattens into blocks. */
+/* The glow sits behind the skyline, so the haze between viewer and building
+   is lit warm, not cool — a far building is a touch lighter and warmer than
+   a near one, never paler than the sky behind it. Opacity is left alone:
+   letting the glow through is what made the back rank read as the closest
+   thing on screen. */
+.city .mid > .bld > rect:not(.fc), .city .mid > .bld > path { fill: #0e0a09; stroke: rgba(255, 90, 31, .12); }
+.city .near > .bld > rect:not(.fc), .city .near > .bld > path { fill: #090706; stroke: rgba(255, 90, 31, .2); }
+.city .mid > .bld > g rect, .city .near > .bld > g rect { fill: #090706; }
+/* Facade: mullions and a window grid, low enough in contrast to read as
+   surface rather than as detail. Painted over the body, under the lit
+   windows, and never outlined — the body rect already carries the edge. */
+.city .fc { fill: url(#fac); stroke: none; }
+.city .far .fc { fill: url(#facFar); }
 .city .bcn { fill: var(--acc); animation: bcn 2.8s ease-in-out infinite; }
 .city .jib { transform-box: fill-box; transform-origin: 26% 50%; animation: sway 18s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .city .bld { transform: none; } }

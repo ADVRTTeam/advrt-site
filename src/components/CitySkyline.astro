@@ -2,31 +2,80 @@
 /**
  * The hero skyline, transcribed from the night-system home board.
  *
- * 13 buildings scale up in sequence from the horizon out, with twinkling
+ * Buildings scale up in sequence from the horizon out, with twinkling
  * windows, blinking roof beacons and two swaying crane jibs. Inline, so
  * it costs no request; animation is transform/opacity only.
  *
  * `.play` on the hero starts the build-up, so the sequence waits until
  * the hero is actually on screen and replays when it returns.
+ *
+ * Depth is carried by four things, because flat silhouettes of one colour
+ * read as blocks however well they are arranged:
+ *
+ *  - A back rank of simpler, lighter shapes set between the front ones, so
+ *    buildings overlap. Overlap is the strongest depth cue there is.
+ *  - Three depth bands (.far / .mid / .near). Further buildings sit in more
+ *    atmosphere, so they are lighter and their outline is weaker; the ones
+ *    at the centre are darkest and crispest.
+ *  - A facade pattern of mullions and a window grid, at very low contrast,
+ *    so a tower has surface rather than being a filled rectangle. The lit
+ *    windows stay on top of it.
+ *  - Silhouettes that are not all rect-plus-small-rect: setbacks, a tapered
+ *    crown, a stepped top.
  */
 ---
 
 <div class="city" aria-hidden="true">
   <svg width="1340" height="430" viewBox="0 0 1340 430" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g fill="#08080b" stroke="rgba(255,90,31,.16)" stroke-width="1">
-          <g transform="translate(150 298) rotate(-27)"><g class="bld" style="animation-delay: 1.72s"><rect x="-26" y="-30" width="52" height="30"/><rect x="-8" y="-38" width="12" height="8"/></g></g>
-          <g transform="translate(240 259) rotate(-22)"><g class="bld" style="animation-delay: 1.6s"><rect x="-16" y="-84" width="32" height="84"/><rect x="-10" y="-90" width="20" height="6"/><rect class="win" x="-8" y="-72" width="3" height="4" style="animation-delay: .7s"/><rect class="win" x="4" y="-52" width="3" height="4" style="animation-delay: 2.1s"/></g></g>
-          <g transform="translate(340 225) rotate(-17)"><g class="bld" style="animation-delay: 1.48s"><rect x="-2.5" y="-104" width="5" height="104"/><rect x="-7" y="-112" width="14" height="9"/><g class="jib"><rect x="-26" y="-110" width="26" height="4"/><rect x="0" y="-110" width="80" height="4"/><path d="M0 -121 L34 -108 M0 -121 L-20 -108" stroke="rgba(236,234,227,.35)" stroke-width="1.4"/><rect x="62" y="-106" width="1.5" height="40" fill="rgba(236,234,227,.3)" stroke="none"/><rect x="57" y="-66" width="12" height="7"/></g></g></g>
-          <g transform="translate(430 202) rotate(-12)"><g class="bld" style="animation-delay: 1.36s"><rect x="-20" y="-70" width="40" height="70"/><rect x="-14" y="-96" width="28" height="26"/><rect x="-8" y="-116" width="16" height="20"/><circle class="bcn" cx="0" cy="-120" r="2" stroke="none" style="animation-delay: .9s"/><rect class="win" x="-12" y="-58" width="3" height="4" style="animation-delay: 1.4s"/><rect class="win" x="6" y="-84" width="3" height="4" style="animation-delay: 3s"/><rect class="win" x="-4" y="-108" width="3" height="4"/></g></g>
-          <g transform="translate(510 188) rotate(-8)"><g class="bld" style="animation-delay: 1.24s"><rect x="-30" y="-54" width="60" height="54"/><rect x="-20" y="-61" width="14" height="7"/><rect x="8" y="-60" width="10" height="6"/><rect class="win" x="-18" y="-40" width="4" height="4" style="animation-delay: 2.4s"/><rect class="win" x="10" y="-28" width="4" height="4" style="animation-delay: .4s"/></g></g>
-          <g transform="translate(590 180) rotate(-4)"><g class="bld" style="animation-delay: 1.12s"><rect x="-14" y="-150" width="28" height="150"/><rect x="-1.5" y="-172" width="3" height="22"/><circle class="bcn" cx="0" cy="-174" r="2.2" stroke="none"/><rect class="win" x="-8" y="-134" width="3" height="4" style="animation-delay: 1.8s"/><rect class="win" x="4" y="-108" width="3" height="4" style="animation-delay: .2s"/><rect class="win" x="-8" y="-76" width="3" height="4" style="animation-delay: 3.4s"/><rect class="win" x="4" y="-44" width="3" height="4" style="animation-delay: 2.6s"/></g></g>
-          <g transform="translate(670 177)"><g class="bld" style="animation-delay: 1s"><rect x="-22" y="-92" width="44" height="92"/><rect x="-14" y="-99" width="12" height="7"/><rect class="win" x="-13" y="-76" width="3.5" height="4.5" style="animation-delay: 2.2s"/><rect class="win" x="8" y="-50" width="3.5" height="4.5" style="animation-delay: .6s"/></g></g>
-          <g transform="translate(750 180) rotate(4)"><g class="bld" style="animation-delay: 1.12s"><rect x="-18" y="-186" width="36" height="186"/><rect x="-12" y="-208" width="24" height="22"/><rect x="-1.5" y="-232" width="3" height="24"/><circle class="bcn" cx="0" cy="-234" r="2.4" stroke="none" style="animation-delay: 1.3s"/><rect class="win" x="-11" y="-170" width="3.5" height="4.5" style="animation-delay: .5s"/><rect class="win" x="7" y="-146" width="3.5" height="4.5" style="animation-delay: 2.9s"/><rect class="win" x="-11" y="-114" width="3.5" height="4.5" style="animation-delay: 1.6s"/><rect class="win" x="7" y="-82" width="3.5" height="4.5" style="animation-delay: 3.8s"/><rect class="win" x="-11" y="-52" width="3.5" height="4.5" style="animation-delay: .9s"/></g></g>
-          <g transform="translate(830 188) rotate(8)"><g class="bld" style="animation-delay: 1.24s"><rect x="-2.5" y="-96" width="5" height="96"/><rect x="-7" y="-104" width="14" height="9"/><g class="jib" style="animation-delay: 4s; animation-duration: 22s"><rect x="-70" y="-102" width="70" height="4"/><rect x="0" y="-102" width="24" height="4"/><path d="M0 -113 L-30 -100 M0 -113 L16 -100" stroke="rgba(236,234,227,.35)" stroke-width="1.4"/><rect x="-54" y="-98" width="1.5" height="30" fill="rgba(236,234,227,.3)" stroke="none"/><rect x="-59" y="-68" width="11" height="7"/></g></g></g>
-          <g transform="translate(910 202) rotate(12)"><g class="bld" style="animation-delay: 1.36s"><rect x="-15" y="-120" width="30" height="120"/><rect x="-9" y="-127" width="18" height="7"/><circle class="bcn" cx="0" cy="-130" r="2" stroke="none" style="animation-delay: 2s"/><rect class="win" x="-9" y="-104" width="3" height="4" style="animation-delay: 1.1s"/><rect class="win" x="5" y="-72" width="3" height="4" style="animation-delay: 3.2s"/><rect class="win" x="-9" y="-40" width="3" height="4" style="animation-delay: .3s"/></g></g>
-          <g transform="translate(1000 225) rotate(17)"><g class="bld" style="animation-delay: 1.48s"><rect x="-24" y="-60" width="48" height="60"/><rect x="-16" y="-78" width="32" height="18"/><rect class="win" x="-12" y="-48" width="4" height="4" style="animation-delay: 1.9s"/><rect class="win" x="8" y="-66" width="4" height="4" style="animation-delay: .8s"/></g></g>
-          <g transform="translate(1100 259) rotate(22)"><g class="bld" style="animation-delay: 1.6s"><rect x="-20" y="-44" width="40" height="44"/><rect x="-6" y="-52" width="12" height="8"/><rect class="win" x="-10" y="-30" width="3.5" height="4" style="animation-delay: 2.7s"/></g></g>
-          <g transform="translate(1190 298) rotate(27)"><g class="bld" style="animation-delay: 1.72s"><rect x="-26" y="-26" width="52" height="26"/></g></g>
-        </g>
-      </svg>
+    <defs>
+      <!-- Mullions and a window grid. userSpaceOnUse so the pattern rotates
+           with the building it is painted into and stays square to it. -->
+      <pattern id="fac" width="10" height="14" patternUnits="userSpaceOnUse">
+        <rect x="0" y="0" width="0.7" height="14" fill="rgba(255,206,174,.05)"/>
+        <rect x="2.4" y="3" width="5" height="6.5" fill="rgba(255,138,80,.05)"/>
+      </pattern>
+      <!-- Coarser, fainter: the back rank is further away, so its detail
+           falls below the point where the eye resolves it. -->
+      <pattern id="facFar" width="13" height="18" patternUnits="userSpaceOnUse">
+        <rect x="0" y="0" width="0.7" height="18" fill="rgba(255,206,174,.03)"/>
+        <rect x="3" y="4" width="6" height="8" fill="rgba(255,138,80,.028)"/>
+      </pattern>
+    </defs>
+
+    <!-- ---- Back rank: lighter, simpler, set between the front ones ---- -->
+    <g class="bank far" fill="#120d0b" stroke="rgba(255,90,31,.05)" stroke-width="1">
+      <g transform="translate(195 277) rotate(-24)"><g class="bld" style="animation-delay:1.9s"><rect x="-18" y="-40" width="36" height="40"/><rect class="fc" x="-18" y="-40" width="36" height="40"/></g></g>
+      <g transform="translate(290 241) rotate(-19)"><g class="bld" style="animation-delay:1.82s"><rect x="-15" y="-62" width="30" height="62"/><rect class="fc" x="-15" y="-62" width="30" height="62"/></g></g>
+      <g transform="translate(385 213) rotate(-14)"><g class="bld" style="animation-delay:1.74s"><rect x="-13" y="-96" width="26" height="96"/><rect class="fc" x="-13" y="-96" width="26" height="96"/><rect x="-8" y="-104" width="16" height="8"/></g></g>
+      <g transform="translate(470 194) rotate(-10)"><g class="bld" style="animation-delay:1.66s"><rect x="-20" y="-52" width="40" height="52"/><rect class="fc" x="-20" y="-52" width="40" height="52"/></g></g>
+      <g transform="translate(550 184) rotate(-6)"><g class="bld" style="animation-delay:1.58s"><rect x="-12" y="-124" width="24" height="124"/><rect class="fc" x="-12" y="-124" width="24" height="124"/><rect x="-7" y="-133" width="14" height="9"/></g></g>
+      <g transform="translate(630 178) rotate(-2)"><g class="bld" style="animation-delay:1.5s"><rect x="-16" y="-74" width="32" height="74"/><rect class="fc" x="-16" y="-74" width="32" height="74"/></g></g>
+      <g transform="translate(710 178) rotate(2)"><g class="bld" style="animation-delay:1.5s"><rect x="-14" y="-140" width="28" height="140"/><rect class="fc" x="-14" y="-140" width="28" height="140"/><rect x="-9" y="-152" width="18" height="12"/></g></g>
+      <g transform="translate(790 184) rotate(6)"><g class="bld" style="animation-delay:1.58s"><rect x="-19" y="-58" width="38" height="58"/><rect class="fc" x="-19" y="-58" width="38" height="58"/></g></g>
+      <g transform="translate(870 194) rotate(10)"><g class="bld" style="animation-delay:1.66s"><rect x="-13" y="-104" width="26" height="104"/><rect class="fc" x="-13" y="-104" width="26" height="104"/></g></g>
+      <g transform="translate(955 213) rotate(14)"><g class="bld" style="animation-delay:1.74s"><rect x="-17" y="-68" width="34" height="68"/><rect class="fc" x="-17" y="-68" width="34" height="68"/></g></g>
+      <g transform="translate(1050 241) rotate(19)"><g class="bld" style="animation-delay:1.82s"><rect x="-15" y="-48" width="30" height="48"/><rect class="fc" x="-15" y="-48" width="30" height="48"/></g></g>
+      <g transform="translate(1145 277) rotate(24)"><g class="bld" style="animation-delay:1.9s"><rect x="-19" y="-36" width="38" height="36"/><rect class="fc" x="-19" y="-36" width="38" height="36"/></g></g>
+    </g>
+
+    <!-- ---- Front rank ---- -->
+    <g class="bank" stroke-width="1">
+      <g class="mid" transform="translate(150 298) rotate(-27)"><g class="bld" style="animation-delay: 1.72s"><rect x="-26" y="-30" width="52" height="30"/><rect class="fc" x="-26" y="-30" width="52" height="30"/><rect x="-8" y="-38" width="12" height="8"/></g></g>
+      <g class="mid" transform="translate(240 259) rotate(-22)"><g class="bld" style="animation-delay: 1.6s"><rect x="-16" y="-84" width="32" height="84"/><rect class="fc" x="-16" y="-84" width="32" height="84"/><rect x="-10" y="-90" width="20" height="6"/><rect class="win" x="-8" y="-72" width="3" height="4" style="animation-delay: .7s"/><rect class="win" x="4" y="-52" width="3" height="4" style="animation-delay: 2.1s"/></g></g>
+      <g class="mid" transform="translate(340 225) rotate(-17)"><g class="bld" style="animation-delay: 1.48s"><rect x="-2.5" y="-104" width="5" height="104"/><rect x="-7" y="-112" width="14" height="9"/><g class="jib"><rect x="-26" y="-110" width="26" height="4"/><rect x="0" y="-110" width="80" height="4"/><path d="M0 -121 L34 -108 M0 -121 L-20 -108" stroke="rgba(236,234,227,.35)" stroke-width="1.4"/><rect x="62" y="-106" width="1.5" height="40" fill="rgba(236,234,227,.3)" stroke="none"/><rect x="57" y="-66" width="12" height="7"/></g></g></g>
+      <!-- Stepped crown rather than a box on a box. -->
+      <g class="near" transform="translate(430 202) rotate(-12)"><g class="bld" style="animation-delay: 1.36s"><rect x="-20" y="-70" width="40" height="70"/><rect class="fc" x="-20" y="-70" width="40" height="70"/><rect x="-14" y="-96" width="28" height="26"/><rect class="fc" x="-14" y="-96" width="28" height="26"/><rect x="-8" y="-116" width="16" height="20"/><circle class="bcn" cx="0" cy="-120" r="2" stroke="none" style="animation-delay: .9s"/><rect class="win" x="-12" y="-58" width="3" height="4" style="animation-delay: 1.4s"/><rect class="win" x="6" y="-84" width="3" height="4" style="animation-delay: 3s"/><rect class="win" x="-4" y="-108" width="3" height="4"/></g></g>
+      <g class="near" transform="translate(510 188) rotate(-8)"><g class="bld" style="animation-delay: 1.24s"><rect x="-30" y="-54" width="60" height="54"/><rect class="fc" x="-30" y="-54" width="60" height="54"/><rect x="-20" y="-61" width="14" height="7"/><rect x="8" y="-60" width="10" height="6"/><rect class="win" x="-18" y="-40" width="4" height="4" style="animation-delay: 2.4s"/><rect class="win" x="10" y="-28" width="4" height="4" style="animation-delay: .4s"/></g></g>
+      <!-- Tapered crown. -->
+      <g class="near" transform="translate(590 180) rotate(-4)"><g class="bld" style="animation-delay: 1.12s"><rect x="-14" y="-150" width="28" height="150"/><rect class="fc" x="-14" y="-150" width="28" height="150"/><path d="M-14 -150 L0 -166 L14 -150 Z"/><rect x="-1.5" y="-186" width="3" height="20"/><circle class="bcn" cx="0" cy="-188" r="2.2" stroke="none"/><rect class="win" x="-8" y="-134" width="3" height="4" style="animation-delay: 1.8s"/><rect class="win" x="4" y="-108" width="3" height="4" style="animation-delay: .2s"/><rect class="win" x="-8" y="-76" width="3" height="4" style="animation-delay: 3.4s"/><rect class="win" x="4" y="-44" width="3" height="4" style="animation-delay: 2.6s"/></g></g>
+      <g class="near" transform="translate(670 177)"><g class="bld" style="animation-delay: 1s"><rect x="-22" y="-92" width="44" height="92"/><rect class="fc" x="-22" y="-92" width="44" height="92"/><rect x="-14" y="-99" width="12" height="7"/><rect class="win" x="-13" y="-76" width="3.5" height="4.5" style="animation-delay: 2.2s"/><rect class="win" x="8" y="-50" width="3.5" height="4.5" style="animation-delay: .6s"/></g></g>
+      <!-- Two setbacks on the way up, which is what tall towers actually do. -->
+      <g class="near" transform="translate(750 180) rotate(4)"><g class="bld" style="animation-delay: 1.12s"><rect x="-18" y="-120" width="36" height="120"/><rect class="fc" x="-18" y="-120" width="36" height="120"/><rect x="-14" y="-176" width="28" height="56"/><rect class="fc" x="-14" y="-176" width="28" height="56"/><rect x="-9" y="-208" width="18" height="32"/><rect class="fc" x="-9" y="-208" width="18" height="32"/><rect x="-1.5" y="-232" width="3" height="24"/><circle class="bcn" cx="0" cy="-234" r="2.4" stroke="none" style="animation-delay: 1.3s"/><rect class="win" x="-11" y="-170" width="3.5" height="4.5" style="animation-delay: .5s"/><rect class="win" x="7" y="-146" width="3.5" height="4.5" style="animation-delay: 2.9s"/><rect class="win" x="-11" y="-114" width="3.5" height="4.5" style="animation-delay: 1.6s"/><rect class="win" x="7" y="-82" width="3.5" height="4.5" style="animation-delay: 3.8s"/><rect class="win" x="-11" y="-52" width="3.5" height="4.5" style="animation-delay: .9s"/></g></g>
+      <g class="near" transform="translate(830 188) rotate(8)"><g class="bld" style="animation-delay: 1.24s"><rect x="-2.5" y="-96" width="5" height="96"/><rect x="-7" y="-104" width="14" height="9"/><g class="jib" style="animation-delay: 4s; animation-duration: 22s"><rect x="-70" y="-102" width="70" height="4"/><rect x="0" y="-102" width="24" height="4"/><path d="M0 -113 L-30 -100 M0 -113 L16 -100" stroke="rgba(236,234,227,.35)" stroke-width="1.4"/><rect x="-54" y="-98" width="1.5" height="30" fill="rgba(236,234,227,.3)" stroke="none"/><rect x="-59" y="-68" width="11" height="7"/></g></g></g>
+      <g class="near" transform="translate(910 202) rotate(12)"><g class="bld" style="animation-delay: 1.36s"><rect x="-15" y="-120" width="30" height="120"/><rect class="fc" x="-15" y="-120" width="30" height="120"/><rect x="-9" y="-127" width="18" height="7"/><circle class="bcn" cx="0" cy="-130" r="2" stroke="none" style="animation-delay: 2s"/><rect class="win" x="-9" y="-104" width="3" height="4" style="animation-delay: 1.1s"/><rect class="win" x="5" y="-72" width="3" height="4" style="animation-delay: 3.2s"/><rect class="win" x="-9" y="-40" width="3" height="4" style="animation-delay: .3s"/></g></g>
+      <g class="mid" transform="translate(1000 225) rotate(17)"><g class="bld" style="animation-delay: 1.48s"><rect x="-24" y="-60" width="48" height="60"/><rect class="fc" x="-24" y="-60" width="48" height="60"/><rect x="-16" y="-78" width="32" height="18"/><rect class="fc" x="-16" y="-78" width="32" height="18"/><rect class="win" x="-12" y="-48" width="4" height="4" style="animation-delay: 1.9s"/><rect class="win" x="8" y="-66" width="4" height="4" style="animation-delay: .8s"/></g></g>
+      <g class="mid" transform="translate(1100 259) rotate(22)"><g class="bld" style="animation-delay: 1.6s"><rect x="-20" y="-44" width="40" height="44"/><rect class="fc" x="-20" y="-44" width="40" height="44"/><rect x="-6" y="-52" width="12" height="8"/><rect class="win" x="-10" y="-30" width="3.5" height="4" style="animation-delay: 2.7s"/></g></g>
+      <g class="mid" transform="translate(1190 298) rotate(27)"><g class="bld" style="animation-delay: 1.72s"><rect x="-26" y="-26" width="52" height="26"/><rect class="fc" x="-26" y="-26" width="52" height="26"/></g></g>
+    </g>
+  </svg>
 </div>
