@@ -36,12 +36,19 @@ and it pushes to `main`, which deploys.
 
 **Status:** configured and tested, 11 November 2026. `ENQUIRY_WEBHOOK_URL` is
 set on the Netlify project and points at the GoHighLevel inbound webhook.
-`ENQUIRY_WEBHOOK_TOKEN` is unset and not needed — the GoHighLevel hook URL
-carries its own capability token.
+`CONTACT_WEBHOOK_URL` points at a second GoHighLevel hook, so the contact form
+and the brief land separately — a brief is a qualified enquiry carrying sector,
+budget and timing, a contact message is a question, and routing both to one
+hook meant the CRM had to tell them apart after the fact. If the contact
+variable is ever unset, contact falls back to the enquiry hook rather than
+being dropped.
 
-**The URL is deliberately not in this repository.** This repo is public, and a
-GoHighLevel inbound hook URL is a capability: anyone holding it can post
-arbitrary leads into the CRM. It lives only in the Netlify environment.
+`ENQUIRY_WEBHOOK_TOKEN` is unset and not needed — the GoHighLevel hook URLs
+carry their own capability tokens.
+
+**Neither URL is in this repository.** This repo is public, and a GoHighLevel
+inbound hook URL is a capability: anyone holding it can post arbitrary leads
+into the CRM. They live only in the Netlify environment.
 
 **Two things worth tightening**, neither of which this project's plan allowed
 through the API — both are a few clicks in **Netlify → Project configuration →

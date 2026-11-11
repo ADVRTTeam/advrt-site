@@ -2,10 +2,19 @@
  * Enquiry forwarder for the brief and contact forms.
  *
  * Takes a POST from either form, runs two cheap spam checks, normalises the
- * payload and forwards it to ENQUIRY_WEBHOOK_URL. Nothing is stored here.
+ * payload and forwards it. Nothing is stored here.
+ *
+ * The two forms go to different places, because they are different things:
+ * a brief is a qualified enquiry with sector, budget and timing on it, and a
+ * contact message is someone asking a question. Routing them to one hook
+ * meant the CRM had to tell them apart after the fact.
  *
  * Env:
- *   ENQUIRY_WEBHOOK_URL    required — where enquiries are forwarded
+ *   ENQUIRY_WEBHOOK_URL    required — where the brief is forwarded, and the
+ *                          fallback for anything else
+ *   CONTACT_WEBHOOK_URL    optional — where the contact form is forwarded.
+ *                          Unset, contact falls back to ENQUIRY_WEBHOOK_URL
+ *                          rather than being dropped.
  *   ENQUIRY_WEBHOOK_TOKEN  optional — sent as "Authorization: Bearer <token>"
  *
  * Responds with JSON to fetch (the forms submit by fetch when JS is on) and
@@ -73,10 +82,17 @@ export default async (req) => {
   }
 
   // ---- Forward --------------------------------------------------------
-  const target = process.env.ENQUIRY_WEBHOOK_URL;
+  const form = String(fields.form ?? 'unknown');
+
+  // The contact form has its own hook. Anything else, including the brief,
+  // goes to the enquiry hook — and so does contact if its own is not set,
+  // because losing a message is worse than filing it in the wrong place.
+  const target =
+    (form === 'contact' ? process.env.CONTACT_WEBHOOK_URL : '') ||
+    process.env.ENQUIRY_WEBHOOK_URL;
 
   const payload = {
-    form: String(fields.form ?? 'unknown'),
+    form,
     submittedAt: new Date().toISOString(),
     source: {
       page: String(fields.page ?? ''),
@@ -90,10 +106,7 @@ export default async (req) => {
 
   if (!target) {
     // Not configured yet. Say so plainly rather than silently dropping a lead.
-    console.error('ENQUIRY_WEBHOOK_URL is not set — enquiry was not forwarded', {
-      form: payload.form,
-      email,
-    });
+    console.error('No webhook is configured — enquiry was not forwarded', { form, email });
     return json(
       {
         ok: false,
