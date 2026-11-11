@@ -213,31 +213,6 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
       </div>
     </form>
 
-    <!-- ---- Confirmation ---- -->
-    <div class="stage" id="done" style="min-height:560px;display:flex;flex-direction:column;justify-content:center;gap:26px" hidden>
-      <span class="okring" aria-hidden="true">
-        <svg width="40" height="40" viewBox="0 0 16 16" fill="none" stroke="#0b0b0c" stroke-width="2.4" stroke-dasharray="40" style="animation:drawok .8s .3s ease both"><path d="M2.5 8.5l3.5 3.5 7.5-8"/></svg>
-      </span>
-      <h2 class="disp" style="font-size:clamp(34px,5.4vw,80px)">All done, <span class="glow" id="done-name">thanks.</span></h2>
-      <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
-        <span class="stepflag done">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8"/></svg>
-          Brief received
-        </span>
-      </div>
-      <div>
-        <p class="flabel" style="margin-bottom:14px">What happens next</p>
-        <ol class="nexts">
-          <li><b>1</b>We read your brief and come back to you, usually the same working day.</li>
-          <li><b>2</b>If a call suits you better, the calendar is still open — go back and pick a time.</li>
-          <li><b>3</b>When we talk: your numbers, your patch, and the plan we'd build. No pitch deck.</li>
-        </ol>
-      </div>
-      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:8px">
-        <a class="cbtn" href="/">Back to home →</a>
-        <a class="backlk" href={`mailto:${site.email}`}>Or email us instead</a>
-      </div>
-    </div>
   </main>
 </Base>
 
@@ -320,7 +295,7 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
     const pfill = document.getElementById('pfill') as HTMLElement;
     const briefError = document.getElementById('brief-error') as HTMLElement;
     const callError = document.getElementById('call-error') as HTMLElement;
-    const done = document.getElementById('done') as HTMLElement;
+    const bfoot = document.querySelector('.bfoot') as HTMLElement;
     const recap = document.getElementById('recap')!;
     const cal = document.getElementById('cal')!;
 
@@ -361,7 +336,6 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
       'Next: budget and timing',
       'Next: your details',
       'Then: book your call',
-      'Or finish — the brief is already in',
     ];
 
     function paint() {
@@ -390,11 +364,13 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
         b.disabled = n > i;
       });
       back.hidden = i === 0 || i >= BOOKING;
-      // On the booking step the calendar does the booking, so our button
-      // cannot claim to. It becomes the way out for anyone who would rather
-      // not book — the brief is already sent by then either way.
-      next.classList.toggle('ghost', i === BOOKING);
-      nextLabel.textContent = i === LAST ? 'Send brief' : i === BOOKING ? "I'll book later" : 'Continue';
+      // The booking step has no control of ours. The calendar does the
+      // booking and confirms it in its own frame, so the only button we could
+      // offer there would be a way out of booking — and the point of the step
+      // is the call. The footer hides entirely; the close control in the top
+      // bar is still there for anyone who wants to leave.
+      bfoot.hidden = i === BOOKING;
+      nextLabel.textContent = i === LAST ? 'Send brief' : 'Continue';
       briefError.hidden = true;
       callError.hidden = true;
       paint();
@@ -583,19 +559,9 @@ const tick = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke
         return;
       }
 
-      // Booking step. The calendar books the call inside its own iframe and
-      // confirms it there, and it tells us nothing — the embed script handles
-      // resizing and contact stickiness, and emits no booking event we could
-      // listen for. So this button never claims a call was booked; it is the
-      // way out for someone who would rather not, and the brief is in either
-      // way.
-      callError.hidden = true;
-      document.getElementById('done-name')!.textContent = `${text('name').split(' ')[0] || 'thanks'}.`;
-      form.hidden = true;
-      done.hidden = false;
-      pfill.style.width = '100%';
-      topMeta.textContent = 'Start a project · Done';
-      scrollTo({ top: 0, behavior: 'smooth' });
+      // There is no step past the booking one: the calendar books the call
+      // and confirms it inside its own frame, and the footer is hidden there,
+      // so nothing can submit this form again.
     });
 
     syncWork();

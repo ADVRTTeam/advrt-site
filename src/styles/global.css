@@ -922,6 +922,9 @@ section { scroll-margin-top: 84px; }
   margin-top: auto; padding-top: 44px; display: flex;
   justify-content: space-between; align-items: center; gap: 12px;
 }
+/* display:flex outranks the user-agent rule for [hidden], so the booking
+   step, which has no control of its own, needs this to lose the footer. */
+.bfoot[hidden] { display: none !important; }
 .q {
   font-weight: 850; font-stretch: 104%; text-transform: uppercase;
   letter-spacing: -.02em; line-height: .96; font-size: clamp(27px, 4vw, 52px);
