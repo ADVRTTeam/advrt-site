@@ -54,20 +54,58 @@ export default async (req) => {
     (req.headers.get('accept') ?? '').includes('application/json');
 
   // ---- Spam checks ----------------------------------------------------
-  // 1. Honeypot: a field people never see and bots usually fill.
-  if (typeof fields._gotcha === 'string' && fields._gotcha.trim() !== '') {
-    // Look successful so the bot does not retry.
+  // Both forms submit with new FormData(form), so every field in the markup
+  // is always sent — by the fetch path and by a no-JS native post alike.
+  // That means a MISSING field is itself the signal: it says the request did
+  // not come from our form at all.
+  //
+  // This is where spam was getting in. The checks used to run only when the
+  // fields happened to be present, so a bot posting JSON straight at this
+  // endpoint with nothing but a name, an email and a message skipped both of
+  // them and was forwarded like anything else.
+  //
+  // Everything below looks successful rather than returning an error, so a
+  // bot gets no signal to tune against and no reason to retry.
+  const quietlyDrop = (reason) => {
+    console.warn('Dropped a submission', { reason, form: fields.form ?? 'unknown' });
     return wantsJson ? json({ ok: true }) : redirect('/thank-you');
+  };
+
+  // 1. The form's own fields must be there at all.
+  if (typeof fields._gotcha !== 'string' || typeof fields._t !== 'string') {
+    return quietlyDrop('not_from_our_form');
   }
 
-  // 2. Time-to-submit: a human takes more than a couple of seconds.
+  // 2. Honeypots: fields nobody can see and bots fill anyway. Two of them,
+  //    because _gotcha is a well-known name that better bots skip, while a
+  //    field called "url" is one they reach for.
+  for (const name of ['_gotcha', 'url']) {
+    if (typeof fields[name] === 'string' && fields[name].trim() !== '') {
+      return quietlyDrop(`honeypot:${name}`);
+    }
+  }
+
+  // 3. Time to submit. Empty means scripting was off and nothing filled it,
+  //    which is fine — the field being present is what mattered. There is
+  //    deliberately no upper bound: leaving a tab open overnight and sending
+  //    in the morning is a real thing people do.
   const started = Number(fields._t);
-  if (Number.isFinite(started) && Date.now() - started < 2500) {
-    return wantsJson ? json({ ok: true }) : redirect('/thank-you');
+  if (fields._t !== '' && (!Number.isFinite(started) || Date.now() - started < 2500)) {
+    return quietlyDrop('too_fast');
+  }
+
+  // 4. Where it was sent from. A browser sets Origin on a cross-origin post,
+  //    so a wrong one is conclusive; an absent one is not, and same-origin
+  //    posts legitimately omit it.
+  const origin = req.headers.get('origin');
+  if (origin) {
+    const allowed = ['https://advrt.co.uk', 'https://www.advrt.co.uk', 'https://advrt-site.netlify.app'];
+    if (!allowed.includes(origin)) return quietlyDrop(`bad_origin:${origin}`);
   }
 
   delete fields._gotcha;
   delete fields._t;
+  delete fields.url;
 
   // ---- Validate -------------------------------------------------------
   const name = String(fields.name ?? '').trim();
@@ -91,9 +129,16 @@ export default async (req) => {
     (form === 'contact' ? process.env.CONTACT_WEBHOOK_URL : '') ||
     process.env.ENQUIRY_WEBHOOK_URL;
 
+  // A link-stuffed message is the shape almost all contact spam takes. This
+  // is a guess rather than a certainty, so it never drops anything — it tags
+  // the payload and lets the CRM file it for a look. A lead quietly binned by
+  // a heuristic costs far more than one in the wrong folder.
+  const links = (String(fields.message ?? '').match(/https?:\/\/|www\./gi) ?? []).length;
+
   const payload = {
     form,
     submittedAt: new Date().toISOString(),
+    ...(links >= 3 ? { suspectedSpam: true, suspectedSpamReason: `links:${links}` } : {}),
     source: {
       page: String(fields.page ?? ''),
       referrer: req.headers.get('referer') ?? '',
