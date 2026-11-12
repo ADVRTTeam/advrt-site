@@ -106,14 +106,76 @@ const directGa4 = gtm ? '' : ga4;
 
         const loadGa = () => (gtm ? loadGtm() : loadDirectGa4());
 
+        /**
+         * When to ask.
+         *
+         * Not on arrival. The banner is fixed to the bottom of the window and
+         * the hero is the one part of this site built to be looked at, so
+         * putting a panel across it the moment someone lands spoils the first
+         * thing they see and asks for a decision before they know what the
+         * site is.
+         *
+         * Instead it waits until the hero has nearly left: its bottom edge up
+         * in the top fifth of the window. On the home page that is the whole
+         * skyline gone rather than a panel across it. Someone who lands and
+         * leaves is never asked, which is the right outcome — nothing
+         * non-essential runs without an answer, so no answer costs them
+         * nothing.
+         *
+         * The margin is measured against the window rather than the hero
+         * because hero heights differ: the home page's is taller than the
+         * window, an article's is shorter. Testing the bottom edge alone
+         * would fire after a hundred pixels on the first and immediately, at
+         * rest, on the second.
+         */
+        function armBanner() {
+          const hero = document.querySelector('.hero');
+          let shown = false;
+
+          const pastHero = () =>
+            hero
+              ? hero.getBoundingClientRect().bottom <= window.innerHeight * 0.2
+              : window.scrollY > window.innerHeight * 0.6;
+
+          // Some pages can never scroll far enough to reach that point —
+          // /start-a-project is one window tall and does not scroll at all.
+          // Rather than guess, work out whether the trigger is reachable.
+          const reachable = () => {
+            const max = document.documentElement.scrollHeight - window.innerHeight;
+            if (max <= 40) return false;
+            if (!hero) return max > window.innerHeight * 0.6;
+            const heroBottom = hero.getBoundingClientRect().bottom + window.scrollY;
+            return max >= heroBottom - window.innerHeight * 0.2;
+          };
+
+          const show = () => {
+            if (shown) return;
+            shown = true;
+            window.removeEventListener('scroll', onScroll);
+            el.hidden = false;
+          };
+
+          const onScroll = () => { if (pastHero()) show(); };
+          window.addEventListener('scroll', onScroll, { passive: true });
+
+          // Reloading mid-page, or following a #link, can land past the hero
+          // already. Re-checked after load because late images and fonts move
+          // the hero's edge and decide whether the page scrolls at all.
+          const settle = () => {
+            if (pastHero()) show();
+            else if (!reachable()) setTimeout(() => { if (!reachable()) show(); }, 2500);
+          };
+          if (document.readyState === 'complete') settle();
+          else window.addEventListener('load', settle, { once: true });
+        }
+
         let stored = null;
         try { stored = localStorage.getItem(KEY); } catch {}
 
         if (stored === 'yes') {
           loadGa();
         } else if (stored !== 'no' && el) {
-          // Let the page settle before asking.
-          setTimeout(() => { el.hidden = false; }, 900);
+          armBanner();
         }
 
         const set = (v) => {
