@@ -22,9 +22,15 @@ export default defineConfig({
   compressHTML: true,
   integrations: [
     sitemap({
-      // /thank-you is noindex: it exists only as the landing page for a
-      // no-JS form post, so it has no business in the sitemap.
-      filter: (page) => !page.replace(/\/$/, '').endsWith('/thank-you'),
+      // Pages that carry noindex stay out of the sitemap, which would
+      // otherwise be asking Google to crawl what the page then tells it to
+      // drop. /thank-you is the landing page for a form post; /contact is
+      // unlinked and noindexed while it draws promotional spam, and still
+      // works for anyone holding the URL.
+      filter: (page) => {
+        const path = new URL(page).pathname.replace(/\/$/, '');
+        return !['/thank-you', '/contact'].includes(path);
+      },
     }),
   ],
   build: {

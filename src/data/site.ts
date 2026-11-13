@@ -55,12 +55,18 @@ export const sectorNav = [
   { label: 'Wider built environment', note: 'Specialists', href: '/built-environment' },
 ] as const;
 
-/** Primary nav, left to right, beside the logo. */
+/**
+ * Primary nav, left to right, beside the logo.
+ *
+ * /contact is deliberately absent. The page still exists and still works,
+ * but it was drawing promotional spam and a real enquiry has a better route
+ * through the brief, so it is unlinked and noindexed rather than deleted.
+ * Put the entry back here and in footerCompany to bring it out again.
+ */
 export const primaryNav = [
   { label: 'Work', href: '/#work' },
   { label: 'Process', href: '/#process' },
   { label: 'Insights', href: '/insights' },
-  { label: 'Contact', href: '/contact' },
 ] as const;
 
 export const footerCompany = [
@@ -68,7 +74,6 @@ export const footerCompany = [
   { label: 'Our work', href: '/#work' },
   { label: 'How we work', href: '/#process' },
   { label: 'Insights', href: '/insights' },
-  { label: 'Contact us', href: '/contact' },
   { label: 'Start a project', href: '/start-a-project' },
 ] as const;
 

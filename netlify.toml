@@ -100,6 +100,20 @@
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
 
+# /contact is unlinked and noindexed while it draws promotional spam. The page
+# and its form still work for anyone holding the URL — this only stops it being
+# indexed. Same reasoning as above: it stays crawlable, because a crawler
+# blocked by robots.txt could not read the directive.
+[[headers]]
+  for = "/contact"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/contact/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
 [[headers]]
   for = "/thank-you/*"
   [headers.values]

@@ -42,7 +42,6 @@ export async function GET({ site: base }: APIContext) {
     '',
     `- [Home](${u('/')}): what ADVRT does, the work it has shipped and how a build runs.`,
     `- [Start a project](${u('/start-a-project')}): the project brief. Five questions, then a discovery call.`,
-    `- [Contact](${u('/contact')}): general enquiries, partnerships, press and client support.`,
     `- [Insights](${u('/insights')}): field notes on lead generation in the built environment.`,
     '',
     '## Insights',
