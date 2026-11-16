@@ -415,16 +415,18 @@ const schema = [
             <div class="resfig">
               <p class="lbl resfl">{s.results.metric.label}</p>
               <div class="resba">
-                <div class="resq">
-                  <span class="rk">Before</span>
-                  <span class="rv">{s.results.metric.before}</span>
-                </div>
-                <svg class="resar" viewBox="0 0 34 12" fill="none" aria-hidden="true">
-                  <path d="M0 6h30M25 1.5L30.5 6 25 10.5" stroke="currentColor" stroke-width="1.6"/>
-                </svg>
-                <div class="resq now">
-                  <span class="rk">After</span>
-                  <span class="rv">{s.results.metric.after}</span>
+                <div class="respair">
+                  <div class="resq">
+                    <span class="rk">Before</span>
+                    <span class="rv">{s.results.metric.before}</span>
+                  </div>
+                  <svg class="resar" viewBox="0 0 34 12" fill="none" aria-hidden="true">
+                    <path d="M0 6h30M25 1.5L30.5 6 25 10.5" stroke="currentColor" stroke-width="1.6"/>
+                  </svg>
+                  <div class="resq now">
+                    <span class="rk">After</span>
+                    <span class="rv">{s.results.metric.after}</span>
+                  </div>
                 </div>
                 <div class="resd">
                   <span class="rd">{s.results.metric.delta}</span>
@@ -619,7 +621,8 @@ const schema = [
     border: 1px solid var(--line-3); background: var(--ink-3);
   }
   .resfl { color: var(--fg-4); }
-  .resba { margin-top: 14px; display: flex; align-items: flex-end; gap: 18px; flex-wrap: wrap; }
+  .resba { margin-top: 14px; display: flex; align-items: flex-end; gap: 18px; }
+  .respair { display: flex; align-items: flex-end; gap: 18px; min-width: 0; }
   .resq { display: flex; flex-direction: column; gap: 4px; }
   .rk {
     font-size: 10.5px; font-weight: 800; letter-spacing: .14em;
@@ -635,14 +638,26 @@ const schema = [
     display: flex; flex-direction: column; gap: 4px; margin-left: auto;
     padding-left: 18px; border-left: 1px solid var(--line-3);
   }
-  @media (max-width: 420px) {
-    .resd { margin-left: 0; padding-left: 0; border-left: 0; }
-  }
   .rd {
     font-weight: 850; font-stretch: 104%; font-size: clamp(30px, 3.2vw, 42px);
     line-height: 1; color: var(--acc); text-shadow: var(--glow-txt);
   }
   .resnote { margin-top: 14px; font-size: 13.5px; line-height: 1.55; color: var(--fg-4); }
+
+  /* Narrow: the three figures stop fitting on one line, and letting them
+     wrap stranded the change on its own row still carrying the divider that
+     belongs beside it. The pair moves above instead, and the change — the
+     part worth reading — drops below its own rule and gets bigger. */
+  @media (max-width: 620px) {
+    .resba { flex-direction: column; align-items: stretch; gap: 16px; }
+    .respair { justify-content: flex-start; gap: 16px; }
+    .resd {
+      margin-left: 0; padding-left: 0; border-left: 0;
+      padding-top: 16px; border-top: 1px solid var(--line-3);
+      align-items: center; text-align: center; gap: 6px;
+    }
+    .rd { font-size: clamp(40px, 12vw, 54px); }
+  }
 
   .resdl { margin-top: 28px; }
   .resdid { list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 11px; }
