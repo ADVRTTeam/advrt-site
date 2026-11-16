@@ -89,6 +89,50 @@ piece, or none.
 
 ---
 
+## 1b. Read the AI-search picture too
+
+Koalr tracks where AI answers cite ADVRT and where they do not.
+`site_id: 5a37b1a3-b6a4-4bfa-9a92-da976b4d7f22`. Call `get_actions`,
+`get_content_opportunities` and `get_gaps`.
+
+**Read its content recommendations carefully rather than following them.**
+As of November 2026 every "write a stronger guide" it suggests points at the
+same kind of page: a third-party listicle — "best Google Ads agencies for
+builders", "top UK construction marketing agencies", "top lead generation
+companies for contractors". That is genuinely what AI cites for these
+prompts. But the move it implies is publishing our own agency roundup on our
+own domain, with us in it, and that is self-serving in a way this site spends
+its whole homepage arguing against. It would cost more in credibility than it
+returns in citations.
+
+**The honest version of the same play** is a buyer's guide that does not
+nominate a winner: what to ask an agency, what the answers tell you, what the
+warning signs are, what each pricing model really costs. That can legitimately
+be the best answer to "best paid search agency for contractor lead
+generation" without us claiming to be it. If a piece in a batch targets
+vendor-selection prompts, write that one.
+
+**What Koalr is actually telling us is that the cheapest wins are not
+content.** Its top three actions are off-page: get listed on goodfirms.co and
+houzz.com, and publish on LinkedIn, which is cited across six platforms and
+where a competitor's company page ranks for our exact positioning. There is
+also already a Clutch profile under ADVRT's name that may be stale. None of
+that is a writing job, so note it in the report and move on — but do not spend
+a week writing to solve a problem a directory listing would solve.
+
+**Two cautions when reading its data:**
+
+Some tracked prompts pull noise. "Paid surveys in Denver, Colorado" is market
+research, not surveying; comparemymove.com is a removals comparison site.
+Treat a source that has nothing to do with the built environment as a prompt
+that needs retiring, not a gap to chase.
+
+The site's own GEO score is 81/100 and the top fixes would take it to 83. On-site
+structure is not the constraint, so do not let an audit score pull a week of
+work onto tidying pages that already score well.
+
+---
+
 ## 2. Decide what to write
 
 Four questions, in this order. Each can produce a candidate.
@@ -106,6 +150,14 @@ Google is starting to associate with the site — that is the pillar to feed.
 few or no clicks. These are the cheapest wins on the board: one focused piece,
 or a strengthening pass on the page already ranking, moves them onto page one.
 Prefer these over anything else when they exist.
+
+**c2. Vendor-selection prompts.** The queries Koalr tracks are people
+choosing an agency — "who runs Google Ads campaigns for construction
+contractors", "best paid search agency for property developers". That is a
+different class from the trade-education queries most of this blog targets,
+and it sits further down the funnel. Both are worth having. Do not let one
+crowd the other out: at most one piece a batch should aim at vendor
+selection, and it follows the buyer's-guide rule in §1b.
 
 **d. Pillar gaps.** The seven sectors in `src/data/sectors.ts` are the pillars:
 surveyors, architects, contractors, compliance, fire protection, training,

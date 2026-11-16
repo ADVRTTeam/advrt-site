@@ -50,6 +50,28 @@ If one is agreed, it belongs at the top of that list: it is the only item there
 a competitor cannot equally claim, and it is the reason their version of this
 section is stronger than ours.
 
+## 0d. The off-page AI-search wins, which are not code
+
+Koalr's three highest-value actions for advrt.co.uk are all off-page, all
+rated low or medium effort, and none of them is something I can do from here.
+They are worth more than the next month of writing.
+
+- **Claim and check the Clutch profile.** One already exists under ADVRT's
+  name at `clutch.co/profile/advrt-your-ads-zero-habenero` — the slug looks
+  like older branding, so check it is ours and that it is current. Clutch is
+  cited by Claude, Gemini and Perplexity across the tracked prompts.
+- **Get listed on goodfirms.co** (cited by Copilot and Gemini on 3 prompts)
+  **and houzz.com** (Claude and Gemini, the architects prompt). Both free.
+- **The LinkedIn company page.** linkedin.com is cited on 5 of 5 tracked
+  prompts across six platforms, and the page winning that slot is a
+  competitor's company page ranking for "Lead Generation for Construction &
+  the Built Environment". That is the single clearest gap in the data.
+
+Also worth doing: tune the tracked prompt set. Some are pulling results with
+nothing to do with the built environment — a Denver market-research page for
+"paid surveys", a removals comparison site — and they drag the
+recommendations with them.
+
 ## 1. Enquiry webhook
 
 **Status:** configured and tested, 11 November 2026. `ENQUIRY_WEBHOOK_URL` is
