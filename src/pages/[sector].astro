@@ -397,6 +397,66 @@ const schema = [
       </section>
     )}
 
+    <!-- 09b · RESULTS ROW -->
+    {s.results && (
+      <section class="wrap" style="padding-top:110px">
+        <p class="lbl"><span class="dot" aria-hidden="true"></span>{s.results.tag}</p>
+        <div class="resrow" data-rise>
+          <div class="resleft">
+            <figure class="resshot">
+              <Image
+                src={img(s.results.img)} alt={s.results.alt}
+                widths={[520, 820, 1200, 1640]}
+                sizes="(max-width: 980px) 92vw, 620px"
+                loading="lazy" decoding="async"
+              />
+            </figure>
+
+            <div class="resfig">
+              <p class="lbl resfl">{s.results.metric.label}</p>
+              <div class="resba">
+                <div class="resq">
+                  <span class="rk">Before</span>
+                  <span class="rv">{s.results.metric.before}</span>
+                </div>
+                <svg class="resar" viewBox="0 0 34 12" fill="none" aria-hidden="true">
+                  <path d="M0 6h30M25 1.5L30.5 6 25 10.5" stroke="currentColor" stroke-width="1.6"/>
+                </svg>
+                <div class="resq now">
+                  <span class="rk">After</span>
+                  <span class="rv">{s.results.metric.after}</span>
+                </div>
+                <div class="resd">
+                  <span class="rd">{s.results.metric.delta}</span>
+                  <span class="rk">Relative change</span>
+                </div>
+              </div>
+              <p class="resnote">{s.results.metric.note}</p>
+            </div>
+          </div>
+
+          <div class="resbody">
+            <p class="resclient">{s.results.client}</p>
+            <p class="resmeta">{s.results.meta}</p>
+            <h3 class="disp resh">{s.results.head}</h3>
+            <p class="lede resl">{s.results.lede}</p>
+
+            <p class="lbl resdl">What we did</p>
+            <ul class="resdid">
+              {s.results.did.map((d) => (
+                <li>
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8"/></svg>
+                  {d}
+                </li>
+              ))}
+            </ul>
+
+            <p class="resout">{s.results.outcome}</p>
+          </div>
+        </div>
+      </section>
+    )}
+
     <!-- 10 · FAQ -->
     <section id="faq" class="wrap" style="padding-top:120px">
       <p class="lbl"><span class="dot" aria-hidden="true"></span>Straight answers</p>
@@ -523,6 +583,77 @@ const schema = [
   .labgrid {
     margin-top: 36px; display: grid; gap: 14px;
     grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  }
+
+  /* ---- Results row ----------------------------------------------------
+     One real build, told in the order someone reads it: what it looked like,
+     what moved, what we did, what it was worth. The image sits left so the
+     eye lands on the thing itself before the claim about it. */
+  .resrow {
+    margin-top: 22px; display: grid; gap: 34px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start;
+  }
+  @media (max-width: 980px) { .resrow { grid-template-columns: minmax(0, 1fr); gap: 26px; } }
+
+  .resshot {
+    margin: 0; border-radius: var(--r-md); overflow: clip;
+    border: 1px solid var(--line-3); background: var(--ink-3);
+    box-shadow: 0 30px 70px -34px rgba(0, 0, 0, .9);
+  }
+  .resshot img { display: block; width: 100%; height: auto; }
+
+  .resleft { min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+  .resbody { min-width: 0; }
+  .resclient {
+    font-weight: 850; font-stretch: 104%; text-transform: uppercase;
+    font-size: clamp(17px, 1.5vw, 21px); line-height: 1.1; letter-spacing: -.01em;
+  }
+  .resmeta { margin-top: 6px; font-size: 13.5px; font-weight: 600; color: var(--fg-5); }
+  .resh { margin-top: 16px; font-size: clamp(23px, 2.4vw, 34px); max-width: 19ch; }
+  .resl { margin-top: 14px; font-size: 15.5px; max-width: 54ch; }
+
+  /* The figures. Before and after are stated next to the relative change so
+     the percentage can never be read without the numbers it came from. */
+  .resfig {
+    padding: 20px 22px 18px; border-radius: var(--r-sm);
+    border: 1px solid var(--line-3); background: var(--ink-3);
+  }
+  .resfl { color: var(--fg-4); }
+  .resba { margin-top: 14px; display: flex; align-items: flex-end; gap: 18px; flex-wrap: wrap; }
+  .resq { display: flex; flex-direction: column; gap: 4px; }
+  .rk {
+    font-size: 10.5px; font-weight: 800; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--fg-5);
+  }
+  .rv {
+    font-weight: 850; font-stretch: 104%; font-size: clamp(26px, 2.6vw, 34px);
+    line-height: 1; color: var(--fg-4);
+  }
+  .resq.now .rv { color: var(--fg); }
+  .resar { width: 34px; height: 12px; margin-bottom: 11px; color: var(--fg-5); flex: none; }
+  .resd {
+    display: flex; flex-direction: column; gap: 4px; margin-left: auto;
+    padding-left: 18px; border-left: 1px solid var(--line-3);
+  }
+  @media (max-width: 420px) {
+    .resd { margin-left: 0; padding-left: 0; border-left: 0; }
+  }
+  .rd {
+    font-weight: 850; font-stretch: 104%; font-size: clamp(30px, 3.2vw, 42px);
+    line-height: 1; color: var(--acc); text-shadow: var(--glow-txt);
+  }
+  .resnote { margin-top: 14px; font-size: 13.5px; line-height: 1.55; color: var(--fg-4); }
+
+  .resdl { margin-top: 28px; }
+  .resdid { list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 11px; }
+  .resdid li {
+    display: grid; grid-template-columns: 17px minmax(0, 1fr); gap: 11px;
+    align-items: start; font-size: 14.5px; line-height: 1.55; color: var(--fg-3);
+  }
+  .resdid svg { width: 13px; height: 13px; margin-top: 5px; color: var(--acc); }
+  .resout {
+    margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line-3);
+    font-size: 15px; line-height: 1.6; font-weight: 500; color: var(--fg-2);
   }
 
   /* ---- Case ---- */

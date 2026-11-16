@@ -40,6 +40,27 @@ export interface Sector {
     | { kind: 'named'; head1: string; head2: string; lede: string; stats: { n: string; k: string }[] }
     | { kind: 'cards'; head1: string; head2: string; lede: string; cards: { k: string; h: string; b: string }[] };
   caseStudy: { img: string; alt: string; client: string; title: string; lede: string; stat: string };
+  /**
+   * A result from a real build, shown as the results row on the sector page.
+   * Optional: a sector only carries one once there is a case with numbers
+   * behind it, and the row is simply absent until then.
+   *
+   * `before`/`after` are the measured figures and `delta` is the relative
+   * change between them — the row prints all three, because a percentage on
+   * its own invites the reader to guess the baseline.
+   */
+  results?: {
+    tag: string;
+    client: string;
+    meta: string;
+    head: string;
+    lede: string;
+    img: string;
+    alt: string;
+    metric: { label: string; before: string; after: string; delta: string; note: string };
+    did: string[];
+    outcome: string;
+  };
   faqHead: string;
   faqs: { q: string; a: string; link?: boolean }[];
   ctaHead1: string;
@@ -585,6 +606,29 @@ export const sectors: Sector[] = [
       "title": "A bespoke build on their existing site.",
       "lede": "Custom landing pages engineered into the site they already had, with ads, tracking and CRM integration. The same bolt-on build works for a specialist contractor with a site worth keeping.",
       "stat": "26"
+    },
+    "results": {
+      "tag": "Proven in the field",
+      "client": "Garden Room Projects",
+      "meta": "Garden rooms · Hampshire, Kent and the Isle of Wight",
+      "head": "The same ad spend, more than twice the enquiries.",
+      "lede": "A bank of landing pages built on the ADVRTISE framework, so the campaigns started from structures already proven in the trade instead of a blank page and a learning budget.",
+      "img": "case-garden-rooms",
+      "alt": "The Garden Room Projects landing page, showing the interactive quote form in the hero",
+      "metric": {
+        "label": "Landing page conversion rate",
+        "before": "1.98%",
+        "after": "4.17%",
+        "delta": "+111%",
+        "note": "Still climbing. Same clicks, same budget — the page simply converts more of them."
+      },
+      "did": [
+        "Landing pages built on the ADVRTISE framework, drawing on what already works in this trade rather than paying to discover it again",
+        "A bespoke interactive quote form with a configurator, so an enquiry arrives with the detail the sales team needs to price it",
+        "Conversion tracking wired end to end, so spend is judged on booked work rather than on clicks",
+        "High-intent Google Ads campaigns pointed at the new pages, not at a homepage"
+      ],
+      "outcome": "Enough qualified enquiries, and enough confidence in where they come from, to start building next year's order book."
     },
     "faqHead": "What specialist contractors ask first.",
     "faqs": [
