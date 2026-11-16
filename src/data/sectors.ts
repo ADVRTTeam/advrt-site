@@ -82,7 +82,7 @@ export const sectors: Sector[] = [
       {
         "n": "49",
         "k": "Enquiries in month one",
-        "c": "Huxley Surveyors, from a standing start."
+        "c": "From a standing start."
       },
       {
         "n": "0",

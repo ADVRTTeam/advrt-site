@@ -18,10 +18,36 @@ export const manifestoWords = manifesto.split(' ').map((raw) => {
 
 export const manifestoPlain = manifesto.replace(/\*/g, '');
 
+export const sectorRows = [
+  { no: '01', name: 'Surveyors', href: '/surveyors', desc: 'Instructions from homeowners, buyers and funders, filtered to the work you want.' },
+  { no: '02', name: 'Contractors', href: '/contractors', desc: 'High-value work for damp proofing, asbestos, air conditioning and the specialist trades.' },
+  { no: '03', name: 'Compliance', href: '/compliance', desc: 'EPCs, EICRs, gas, fire: people who need the certificate this week.' },
+  { no: '04', name: 'Fire protection', href: '/fire-protection', desc: 'Risk assessments, extinguishers, alarms and passive protection — contracts, not callouts.' },
+  { no: '05', name: 'Training', href: '/training', desc: 'Course dates filled by learners and employers ready to book.' },
+  { no: '06', name: 'Architects', href: '/architects', desc: "Commissions that fit the portfolio you're building." },
+  { no: '07', name: 'Wider built environment', href: '/built-environment', desc: 'Engineers, planners, consultancies and specialist trades.' },
+] as const;
+
+/**
+ * Spelled out for the sectors heading, so adding a sector can't leave the
+ * copy claiming the wrong number. Falls back to the digits past the range
+ * the list will realistically ever reach.
+ */
+const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven',
+  'eight', 'nine', 'ten', 'eleven', 'twelve'] as const;
+
+export const sectorCountWord =
+  WORDS[sectorRows.length] ?? String(sectorRows.length);
+
+/**
+ * The proof row. `Sectors served` counts sectorRows rather than restating
+ * its length, which is why that list is defined above this one — it went
+ * stale once already when fire protection was added.
+ */
 export const proof = [
-  { to: 49, label: 'Enquiries in month one', sub: 'Huxley Surveyors' },
-  { to: 10, prefix: '£', suffix: 'm+', label: 'Ad spend managed', sub: 'Built environment only' },
-  { to: 6, label: 'Sectors served', sub: 'One discipline' },
+  { to: 49, label: 'Enquiries in month one', sub: 'From a standing start' },
+  { to: 2, prefix: '£', suffix: 'm+', label: 'Ad spend managed', sub: 'Built environment only' },
+  { to: sectorRows.length, label: 'Sectors served', sub: 'One discipline' },
   { to: 0, label: 'Enquiries shared', sub: 'with other firms. Ever.' },
 ] as const;
 
@@ -52,26 +78,6 @@ export const cases = [
   },
 ] as const;
 
-export const sectorRows = [
-  { no: '01', name: 'Surveyors', href: '/surveyors', desc: 'Instructions from homeowners, buyers and funders, filtered to the work you want.' },
-  { no: '02', name: 'Contractors', href: '/contractors', desc: 'High-value work for damp proofing, asbestos, air conditioning and the specialist trades.' },
-  { no: '03', name: 'Compliance', href: '/compliance', desc: 'EPCs, EICRs, gas, fire: people who need the certificate this week.' },
-  { no: '04', name: 'Fire protection', href: '/fire-protection', desc: 'Risk assessments, extinguishers, alarms and passive protection — contracts, not callouts.' },
-  { no: '05', name: 'Training', href: '/training', desc: 'Course dates filled by learners and employers ready to book.' },
-  { no: '06', name: 'Architects', href: '/architects', desc: "Commissions that fit the portfolio you're building." },
-  { no: '07', name: 'Wider built environment', href: '/built-environment', desc: 'Engineers, planners, consultancies and specialist trades.' },
-] as const;
-
-/**
- * Spelled out for the sectors heading, so adding a sector can't leave the
- * copy claiming the wrong number. Falls back to the digits past the range
- * the list will realistically ever reach.
- */
-const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven',
-  'eight', 'nine', 'ten', 'eleven', 'twelve'] as const;
-
-export const sectorCountWord =
-  WORDS[sectorRows.length] ?? String(sectorRows.length);
 
 /**
  * The diagnosis: how work actually gets bought in this industry, and what
