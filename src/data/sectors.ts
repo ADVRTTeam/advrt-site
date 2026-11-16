@@ -87,7 +87,7 @@ export const sectors: Sector[] = [
       {
         "n": "0",
         "k": "Shared with rivals",
-        "c": "Every enquiry exclusive to one firm. Yours."
+        "c": "We build the pipeline. What comes out of it is only ever yours."
       },
       {
         "n": "30–40%",
@@ -249,7 +249,7 @@ export const sectors: Sector[] = [
       {
         "n": "0",
         "k": "Shared with rivals",
-        "c": "Every enquiry exclusive to the firm that paid for it."
+        "c": "We build the pipeline. What comes out of it is only ever yours."
       },
       {
         "n": "100%",
@@ -453,7 +453,7 @@ export const sectors: Sector[] = [
       {
         "n": "0",
         "k": "Shared with rivals",
-        "c": "Every enquiry exclusive to the firm that paid for it."
+        "c": "We build the pipeline. What comes out of it is only ever yours."
       },
       {
         "n": "100%",
@@ -680,7 +680,7 @@ export const sectors: Sector[] = [
       {
         "n": "0",
         "k": "Shared with rivals",
-        "c": "Every enquiry exclusive to the firm that paid for it."
+        "c": "We build the pipeline. What comes out of it is only ever yours."
       },
       {
         "n": "100%",
@@ -920,7 +920,7 @@ export const sectors: Sector[] = [
       {
         "n": "0",
         "k": "Shared with rivals",
-        "c": "Every enquiry exclusive to the firm that paid for it."
+        "c": "We build the pipeline. What comes out of it is only ever yours."
       },
       {
         "n": "100%",
@@ -1160,7 +1160,7 @@ export const sectors: Sector[] = [
       {
         "n": "0",
         "k": "Shared with rivals",
-        "c": "Every enquiry exclusive to the firm that paid for it."
+        "c": "We build the pipeline. What comes out of it is only ever yours."
       },
       {
         "n": "100%",
@@ -1400,7 +1400,7 @@ export const sectors: Sector[] = [
       {
         "n": "0",
         "k": "Shared with rivals",
-        "c": "Every enquiry exclusive to the firm that paid for it."
+        "c": "We build the pipeline. What comes out of it is only ever yours."
       },
       {
         "n": "100%",

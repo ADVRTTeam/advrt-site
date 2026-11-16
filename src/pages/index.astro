@@ -264,19 +264,15 @@ const schema = [
   </main>
 
   <section class="wrap ps">
-      <p class="lbl"><span class="dot" aria-hidden="true"></span>P.S.</p>
+      <p class="lbl"><span class="dot" aria-hidden="true"></span>The short version</p>
       <p class="pstx">
-        If you scrolled straight to the bottom — we do it too — here is the whole
-        thing. We build lead generation for firms in the built
-        environment, and only for them. The enquiries are exclusive to you and the
-        site, campaigns and data are yours from the first day. We prove the plays on
-        our own brands with our own money before any of your budget is involved.
-        And you get a plan with a number on it before you commit to anything.
+        We build lead generation for firms in the built environment, and nothing
+        else. The enquiries come to you, not through us. The site, the campaigns,
+        the ad account and the data are in your name from the first day. Every
+        play we run was proven on our own brands, with our own money, before it
+        went near your budget. And you see the plan, and the number, before you
+        commit to anything.
       </p>
-      <div class="psb">
-        <a class="cbtn" href="/start-a-project">Start a project →</a>
-        <a class="backlk" href="/insights/ranking-without-traffic">Or read how we think about it</a>
-      </div>
     </section>
 
   <Footer />
@@ -523,13 +519,15 @@ const schema = [
     .dcost { grid-column: 2; }
   }
 
-  /* ---- P.S. ---- */
-  .ps { padding-top: 10px; padding-bottom: 120px; }
+  /* ---- The short version ----------------------------------------------
+     Closes the page for anyone who skipped it. Centred and carrying no
+     button of its own: the call to action directly above is the one that
+     should be taken, and a second one here only splits the decision. */
+  .ps { padding-top: 10px; padding-bottom: 120px; text-align: center; }
   .pstx {
-    margin-top: 16px; max-width: 70ch; font-size: clamp(16px, 1.3vw, 18px);
-    line-height: 1.7; font-weight: 450; color: var(--fg-3);
+    margin: 18px auto 0; max-width: 78ch; font-size: clamp(16px, 1.3vw, 18px);
+    line-height: 1.75; font-weight: 450; color: var(--fg-3); text-wrap: pretty;
   }
-  .psb { margin-top: 26px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
 
   .fitrow {
     display: grid; grid-template-columns: 70px minmax(0, 1fr) minmax(0, 1.35fr);
