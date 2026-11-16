@@ -3,10 +3,11 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Guarantees from '../components/Guarantees.astro';
 import CitySkyline from '../components/CitySkyline.astro';
 import { site, nextQuarter } from '../data/site';
 import {
-  manifestoWords, proof, cases, sectorRows, sectorCountWord, process, fit,
+  manifestoWords, diagnosis, proof, cases, sectorRows, sectorCountWord, process, fit,
 } from '../data/home';
 import { img } from '../lib/images';
 import { defaultAuthor } from '../data/authors';
@@ -88,8 +89,38 @@ const schema = [
       </div>
     </section>
 
+    <!-- 02b · DIAGNOSIS -->
+    <section class="wrap" style="padding-top:130px">
+      <p class="lbl"><span class="dot" aria-hidden="true"></span>The diagnosis</p>
+      <h2 class="disp" data-rise style="margin-top:18px;font-size:clamp(34px,4.6vw,72px)">
+        Five ways to buy work. <span class="glow">Five side effects.</span>
+      </h2>
+      <p class="lede" style="margin-top:20px;max-width:60ch">
+        Every firm in this industry uses some mix of these. None of them is wrong,
+        and we would tell you the same if you never spoke to us again. But each one
+        costs you something, and it is usually the thing nobody priced in.
+      </p>
+      <div class="dgrid">
+        {diagnosis.map((d) => (
+          <div class="drow" data-rise>
+            <span class="dno">{d.no}</span>
+            <div class="dnm">
+              <h3>{d.name}</h3>
+              <p class="dhow">{d.how}</p>
+            </div>
+            <p class="dcost">{d.cost}</p>
+          </div>
+        ))}
+      </div>
+      <p class="dend" data-rise>
+        There is a sixth: own the pipeline outright, so the enquiries are yours,
+        the asset is yours, and nobody can switch it off. That is the only one
+        we build.
+      </p>
+    </section>
+
     <!-- 03 · PROOF -->
-    <section class="wrap" style="padding-bottom:120px">
+    <section class="wrap" style="padding-top:120px;padding-bottom:120px">
       <div class="proofgrid">
         {proof.map((p) => (
           <div>
@@ -188,6 +219,8 @@ const schema = [
       </div>
     </section>
 
+    <Guarantees />
+
     <!-- 08 · JACK -->
     <section class="wrap" style="padding-top:130px">
       <div class="jpanel">
@@ -229,6 +262,22 @@ const schema = [
       </div>
     </section>
   </main>
+
+  <section class="wrap ps">
+      <p class="lbl"><span class="dot" aria-hidden="true"></span>P.S.</p>
+      <p class="pstx">
+        If you scrolled straight to the bottom — we do it too — here is the whole
+        thing. We build lead generation for firms in the built
+        environment, and only for them. The enquiries are exclusive to you and the
+        site, campaigns and data are yours from the first day. We prove the plays on
+        our own brands with our own money before any of your budget is involved.
+        And you get a plan with a number on it before you commit to anything.
+      </p>
+      <div class="psb">
+        <a class="cbtn" href="/start-a-project">Start a project →</a>
+        <a class="backlk" href="/insights/ranking-without-traffic">Or read how we think about it</a>
+      </div>
+    </section>
 
   <Footer />
 </Base>
@@ -445,6 +494,43 @@ const schema = [
   }
 
   /* ---- Fit rows ---- */
+  /* ---- Diagnosis ----------------------------------------------------
+     A row per route: number, what it is called, what it costs. Three
+     columns on desktop so the eye can run down the cost column alone,
+     which is the column that makes the argument. */
+  .dgrid { margin-top: 40px; border-top: 1px solid var(--line-3); }
+  .drow {
+    display: grid; grid-template-columns: 54px minmax(130px, 200px) minmax(0, 1fr);
+    gap: 22px; align-items: start; padding: 26px 0;
+    border-bottom: 1px solid var(--line-3);
+  }
+  .dno {
+    font-size: 11px; font-weight: 850; letter-spacing: .12em;
+    color: var(--fg-5); padding-top: 3px;
+  }
+  .dnm h3 {
+    font-weight: 850; font-stretch: 104%; text-transform: uppercase;
+    font-size: 17px; line-height: 1.15;
+  }
+  .dhow { margin-top: 6px; font-size: 12.5px; font-weight: 600; color: var(--fg-5); }
+  .dcost { font-size: 15px; line-height: 1.6; color: var(--fg-3); }
+  .dend {
+    margin-top: 30px; max-width: 62ch; font-size: 16.5px; line-height: 1.65;
+    font-weight: 500; color: var(--fg-2);
+  }
+  @media (max-width: 760px) {
+    .drow { grid-template-columns: 34px minmax(0, 1fr); gap: 14px; padding: 22px 0; }
+    .dcost { grid-column: 2; }
+  }
+
+  /* ---- P.S. ---- */
+  .ps { padding-top: 10px; padding-bottom: 120px; }
+  .pstx {
+    margin-top: 16px; max-width: 70ch; font-size: clamp(16px, 1.3vw, 18px);
+    line-height: 1.7; font-weight: 450; color: var(--fg-3);
+  }
+  .psb { margin-top: 26px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+
   .fitrow {
     display: grid; grid-template-columns: 70px minmax(0, 1fr) minmax(0, 1.35fr);
     gap: 30px; align-items: baseline; padding: 30px 0; border-top: 1px solid var(--line);

@@ -1,0 +1,85 @@
+---
+/**
+ * The commitments, stated plainly in one place.
+ *
+ * IMPORTANT: every line here is a promise ADVRT already makes elsewhere on
+ * this site — exclusivity on the sector proof tiles, ownership in the
+ * handover stage, no hostage contracts in the CTA copy, own-money testing in
+ * the lab sections. This block gathers them; it does not invent any.
+ *
+ * It deliberately does NOT carry a performance guarantee ("if we don't
+ * deliver, you don't pay" and the like). That is a commercial undertaking,
+ * not a design decision, and it has to be written by whoever stands behind
+ * it. See OUTSTANDING.md — if one is agreed, it belongs at the top of this
+ * list, because it is the only one a competitor cannot also claim.
+ */
+const items = [
+  {
+    k: 'Exclusive',
+    h: 'Never sold to your rivals',
+    b: 'Every enquiry belongs to the firm that paid for it. We do not sell the same name twice, to anyone, ever.',
+  },
+  {
+    k: 'Yours',
+    h: 'You own all of it',
+    b: 'The site, the campaigns, the tracking, the ad account and the data. In your name from the start, and handed over in full.',
+  },
+  {
+    k: 'No lock-in',
+    h: 'No hostage contracts',
+    b: 'Nothing is built in a way that stops working when you leave. If you want to take it in-house, you can — that is the point of owning it.',
+  },
+  {
+    k: 'Proven first',
+    h: 'Tested on our own money',
+    b: 'We run our own lead generation brands on our own budget. Your campaigns start from what already worked there, not from a blank account.',
+  },
+];
+---
+
+<section class="wrap gua">
+  <p class="lbl"><span class="dot" aria-hidden="true"></span>What you get in writing</p>
+  <h2 class="disp guah" data-rise>Four things we <span class="glow">commit to.</span></h2>
+  <p class="lede guale">
+    Not aspirations. These are in every agreement we sign, and they are the
+    reason the rest of this page is worth reading.
+  </p>
+
+  <ul class="gualist">
+    {items.map((i) => (
+      <li class="guacard" data-rise>
+        <span class="guak">{i.k}</span>
+        <h3 class="guach">{i.h}</h3>
+        <p class="guab">{i.b}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .gua { padding-top: 130px; }
+  .guah { margin-top: 18px; font-size: clamp(34px, 4.6vw, 72px); }
+  .guale { margin-top: 20px; max-width: 58ch; }
+
+  .gualist {
+    list-style: none; margin-top: 40px; display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+  }
+  .guacard {
+    padding: 26px 24px 28px; border-radius: var(--r-sm);
+    border: 1px solid var(--line-3); background: var(--ink-3);
+    display: flex; flex-direction: column; min-width: 0;
+  }
+  .guak {
+    align-self: flex-start; display: inline-flex; align-items: center; min-height: 26px;
+    padding: 0 11px; border-radius: var(--r-pill);
+    border: 1px solid rgba(255, 90, 31, .4); background: rgba(255, 90, 31, .1);
+    font-size: 10.5px; font-weight: 800; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--acc);
+  }
+  .guach {
+    margin-top: 16px; font-weight: 850; font-stretch: 104%;
+    text-transform: uppercase; font-size: 17px; line-height: 1.15;
+  }
+  .guab { margin-top: 10px; font-size: 14.5px; line-height: 1.6; color: var(--fg-3); }
+</style>

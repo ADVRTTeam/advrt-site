@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Guarantees from '../components/Guarantees.astro';
 import { site } from '../data/site';
 import { sectors, anchorFor, type Sector } from '../data/sectors';
 import { img } from '../lib/images';
@@ -458,6 +459,8 @@ const schema = [
         </div>
       </section>
     )}
+
+    <Guarantees />
 
     <!-- 10 · FAQ -->
     <section id="faq" class="wrap" style="padding-top:120px">

@@ -73,6 +73,49 @@ const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven',
 export const sectorCountWord =
   WORDS[sectorRows.length] ?? String(sectorRows.length);
 
+/**
+ * The diagnosis: how work actually gets bought in this industry, and what
+ * each route costs you. Every line is an argument the site already makes
+ * somewhere — the comparison-sites article, the sector ledes, the
+ * manifesto — gathered into one place where a visitor meets it first.
+ *
+ * Deliberately fair to each route. Referrals really are the best work, and
+ * doing it yourself really can work. A comparison that only flatters the
+ * seller reads as a sales pitch and gets discounted as one.
+ */
+export const diagnosis = [
+  {
+    no: '01',
+    name: 'Shared leads',
+    how: 'Comparison sites and lead sellers',
+    cost: 'The same enquiry goes to four firms. You compete on who calls back first and who drops their price, and the margin goes with it.',
+  },
+  {
+    no: '02',
+    name: 'Directories',
+    how: 'Paid listings and trade portals',
+    cost: 'You rent a position rather than own one. Stop paying and every bit of it disappears the same afternoon.',
+  },
+  {
+    no: '03',
+    name: 'Referrals',
+    how: 'Word of mouth and repeat clients',
+    cost: 'The best work you will ever get, and the one tap you cannot turn up. When the diary is thin in February, nothing about it is in your hands.',
+  },
+  {
+    no: '04',
+    name: 'A generalist agency',
+    how: 'Retainer, monthly report, quarterly call',
+    cost: 'They learn your trade on your budget, and the account sits with whoever is free that month. You pay for the learning curve twice.',
+  },
+  {
+    no: '05',
+    name: 'Doing it yourself',
+    how: 'Your own Google Ads account',
+    cost: 'Honest, and it can work. It also competes for attention with running the firm, and the learning is paid for in spend that bought nothing.',
+  },
+] as const;
+
 export const process = [
   {
     no: '01', img: 'process-1-survey', alt: 'Pre-spend audit', name: 'Pre-spend audit',

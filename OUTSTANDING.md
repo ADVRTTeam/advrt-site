@@ -32,6 +32,24 @@ It starts in REVIEW mode — output arrives as a pull request. After about a
 month of output worth trusting, change the mode line in the skill to AUTOPILOT
 and it pushes to `main`, which deploys.
 
+## 0c. A performance guarantee, if there is to be one
+
+`src/components/Guarantees.astro` is on the home page and every sector page.
+Every line in it is a promise already made elsewhere on this site — exclusivity
+on the proof tiles, ownership in the handover stage, no hostage contracts in
+the CTA copy, own-money testing in the lab sections. It gathers them; it does
+not invent any.
+
+What it deliberately does **not** carry is a performance guarantee — "if we
+don't deliver, you don't pay", or a lead-volume floor, which is what the
+competitor who prompted this section leads with. That is a commercial
+undertaking rather than a design decision and has to be written by whoever
+stands behind it.
+
+If one is agreed, it belongs at the top of that list: it is the only item there
+a competitor cannot equally claim, and it is the reason their version of this
+section is stronger than ours.
+
 ## 1. Enquiry webhook
 
 **Status:** configured and tested, 11 November 2026. `ENQUIRY_WEBHOOK_URL` is
