@@ -1,0 +1,367 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+
+const FEE = '£500';
+
+const steps = [
+  {
+    n: '01',
+    h: 'Make the introduction',
+    b: 'Tell us who they are and what they are trying to fix. If you would rather introduce us by email yourself, do that instead — it works better anyway.',
+  },
+  {
+    n: '02',
+    h: 'We take it from there',
+    b: 'We speak to them, work out whether we can actually help, and tell them honestly if we cannot. Nobody gets chased, and your name is not used as leverage.',
+  },
+  {
+    n: '03',
+    h: 'You get paid',
+    b: `${FEE} once they are a client and the work is done: on completion of their project, or after three months if they are on an ongoing retainer.`,
+  },
+];
+
+const fits = [
+  'A firm in the built environment — surveying, a specialist trade, compliance, fire protection, training, architecture.',
+  'Somebody who wants more of a particular kind of work, not just "more leads".',
+  'A business with the capacity to take the work on, and a budget to put behind getting it.',
+  'Owner-led is ideal. The person who feels a quiet month is the person who acts.',
+];
+
+const schema = [
+  {
+    '@type': 'WebPage',
+    '@id': new URL('/referrals#page', Astro.site).href,
+    url: new URL('/referrals', Astro.site).href,
+    name: 'Referral scheme',
+    about: { '@id': new URL('/#organisation', Astro.site).href },
+  },
+];
+---
+
+<Base
+  title="Referral scheme · ADVRT"
+  description={`Refer a firm in the built environment to ADVRT and earn ${FEE} for every one that becomes a client. Paid on completion, or after three months on a retainer.`}
+  path="/referrals"
+  schema={schema}
+>
+  <Nav />
+
+  <main id="main" class="play">
+    <section class="hero">
+      <div class="stars" aria-hidden="true"></div>
+      <div class="stars b" aria-hidden="true"></div>
+      <span class="shoot" aria-hidden="true" style="top:24%;left:60%"></span>
+      <p class="lbl st1"><span class="dot" aria-hidden="true"></span>Referral scheme</p>
+      <h1 class="disp st2" id="hero-h1">
+        Know someone who <span class="glow">needs this?</span>
+      </h1>
+      <p class="lede st3" style="margin-top:22px;max-width:620px;margin-left:auto;margin-right:auto">
+        We pay {FEE} for every firm you introduce that goes on to become a client.
+        No tiers, no points, no portal to log into. One number, paid once the work
+        is done.
+      </p>
+    </section>
+
+    <section class="wrap" style="padding-top:20px">
+      <div class="rfee st4">
+        <div>
+          <span class="rfn">{FEE}</span>
+          <p class="lbl" style="margin-top:8px">Per firm that becomes a client</p>
+        </div>
+        <p class="rfb">
+          Paid on completion of their project, or after three months if they are on
+          an ongoing retainer — the point at which we know the introduction was a
+          good one. There is no cap on how many you make.
+        </p>
+      </div>
+    </section>
+
+    <section class="wrap" style="padding-top:90px">
+      <p class="lbl"><span class="dot" aria-hidden="true"></span>How it works</p>
+      <h2 class="disp" data-rise style="margin-top:18px;font-size:clamp(30px,4.2vw,60px)">
+        Three steps. <span class="glow">No small print.</span>
+      </h2>
+      <div class="rsteps">
+        {steps.map((s) => (
+          <div class="rstep" data-rise>
+            <span class="rsn">{s.n}</span>
+            <div>
+              <h3>{s.h}</h3>
+              <p>{s.b}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="wrap" style="padding-top:90px">
+      <div class="rfit">
+        <div>
+          <p class="lbl"><span class="dot" aria-hidden="true"></span>What makes a good one</p>
+          <h2 class="disp" data-rise style="margin-top:18px;font-size:clamp(26px,3vw,40px)">
+            We would rather have one good introduction than ten polite ones.
+          </h2>
+          <p class="lede" style="margin-top:16px;font-size:15.5px">
+            You are not going to offend us with a referral that does not land. But
+            these are the ones that tend to work.
+          </p>
+        </div>
+        <ul class="rlist">
+          {fits.map((f) => (
+            <li>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8"/></svg>
+              {f}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="wrap" style="padding-top:90px;padding-bottom:110px">
+      <p class="lbl"><span class="dot" aria-hidden="true"></span>Make an introduction</p>
+      <h2 class="disp" data-rise style="margin-top:18px;font-size:clamp(30px,4.2vw,60px)">
+        Tell us who <span class="glow">to talk to.</span>
+      </h2>
+
+      <div class="panel rform" style="margin-top:34px;padding:36px">
+        <form method="POST" action="/api/enquiry" id="refer" novalidate>
+          <input type="hidden" name="form" value="referral" />
+          <input type="hidden" name="page" value="/referrals" />
+          <input type="hidden" name="_t" id="refer-t" value="" />
+          <div class="hp" aria-hidden="true">
+            <label for="r-gotcha">Leave this field empty</label>
+            <input id="r-gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+            <label for="r-url">Leave this field empty too</label>
+            <input id="r-url" name="url" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <p class="lbl">About you</p>
+          <div class="fgrid cfields">
+            <div>
+              <label class="flabel" for="r-name">Your name *</label>
+              <input id="r-name" name="name" class="field" type="text" autocomplete="name" required />
+            </div>
+            <div>
+              <label class="flabel" for="r-co">Your company</label>
+              <input id="r-co" name="company" class="field" type="text" autocomplete="organization" />
+            </div>
+            <div>
+              <label class="flabel" for="r-email">Your email *</label>
+              <input id="r-email" name="email" class="field" type="email" autocomplete="email" required />
+            </div>
+            <div>
+              <label class="flabel" for="r-phone">Your mobile</label>
+              <input id="r-phone" name="phone" class="field" type="tel" autocomplete="tel" />
+            </div>
+          </div>
+
+          <p class="lbl" style="margin-top:34px">Who you are introducing</p>
+          <div class="fgrid cfields">
+            <div>
+              <label class="flabel" for="r-rco">Their company *</label>
+              <input id="r-rco" name="referredCompany" class="field" type="text" required />
+            </div>
+            <div>
+              <label class="flabel" for="r-rname">Their name</label>
+              <input id="r-rname" name="referredName" class="field" type="text" />
+            </div>
+            <div class="wide">
+              <label class="flabel" for="r-rcontact">How we reach them</label>
+              <input id="r-rcontact" name="referredContact" class="field" type="text" placeholder="Email, phone or their website — whatever you have." />
+            </div>
+            <div class="wide">
+              <label class="flabel" for="r-why">Why you think it's a fit *</label>
+              <textarea
+                id="r-why" name="message" class="field" rows="4" required
+                style="resize:vertical;min-height:130px"
+                placeholder="What do they do, and what are they trying to fix?"
+              ></textarea>
+            </div>
+          </div>
+
+          <label class="rconsent">
+            <input type="checkbox" name="consent" id="r-consent" value="yes" />
+            <span>
+              They know I'm passing their details on, and they are happy to hear
+              from ADVRT. <b>If you leave this unticked we will not contact them</b> —
+              we'll come back to you instead so you can make the introduction yourself.
+            </span>
+          </label>
+
+          <p class="alert" id="refer-error" role="alert" hidden></p>
+
+          <div class="csend">
+            <span class="lbl" style="letter-spacing:.12em;color:var(--fg-5)">We never use your name as leverage.</span>
+            <button type="submit" class="cbtn" id="refer-send">Send the introduction →</button>
+          </div>
+        </form>
+
+        <div class="stage" id="refer-done" style="min-height:360px;display:flex;flex-direction:column;justify-content:center;gap:24px" hidden>
+          <span class="okring" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 16 16" fill="none" stroke="#0b0b0c" stroke-width="2.4" stroke-dasharray="40" style="animation:drawok .8s .3s ease both"><path d="M2.5 8.5l3.5 3.5 7.5-8"/></svg>
+          </span>
+          <h2 class="disp" style="font-size:clamp(26px,4vw,52px)">
+            Got it, <span class="glow" id="refer-done-name">thanks.</span>
+          </h2>
+          <div>
+            <div class="prom"><i>1</i>We'll come back to you to confirm what happens next, before we contact anyone.</div>
+            <div class="prom"><i>2</i>If it becomes a client, {FEE} is yours on completion, or after three months on a retainer.</div>
+            <div class="prom"><i>3</i>If it does not, we'll tell you why. It costs you nothing either way.</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="rterms">
+        The fee is paid per firm, once, after they become a client and the work
+        completes — or after three months of an ongoing retainer. It is not paid on
+        enquiries, meetings or signatures. We will confirm the terms with you in
+        writing before anything is owed, and the payment is yours to declare.
+        Questions: <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .hero { position: relative; padding: 150px 24px 60px; text-align: center; overflow: clip; }
+  .hero::before {
+    content: ''; position: absolute; inset: -40% -20% 0;
+    background: radial-gradient(40% 50% at 50% 0%, rgba(255, 90, 31, .16), transparent 70%);
+  }
+  .hero > * { position: relative; z-index: 2; }
+  .hero .stars, .hero .shoot { position: absolute; z-index: 1; }
+  #hero-h1 { margin: 22px auto 0; font-size: clamp(34px, 6vw, 86px); max-width: 15ch; }
+
+  .rfee {
+    display: grid; grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+    gap: 34px; align-items: center; padding: 30px 32px;
+    border-radius: var(--r-md); border: 1px solid var(--line-3); background: var(--ink-3);
+  }
+  @media (max-width: 720px) { .rfee { grid-template-columns: minmax(0, 1fr); gap: 18px; padding: 26px 24px; } }
+  .rfn {
+    font-weight: 850; font-stretch: 104%; font-size: clamp(48px, 7vw, 84px);
+    line-height: 1; color: var(--acc); text-shadow: var(--glow-txt);
+  }
+  .rfb { font-size: 15.5px; line-height: 1.65; color: var(--fg-3); max-width: 56ch; }
+
+  .rsteps { margin-top: 36px; border-top: 1px solid var(--line-3); }
+  .rstep {
+    display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 22px;
+    padding: 26px 0; border-bottom: 1px solid var(--line-3);
+  }
+  .rstep h3 {
+    font-weight: 850; font-stretch: 104%; text-transform: uppercase;
+    font-size: 18px; line-height: 1.15;
+  }
+  .rstep p { margin-top: 10px; font-size: 15px; line-height: 1.6; color: var(--fg-3); max-width: 62ch; }
+  .rsn { font-size: 11px; font-weight: 850; letter-spacing: .12em; color: var(--fg-5); padding-top: 4px; }
+  @media (max-width: 600px) { .rstep { grid-template-columns: 34px minmax(0, 1fr); gap: 14px; } }
+
+  .rfit { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+  @media (max-width: 900px) { .rfit { grid-template-columns: minmax(0, 1fr); gap: 26px; } }
+  .rlist { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .rlist li {
+    display: grid; grid-template-columns: 17px minmax(0, 1fr); gap: 12px; align-items: start;
+    font-size: 15px; line-height: 1.6; color: var(--fg-3);
+  }
+  .rlist svg { width: 13px; height: 13px; margin-top: 5px; color: var(--acc); }
+
+  .rconsent {
+    margin-top: 28px; display: grid; grid-template-columns: 20px minmax(0, 1fr);
+    gap: 13px; align-items: start; font-size: 14px; line-height: 1.6; color: var(--fg-3);
+    cursor: pointer;
+  }
+  .rconsent input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--acc); }
+  .rconsent b { color: var(--fg-2); font-weight: 700; }
+
+  .rterms {
+    margin-top: 26px; max-width: 72ch; font-size: 13px; line-height: 1.65; color: var(--fg-5);
+  }
+  .rterms a { color: var(--acc); text-decoration: underline; text-underline-offset: 3px; }
+
+  .cfields { margin-top: 30px; }
+  .csend {
+    margin-top: 28px; display: flex; align-items: center;
+    justify-content: space-between; gap: 14px; flex-wrap: wrap;
+  }
+  #refer[hidden] { display: none !important; }
+</style>
+
+<script>
+  const form = document.getElementById('refer') as HTMLFormElement | null;
+
+  if (form) {
+    const send = document.getElementById('refer-send') as HTMLButtonElement;
+    const error = document.getElementById('refer-error') as HTMLElement;
+    const done = document.getElementById('refer-done') as HTMLElement;
+
+    (document.getElementById('refer-t') as HTMLInputElement).value = String(Date.now());
+
+    const text = (n: string) =>
+      (form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name="${n}"]`)?.value ?? '').trim();
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = text('name');
+      const email = text('email');
+      const company = text('referredCompany');
+      const why = text('message');
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+      if (name.length < 2 || !emailOk || company.length < 2 || why.length < 2) {
+        error.textContent = 'We need your name, a valid email, who you are introducing, and a line on why.';
+        error.hidden = false;
+        form.querySelector<HTMLInputElement>(
+          name.length < 2 ? '[name="name"]'
+            : !emailOk ? '[name="email"]'
+            : company.length < 2 ? '[name="referredCompany"]'
+            : '[name="message"]',
+        )?.focus();
+        return;
+      }
+
+      error.hidden = true;
+      send.disabled = true;
+
+      try {
+        // An unticked checkbox sends nothing at all, which would leave the
+        // CRM unable to tell "they declined" from "the field never arrived".
+        // Say it out loud instead.
+        const payload = new FormData(form);
+        payload.set(
+          'consent',
+          (document.getElementById('r-consent') as HTMLInputElement).checked ? 'yes' : 'no',
+        );
+
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: payload,
+          headers: { accept: 'application/json' },
+        });
+        let body: { ok?: boolean; message?: string } = {};
+        try { body = await res.json(); } catch { /* an error page, not JSON */ }
+        if (!res.ok || body.ok === false) {
+          throw new Error(body.message
+            ?? 'We could not send that just now. Please email team@advrt.co.uk or call 0800 689 3759.');
+        }
+      } catch (err) {
+        error.textContent = (err as Error).message;
+        error.hidden = false;
+        send.disabled = false;
+        return;
+      }
+
+      document.getElementById('refer-done-name')!.textContent = `${name.split(' ')[0] || 'thanks'}.`;
+      form.hidden = true;
+      done.hidden = false;
+      done.querySelector('h2')?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    });
+  }
+</script>

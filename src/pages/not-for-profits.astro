@@ -1,0 +1,368 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+
+const helps = [
+  {
+    h: 'The Google Ad Grant application',
+    b: 'Google for Nonprofits gives eligible charities $10,000 a month of Search advertising. Getting the account approved is one thing; keeping it is another, because the grant has rules most agencies never read. We do the application and the account structure that survives it.',
+  },
+  {
+    h: 'Making the grant actually work',
+    b: 'Most grant accounts spend a fraction of what they are given, on terms that bring in nobody useful. The constraint is the £2 bid cap, and the way round it is relevance, not budget. That is the same job we do on paid accounts, with a tighter brief.',
+  },
+  {
+    h: 'Turning traffic into something countable',
+    b: 'Donations, volunteer sign-ups, helpline contacts, service referrals, bookings. Whatever counts as a result for you — we make sure it is measured, so the next decision is made on evidence rather than instinct.',
+  },
+  {
+    h: 'Teaching you to run it',
+    b: 'At the end you should not need us. We would rather hand over an account your team can hold than keep a retainer going for the sake of it.',
+  },
+];
+
+const criteria = [
+  'A registered charity, CIC, NGO or not-for-profit — UK or further afield.',
+  'Something specific you want more of: donations, volunteers, referrals, awareness in a defined area.',
+  'Someone internally who can give us an hour a week. The work needs a person, not a committee.',
+  'An honest answer on what has been tried already, including what went badly.',
+];
+
+const schema = [
+  {
+    '@type': 'WebPage',
+    '@id': new URL('/not-for-profits#page', Astro.site).href,
+    url: new URL('/not-for-profits', Astro.site).href,
+    name: 'Not-for-profits',
+    about: { '@id': new URL('/#organisation', Astro.site).href },
+  },
+];
+---
+
+<Base
+  title="Not-for-profits · ADVRT"
+  description="One pro bono spot each quarter for a charity or not-for-profit, plus help accessing the Google Ad Grant — $10,000 a month of Search advertising for eligible organisations."
+  path="/not-for-profits"
+  schema={schema}
+>
+  <Nav />
+
+  <main id="main" class="play">
+    <section class="hero">
+      <div class="stars" aria-hidden="true"></div>
+      <div class="stars b" aria-hidden="true"></div>
+      <span class="shoot" aria-hidden="true" style="top:26%;left:30%"></span>
+      <p class="lbl st1"><span class="dot" aria-hidden="true"></span>Not-for-profits</p>
+      <h1 class="disp st2" id="hero-h1">
+        One spot a quarter, <span class="glow">given away.</span>
+      </h1>
+      <p class="lede st3" style="margin-top:22px;max-width:640px;margin-left:auto;margin-right:auto">
+        Every quarter we take on one charity or not-for-profit and do the work
+        properly — the same discipline, the same people, no invoice. Applications
+        are open now.
+      </p>
+    </section>
+
+    <section class="wrap" style="padding-top:20px">
+      <div class="panel npw st4">
+        <p class="lede" style="font-size:17px;max-width:none">
+          We already put time and money into causes close to where our team live.
+          That is local, quiet, and not really anybody's business but ours. This is
+          the other half of it: the thing we are genuinely good at, given to an
+          organisation that could not otherwise buy it. Because it is remote work,
+          it does not have to be local — a charity anywhere in the UK, or outside
+          it, can apply.
+        </p>
+      </div>
+    </section>
+
+    <section class="wrap" style="padding-top:90px">
+      <div class="gcard">
+        <div>
+          <p class="lbl" style="color:var(--acc)"><span class="dot" aria-hidden="true"></span>Google Ad Grants</p>
+          <h2 class="disp" data-rise style="margin-top:18px;font-size:clamp(28px,3.6vw,48px)">
+            There is <span class="glow">$10,000 a month</span> sat there for charities who qualify.
+          </h2>
+          <p class="lede" style="margin-top:18px;font-size:15.5px">
+            Google for Nonprofits gives eligible organisations up to $10,000 of
+            Search advertising every month — roughly £7,500 at current rates, free,
+            indefinitely. Most charities either never apply, or get the account and
+            then watch it spend almost nothing. We can help with both, and we do
+            this part whether or not you get the quarterly spot.
+          </p>
+          <p class="gnote">
+            Eligibility is Google's call, not ours: you need to be a registered
+            charity or equivalent, pass their validation, and keep to the grant's
+            rules once you are in. We will tell you honestly if we do not think you
+            will qualify.
+          </p>
+        </div>
+        <div class="gnum" aria-hidden="true">
+          <span>$10k</span>
+          <small>per month, in Search ads</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap" style="padding-top:90px">
+      <p class="lbl"><span class="dot" aria-hidden="true"></span>What we do</p>
+      <h2 class="disp" data-rise style="margin-top:18px;font-size:clamp(30px,4.2vw,60px)">
+        The same work. <span class="glow">No invoice.</span>
+      </h2>
+      <div class="nhelps">
+        {helps.map((x) => (
+          <div class="nhelp" data-rise>
+            <h3>{x.h}</h3>
+            <p>{x.b}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="wrap" style="padding-top:90px">
+      <div class="rfit">
+        <div>
+          <p class="lbl"><span class="dot" aria-hidden="true"></span>Who we can help</p>
+          <h2 class="disp" data-rise style="margin-top:18px;font-size:clamp(26px,3vw,40px)">
+            We pick one. We would rather it were the right one.
+          </h2>
+          <p class="lede" style="margin-top:16px;font-size:15.5px">
+            There is no scoring matrix and no panel. We read everything that comes
+            in, speak to a shortlist, and choose the one where the work will make
+            the most difference. Everyone else hears back either way.
+          </p>
+        </div>
+        <ul class="rlist">
+          {criteria.map((c) => (
+            <li>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8"/></svg>
+              {c}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="wrap" style="padding-top:90px;padding-bottom:110px">
+      <p class="lbl"><span class="dot" aria-hidden="true"></span>Apply</p>
+      <h2 class="disp" data-rise style="margin-top:18px;font-size:clamp(30px,4.2vw,60px)">
+        Tell us what you're <span class="glow">trying to do.</span>
+      </h2>
+      <p class="lede" style="margin-top:14px;max-width:62ch;font-size:15.5px">
+        Plain words are fine. We are not marking the application — we just need to
+        understand the cause and what a good quarter would look like.
+      </p>
+
+      <div class="panel rform" style="margin-top:34px;padding:36px">
+        <form method="POST" action="/api/enquiry" id="charity" novalidate>
+          <input type="hidden" name="form" value="charity" />
+          <input type="hidden" name="page" value="/not-for-profits" />
+          <input type="hidden" name="_t" id="charity-t" value="" />
+          <div class="hp" aria-hidden="true">
+            <label for="n-gotcha">Leave this field empty</label>
+            <input id="n-gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+            <label for="n-url">Leave this field empty too</label>
+            <input id="n-url" name="url" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <p class="lbl">What are you applying for?</p>
+          <div role="group" aria-label="What you are applying for" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:9px">
+            {['The quarterly spot', 'Help with a Google Ad Grant', 'Both'].map((t, i) => (
+              <label class="chip">
+                <input type="radio" name="topic" value={t} class="vis-hidden" checked={i === 2} />
+                <span>{t}</span>
+              </label>
+            ))}
+          </div>
+
+          <div class="fgrid cfields">
+            <div>
+              <label class="flabel" for="n-org">Organisation *</label>
+              <input id="n-org" name="company" class="field" type="text" autocomplete="organization" required />
+            </div>
+            <div>
+              <label class="flabel" for="n-reg">Charity / company number</label>
+              <input id="n-reg" name="registration" class="field" type="text" />
+            </div>
+            <div>
+              <label class="flabel" for="n-name">Your name *</label>
+              <input id="n-name" name="name" class="field" type="text" autocomplete="name" required />
+            </div>
+            <div>
+              <label class="flabel" for="n-email">Email *</label>
+              <input id="n-email" name="email" class="field" type="email" autocomplete="email" required />
+            </div>
+            <div>
+              <label class="flabel" for="n-phone">Phone</label>
+              <input id="n-phone" name="phone" class="field" type="tel" autocomplete="tel" />
+            </div>
+            <div>
+              <label class="flabel" for="n-site">Website</label>
+              <input id="n-site" name="website" class="field" type="text" autocomplete="url" placeholder="yourcharity.org.uk" />
+            </div>
+            <div class="wide">
+              <label class="flabel" for="n-cause">What the organisation does, and what you need more of *</label>
+              <textarea
+                id="n-cause" name="message" class="field" rows="5" required
+                style="resize:vertical;min-height:160px"
+                placeholder="The cause, who you help, and what a good quarter would look like — donations, volunteers, referrals, something else."
+              ></textarea>
+            </div>
+          </div>
+
+          <p class="alert" id="charity-error" role="alert" hidden></p>
+
+          <div class="csend">
+            <span class="lbl" style="letter-spacing:.12em;color:var(--fg-5)">Everyone gets an answer, successful or not.</span>
+            <button type="submit" class="cbtn" id="charity-send">Send the application →</button>
+          </div>
+        </form>
+
+        <div class="stage" id="charity-done" style="min-height:360px;display:flex;flex-direction:column;justify-content:center;gap:24px" hidden>
+          <span class="okring" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 16 16" fill="none" stroke="#0b0b0c" stroke-width="2.4" stroke-dasharray="40" style="animation:drawok .8s .3s ease both"><path d="M2.5 8.5l3.5 3.5 7.5-8"/></svg>
+          </span>
+          <h2 class="disp" style="font-size:clamp(26px,4vw,52px)">
+            Received, <span class="glow" id="charity-done-name">thank you.</span>
+          </h2>
+          <div>
+            <div class="prom"><i>1</i>We read every application ourselves. Nobody's goes into a pile.</div>
+            <div class="prom"><i>2</i>We'll come back to you before the end of the quarter either way.</div>
+            <div class="prom"><i>3</i>If it's the Ad Grant you need, we can usually start on that sooner.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .hero { position: relative; padding: 150px 24px 60px; text-align: center; overflow: clip; }
+  .hero::before {
+    content: ''; position: absolute; inset: -40% -20% 0;
+    background: radial-gradient(40% 50% at 50% 0%, rgba(255, 90, 31, .16), transparent 70%);
+  }
+  .hero > * { position: relative; z-index: 2; }
+  .hero .stars, .hero .shoot { position: absolute; z-index: 1; }
+  #hero-h1 { margin: 22px auto 0; font-size: clamp(34px, 6.4vw, 92px); max-width: 14ch; }
+
+  .npw { padding: 32px; }
+  .npw .lede { color: var(--fg-3); }
+
+  .gcard {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .5fr);
+    gap: 40px; align-items: center; padding: 34px 36px;
+    border-radius: var(--r-md); border: 1px solid var(--line-3); background: var(--ink-3);
+  }
+  @media (max-width: 860px) { .gcard { grid-template-columns: minmax(0, 1fr); gap: 24px; padding: 28px 24px; } }
+  .gnote { margin-top: 16px; font-size: 13.5px; line-height: 1.6; color: var(--fg-5); max-width: 62ch; }
+  .gnum { text-align: center; }
+  .gnum span {
+    display: block; font-weight: 850; font-stretch: 104%;
+    font-size: clamp(54px, 8vw, 104px); line-height: 1;
+    color: var(--acc); text-shadow: var(--glow-txt);
+  }
+  .gnum small {
+    display: block; margin-top: 10px; font-size: 11px; font-weight: 850;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--fg-5);
+  }
+
+  .nhelps {
+    margin-top: 36px; display: grid; gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (max-width: 820px) { .nhelps { grid-template-columns: minmax(0, 1fr); } }
+  .nhelp {
+    padding: 26px 26px 28px; border-radius: var(--r-md);
+    border: 1px solid var(--line-3); background: var(--ink-2);
+  }
+  .nhelp h3 {
+    font-weight: 850; font-stretch: 104%; text-transform: uppercase;
+    font-size: 17px; line-height: 1.15;
+  }
+  .nhelp p { margin-top: 12px; font-size: 15px; line-height: 1.65; color: var(--fg-3); }
+
+  .rfit { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+  @media (max-width: 900px) { .rfit { grid-template-columns: minmax(0, 1fr); gap: 26px; } }
+  .rlist { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .rlist li {
+    display: grid; grid-template-columns: 17px minmax(0, 1fr); gap: 12px; align-items: start;
+    font-size: 15px; line-height: 1.6; color: var(--fg-3);
+  }
+  .rlist svg { width: 13px; height: 13px; margin-top: 5px; color: var(--acc); }
+
+  .cfields { margin-top: 30px; }
+  .csend {
+    margin-top: 28px; display: flex; align-items: center;
+    justify-content: space-between; gap: 14px; flex-wrap: wrap;
+  }
+  #charity[hidden] { display: none !important; }
+</style>
+
+<script>
+  const form = document.getElementById('charity') as HTMLFormElement | null;
+
+  if (form) {
+    const send = document.getElementById('charity-send') as HTMLButtonElement;
+    const error = document.getElementById('charity-error') as HTMLElement;
+    const done = document.getElementById('charity-done') as HTMLElement;
+
+    (document.getElementById('charity-t') as HTMLInputElement).value = String(Date.now());
+
+    const text = (n: string) =>
+      (form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name="${n}"]`)?.value ?? '').trim();
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const org = text('company');
+      const name = text('name');
+      const email = text('email');
+      const cause = text('message');
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+      if (org.length < 2 || name.length < 2 || !emailOk || cause.length < 2) {
+        error.textContent = 'We need the organisation, your name, a valid email and a line about the cause.';
+        error.hidden = false;
+        form.querySelector<HTMLInputElement>(
+          org.length < 2 ? '[name="company"]'
+            : name.length < 2 ? '[name="name"]'
+            : !emailOk ? '[name="email"]'
+            : '[name="message"]',
+        )?.focus();
+        return;
+      }
+
+      error.hidden = true;
+      send.disabled = true;
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { accept: 'application/json' },
+        });
+        let body: { ok?: boolean; message?: string } = {};
+        try { body = await res.json(); } catch { /* an error page, not JSON */ }
+        if (!res.ok || body.ok === false) {
+          throw new Error(body.message
+            ?? 'We could not send that just now. Please email team@advrt.co.uk or call 0800 689 3759.');
+        }
+      } catch (err) {
+        error.textContent = (err as Error).message;
+        error.hidden = false;
+        send.disabled = false;
+        return;
+      }
+
+      document.getElementById('charity-done-name')!.textContent = `${name.split(' ')[0] || 'thank you'}.`;
+      form.hidden = true;
+      done.hidden = false;
+      done.querySelector('h2')?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    });
+  }
+</script>

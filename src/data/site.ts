@@ -75,6 +75,8 @@ export const footerCompany = [
   { label: 'How we work', href: '/#process' },
   { label: 'Insights', href: '/insights' },
   { label: 'Start a project', href: '/start-a-project' },
+  { label: 'Referral scheme', href: '/referrals' },
+  { label: 'Not-for-profits', href: '/not-for-profits' },
 ] as const;
 
 export const footerLegal = [

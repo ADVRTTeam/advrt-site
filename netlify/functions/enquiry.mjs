@@ -4,18 +4,23 @@
  * Takes a POST from either form, runs two cheap spam checks, normalises the
  * payload and forwards it. Nothing is stored here.
  *
- * The two forms go to different places, because they are different things:
- * a brief is a qualified enquiry with sector, budget and timing on it, and a
- * contact message is someone asking a question. Routing them to one hook
- * meant the CRM had to tell them apart after the fact.
+ * Each form goes to its own place, because they are different things and the
+ * CRM should not have to tell them apart after the fact: a brief is a
+ * qualified enquiry carrying sector, budget and timing; a contact message is
+ * a question; a referral names a third party; a charity application needs
+ * reviewing against one quarterly place.
  *
  * Env:
  *   ENQUIRY_WEBHOOK_URL    required — where the brief is forwarded, and the
- *                          fallback for anything else
- *   CONTACT_WEBHOOK_URL    optional — where the contact form is forwarded.
- *                          Unset, contact falls back to ENQUIRY_WEBHOOK_URL
- *                          rather than being dropped.
+ *                          fallback for every other form
+ *   CONTACT_WEBHOOK_URL    optional — the contact form
+ *   REFERRAL_WEBHOOK_URL   optional — the referral scheme
+ *   CHARITY_WEBHOOK_URL    optional — the not-for-profit application
  *   ENQUIRY_WEBHOOK_TOKEN  optional — sent as "Authorization: Bearer <token>"
+ *
+ * Any of the optional ones being unset sends that form to the enquiry hook
+ * instead of dropping it. Filing a submission in the wrong place is
+ * recoverable; losing it is not.
  *
  * Responds with JSON to fetch (the forms submit by fetch when JS is on) and
  * with a 303 redirect to /thank-you for a native, no-JS form post.
@@ -122,11 +127,15 @@ export default async (req) => {
   // ---- Forward --------------------------------------------------------
   const form = String(fields.form ?? 'unknown');
 
-  // The contact form has its own hook. Anything else, including the brief,
-  // goes to the enquiry hook — and so does contact if its own is not set,
-  // because losing a message is worse than filing it in the wrong place.
+  // One hook per form where it has one. Adding a form here is adding a line
+  // here and setting the variable on the project; nothing else changes.
+  const HOOK_BY_FORM = {
+    contact: 'CONTACT_WEBHOOK_URL',
+    referral: 'REFERRAL_WEBHOOK_URL',
+    charity: 'CHARITY_WEBHOOK_URL',
+  };
   const target =
-    (form === 'contact' ? process.env.CONTACT_WEBHOOK_URL : '') ||
+    (HOOK_BY_FORM[form] ? process.env[HOOK_BY_FORM[form]] : '') ||
     process.env.ENQUIRY_WEBHOOK_URL;
 
   // A link-stuffed message is the shape almost all contact spam takes. This
