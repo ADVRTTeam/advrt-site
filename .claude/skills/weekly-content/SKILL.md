@@ -74,7 +74,7 @@ Pull these four, each with `connector: "searchconsole"` and
 2. **The week before.** `date_from`/`date_to` set to the seven days before
    that, same fields and filter. You need it to compute movement.
 3. **Pages only, this week.** fields `pagepath, clicks, impressions, position`.
-4. **Sibling demand.** `comsurv.uk` and `sc-domain:greenwashrooms.co.uk`,
+4. **Sibling demand.** `https://comsurv.uk/` and `sc-domain:greenwashrooms.co.uk`,
    `date_preset: "last_30d"`, fields `query, impressions, position`. These are
    ADVRT's own trade brands and they show what buyers in these disciplines
    actually ask. **Never `gogreenquote.com`.**

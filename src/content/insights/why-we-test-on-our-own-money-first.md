@@ -74,4 +74,4 @@ To be clear about the limits, because overclaiming here would be exactly the beh
 
 Partly because it is the main reason to pick us over a generalist, and partly because it is a fair test to apply to anyone bidding for this work.
 
-Ask an agency what they know about your sector and how they came to know it. Ask whether they have ever spent their own money in it. The answers are usually revealing, and the question costs you nothing to ask.
+Ask an agency what they know about your sector and how they came to know it. Ask whether they have ever spent their own money in it. The answers are usually revealing, and the question costs you nothing to ask. It is one of [seven questions worth putting to any paid search agency](/insights/choosing-a-paid-search-agency) before you sign.
