@@ -226,6 +226,11 @@ One per article, through AIBox. The box is already built and reusable:
 - **box_id** `6af396e7660e759e00945279` — "Dark B2B Blog Cover – Square
   Editorial Render (1:1)". It carries the house art direction, so the row only
   supplies the subject.
+- **Use that id and no other.** The account also holds a 16:9 built-environment
+  blog cover that looks like a candidate and is not: these covers are square,
+  because the insight cards crop to a square. Do not pick a box by its name —
+  if that id ever stops working, say so in the report rather than substituting
+  another.
 - Call `aibox_run_box` with `rows`, one row per article:
   `{"concept": "<a concrete abstract subject>"}`. Poll `aibox_get_run` until
   `status: "completed"`. Roughly 8 credits a row, 90 seconds for a batch.

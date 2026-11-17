@@ -13,6 +13,16 @@ connectors can be attached to it. Set:
 - **Schedule:** weekly, Mondays, 07:42 Europe/London. (Not 08:00 — most
   routines run on the hour and get queued behind each other.)
 - **Connectors:** Windsor.ai and AIBox. Both are required.
+- **The repository must be attached to the routine.** This is the one that
+  is easy to miss: the skill lives at `.claude/skills/weekly-content/` inside
+  `ADVRTTeam/advrt-site`, so a run with no checkout cannot read it, cannot see
+  the existing articles, and cannot push a branch. A routine created through
+  the MCP tools gets `sources: []` and there is no parameter to set it, so it
+  has to be chosen in the UI alongside the connectors.
+
+  The GGQ routine on this account has no repository and works fine, which is
+  why this is easy to overlook — its skill is an account-level skill, not one
+  that lives in a repository.
 - **New session each run.**
 - **Notifications:** push, so the PR link reaches you.
 
