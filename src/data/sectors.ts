@@ -61,6 +61,22 @@ export interface Sector {
     did: string[];
     outcome: string;
   };
+  /**
+   * A named client testimonial, shown as its own row above the guarantee.
+   * Optional, and deliberately singular: one real person with a face, a firm
+   * and letters after their name does more than a wall of anonymous praise.
+   * Only ever a quote given to us in writing, reproduced as written.
+   */
+  testimonial?: {
+    tag: string;
+    quote: string;
+    name: string;
+    creds: string;
+    role: string;
+    firm: string;
+    img: string;
+    alt: string;
+  };
   faqHead: string;
   faqs: { q: string; a: string; link?: boolean }[];
   ctaHead1: string;
@@ -198,6 +214,16 @@ export const sectors: Sector[] = [
       "title": "A ground-up build, from a standing start.",
       "lede": "New lead-gen site, campaigns proven on our own spend, and tracking to the penny.",
       "stat": "49"
+    },
+    "testimonial": {
+      "tag": "A client, in his own words",
+      "quote": "Working with Jack and the team has been great. They did as they said they would, and they were available to answer questions whenever needed. Upon completion of the work, we arranged a smooth handover meeting. The ads have been running for over a month now and have been profitable for our business, so their approach definitely works!",
+      "name": "Nicholas Zorpides",
+      "creds": "MRICS, VRS, MSc, BSc (Hons)",
+      "role": "Director",
+      "firm": "Nicholas Surveyors",
+      "img": "testimonial-nicholas-zorpides",
+      "alt": "Nicholas Zorpides, Director of Nicholas Surveyors"
     },
     "faqHead": "What surveyors ask first.",
     "faqs": [

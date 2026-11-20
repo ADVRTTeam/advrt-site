@@ -460,6 +460,33 @@ const schema = [
       </section>
     )}
 
+    <!-- 09c · TESTIMONIAL -->
+    {s.testimonial && (
+      <section class="wrap" style="padding-top:110px">
+        <p class="lbl"><span class="dot" aria-hidden="true"></span>{s.testimonial.tag}</p>
+        <figure class="tmrow" data-rise>
+          <div class="tmface">
+            <Image
+              src={img(s.testimonial.img)} alt={s.testimonial.alt}
+              widths={[160, 240, 320]} sizes="160px"
+              loading="lazy" decoding="async"
+            />
+          </div>
+          <div class="tmbody">
+            <svg class="tmmark" viewBox="0 0 44 32" aria-hidden="true">
+              <path d="M0 32V18.6C0 8.3 5.6 1.6 16.6 0l1.8 5.6c-6 1.4-9 4.6-9.3 9.4h8.4V32H0Zm25.6 0V18.6C25.6 8.3 31.2 1.6 42.2 0L44 5.6c-6 1.4-9 4.6-9.3 9.4H43V32H25.6Z" fill="currentColor"/>
+            </svg>
+            <blockquote class="tmq">{s.testimonial.quote}</blockquote>
+            <figcaption class="tmwho">
+              <span class="tmname">{s.testimonial.name}</span>
+              <span class="tmcreds">{s.testimonial.creds}</span>
+              <span class="tmrole">{s.testimonial.role}, {s.testimonial.firm}</span>
+            </figcaption>
+          </div>
+        </figure>
+      </section>
+    )}
+
     <Guarantees />
 
     <!-- 10 · FAQ -->
@@ -718,6 +745,46 @@ const schema = [
   .ctab { margin: 24px auto 0; max-width: 560px; }
   .ctabtns { margin-top: 36px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
   .cbtn.big { min-height: 66px; font-size: 16px; }
+
+  /* The testimonial row. One named client with a face, set against the
+     guarantee that follows it: the promise reads better straight after
+     somebody saying we kept it. The portrait is fixed-width rather than a
+     column so the quote keeps its measure on every width. */
+  .tmrow {
+    margin: 22px 0 0; display: grid; gap: 30px; align-items: start;
+    grid-template-columns: 160px minmax(0, 1fr);
+    padding: 34px 36px; border-radius: var(--r-md);
+    border: 1px solid var(--line-3); background: var(--ink-3);
+  }
+  @media (max-width: 760px) {
+    .tmrow { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 26px 24px; }
+  }
+
+  .tmface {
+    width: 160px; height: 160px; border-radius: 50%; overflow: clip;
+    border: 1px solid var(--line-4); background: var(--ink-2);
+    box-shadow: 0 20px 48px -24px rgba(0, 0, 0, .9);
+  }
+  @media (max-width: 760px) { .tmface { width: 104px; height: 104px; } }
+  .tmface img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+  .tmbody { min-width: 0; }
+  .tmmark { width: 34px; height: 25px; color: var(--acc); opacity: .85; }
+  .tmq {
+    margin: 14px 0 0; font-size: clamp(16.5px, 1.7vw, 20px); line-height: 1.6;
+    color: var(--fg-2); max-width: 62ch;
+  }
+  .tmwho { margin-top: 20px; display: flex; flex-direction: column; gap: 4px; }
+  .tmname {
+    font-weight: 850; font-stretch: 104%; text-transform: uppercase;
+    font-size: clamp(15px, 1.3vw, 18px); line-height: 1.1; letter-spacing: -.01em;
+  }
+  /* No text-transform here: MRICS is uppercase but MSc and BSc (Hons) are
+     not, and uppercasing a surveyor's post-nominals gets them wrong. */
+  .tmcreds {
+    font-size: 12px; font-weight: 800; letter-spacing: .06em; color: var(--acc);
+  }
+  .tmrole { font-size: 13.5px; font-weight: 600; color: var(--fg-5); }
 </style>
 
 <script>
