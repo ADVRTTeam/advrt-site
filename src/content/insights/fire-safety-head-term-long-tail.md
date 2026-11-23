@@ -30,7 +30,7 @@ Behind it sits an extraordinarily wide tail. Hundreds of distinct phrasings, eac
 
 - **Servicing and interval questions.** How often extinguishers need servicing, when alarms need testing, how frequently an assessment must be reviewed.
 - **Specification questions.** Which extinguisher for which risk, what class of fire, what emergency lighting a particular building needs.
-- **Obligation questions.** Who the responsible person is, what the Fire Safety Order requires, what changed under the Building Safety Act.
+- **Obligation questions.** Who the responsible person is, what the Fire Safety Order requires, what changed under the Building Safety Act, [how often fire doors must now be checked](/insights/fire-door-inspections-the-duty-on-a-calendar).
 - **Cost questions.** What an assessment costs, what a service contract costs, what remedial work typically runs to.
 
 Individually, none of these looks worth a page. Collectively they are the larger half of the market, and almost nobody is competing for them, because every firm's instinct is to build one page called "Fire Risk Assessments" and point everything at it.

@@ -66,4 +66,4 @@ For most firms the answer is not either. It is both, in sequence.
 
 Keep the portal running while the owned pipeline is built, so nothing goes quiet during the changeover. Track both properly, on cost per won job rather than cost per lead. Then, after three months of real data, let the numbers make the decision for you. Some firms turn the portals off entirely. Others keep a trickle running to fill quiet weeks, which is a perfectly sensible place to land.
 
-What matters is that you are choosing on evidence from your own account, rather than on the headline price of a shared enquiry.
+What matters is that you are choosing on evidence from your own account, rather than on the headline price of a shared enquiry. And if the owned pipeline means appointing someone to build it, [the questions to ask a paid search agency](/insights/how-to-choose-a-paid-search-agency-for-a-contracting-firm) are worth reading first, because some of what is sold as agency work is a lead portal with a nicer website.
