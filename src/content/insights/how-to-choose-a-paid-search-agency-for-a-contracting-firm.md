@@ -4,7 +4,7 @@ metaTitle: 'How to choose a paid search agency for contractors'
 excerpt: 'Every agency shortlist looks the same from the outside. Ten questions that separate the ones who will build you a pipeline from the ones who will spend your budget learning your trade.'
 topic: 'Strategy'
 crumb: 'Specialist trades · Strategy'
-date: 2026-11-25
+date: 2026-11-23
 mins: 8
 sectors:
   - 'contractors'
