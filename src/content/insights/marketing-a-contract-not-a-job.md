@@ -17,7 +17,7 @@ takeaways:
   - 'Renewal and dissatisfaction searches are the small, high-value cluster almost nobody targets.'
 ---
 
-A large share of the best work in the built environment is sold as a contract rather than a job. Fire equipment servicing. Water hygiene monitoring. Planned maintenance. Washroom services. Grounds and cleaning. Testing programmes on a statutory cycle.
+A large share of the best work in the built environment is sold as a contract rather than a job. Fire equipment servicing. [Quarterly fire door inspections](/insights/fire-door-inspections-the-duty-on-a-calendar). Water hygiene monitoring. Planned maintenance. Washroom services. Grounds and cleaning. Testing programmes on a statutory cycle.
 
 It is excellent business — recurring, predictable, high retention. It is also marketed badly almost everywhere, because the people marketing it apply a model built for one-off work.
 
