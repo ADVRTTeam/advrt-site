@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Guarantees from '../components/Guarantees.astro';
+import ReviewRating from '../components/ReviewRating.astro';
 import ReviewCard from '../components/ReviewCard.astro';
 import { site } from '../data/site';
 import { sectors, anchorFor, type Sector } from '../data/sectors';
@@ -93,6 +94,7 @@ const schema = [
         <a class="cbtn" href="/start-a-project">Start a project →</a>
         <a class="cbtn ghost" href="#maths">Do the maths</a>
       </div>
+      <ReviewRating class="st4 hero-rate" />
     </section>
 
     <!-- 02 · TRUST BAND -->
