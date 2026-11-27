@@ -1503,3 +1503,10 @@ section { scroll-margin-top: 84px; }
   .chip { min-height: 40px; padding: 0 14px; }
   .bfoot { padding: 8px 0 10px; }
 }
+
+/* Rating strip under the hero CTAs. position and z-index must live here
+   rather than in the page's scoped block: `.hero > *` compiles with the
+   page's scope id and does not match a component's own root element, so
+   without this the city skyline paints straight over it. */
+.hero-rate { margin-top: 30px; justify-content: center; position: relative; z-index: 3; }
+@media (max-width: 760px) { .hero-rate { margin-top: 22px; } }
