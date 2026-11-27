@@ -3,8 +3,9 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import ReviewCard from '../components/ReviewCard.astro';
 import Guarantees from '../components/Guarantees.astro';
+import ReviewCard from '../components/ReviewCard.astro';
+import ReviewRating from '../components/ReviewRating.astro';
 import CitySkyline from '../components/CitySkyline.astro';
 import { site, nextQuarter } from '../data/site';
 import {
@@ -46,8 +47,6 @@ const schema = [
   <Nav />
 
   <main id="main">
-    <!-- HERO and MANIFESTO — night. The page opens on the brand. -->
-    <div class="band">
     <!-- 01 · HERO -->
     <section class="hero" id="hero">
       <div class="stars" aria-hidden="true"></div>
@@ -70,6 +69,7 @@ const schema = [
         <a class="cbtn" href="/start-a-project">Start a project →</a>
         <a class="cbtn ghost" href="#work">See the work</a>
       </div>
+      <ReviewRating class="st4 hero-rate" />
       <div class="cue st4" aria-hidden="true"><em>Scroll</em><div class="cueline"></div></div>
     </section>
 
@@ -92,9 +92,6 @@ const schema = [
       </div>
     </section>
 
-    </div>
-    <!-- DIAGNOSIS — day. The long read where attention was being lost. -->
-    <div class="band band--day">
     <!-- 02b · DIAGNOSIS -->
     <section class="wrap" style="padding-top:130px">
       <p class="lbl"><span class="dot" aria-hidden="true"></span>The diagnosis</p>
@@ -125,12 +122,8 @@ const schema = [
       </p>
     </section>
 
-      <ReviewCard id="ben-smith" align="right" />
-    </div>
-    <!-- PROOF and WORK — night. One band, because the case carousel is
-         scroll-pinned with dark overlay washes between slides and cannot
-         take a light ground without being rebuilt. -->
-    <div class="band">
+    <ReviewCard id="ben-smith" align="right" />
+
     <!-- 03 · PROOF -->
     <section class="wrap" style="padding-top:120px;padding-bottom:120px">
       <div class="proofgrid">
@@ -179,11 +172,6 @@ const schema = [
       ))}
     </section>
 
-      <ReviewCard id="owen-gartside" align="left" />
-    </div>
-    <!-- SECTORS, PROCESS, THE FIT and the guarantees — day. The long middle
-         of the page, where everything used to read at one volume. -->
-    <div class="band band--day">
     <!-- 05 · SECTORS -->
     <section id="sectors" class="wrap" style="padding-top:130px">
       <p class="lbl"><span class="dot" aria-hidden="true"></span>Who we build for</p>
@@ -219,6 +207,8 @@ const schema = [
       </div>
     </section>
 
+    <ReviewCard id="nicholas-z" align="left" />
+
     <!-- 07 · THE FIT -->
     <section class="wrap" style="padding-top:130px">
       <p class="lbl"><span class="dot" aria-hidden="true"></span>Why ADVRT</p>
@@ -238,10 +228,6 @@ const schema = [
 
     <Guarantees />
 
-      <ReviewCard id="nicholas-z" align="left" />
-    </div>
-    <!-- JACK — night. -->
-    <div class="band">
     <!-- 08 · JACK -->
     <section class="wrap" style="padding-top:130px">
       <div class="jpanel">
@@ -265,10 +251,8 @@ const schema = [
       </div>
     </section>
 
-      <ReviewCard id="stuart-carey" align="right" />
-    </div>
-    <!-- CTA — full-bleed accent. Dark type: white on orange is 3.2:1. -->
-    <div class="band band--acc">
+    <ReviewCard id="stuart-carey" align="right" />
+
     <!-- 09 · CTA -->
     <section class="endcta">
       <span aria-hidden="true" class="endglow"></span>
@@ -286,7 +270,6 @@ const schema = [
         </div>
       </div>
     </section>
-    </div>
   </main>
 
   <section class="wrap ps">
@@ -335,20 +318,20 @@ const schema = [
      "built environment", which locks on. */
   @keyframes hlFlash {
     0% { color: var(--fg); text-shadow: none; }
-    16% { color: var(--acc-txt); text-shadow: var(--glow-txt); }
-    58% { color: var(--acc-txt); text-shadow: var(--glow-txt); }
+    16% { color: var(--acc); text-shadow: var(--glow-txt); }
+    58% { color: var(--acc); text-shadow: var(--glow-txt); }
     88%, 100% { color: var(--fg); text-shadow: none; }
   }
   @keyframes hlLock {
     0% { color: var(--fg); text-shadow: none; }
-    100% { color: var(--acc-txt); text-shadow: var(--glow-txt); }
+    100% { color: var(--acc); text-shadow: var(--glow-txt); }
   }
   #hero-h1 :global(.hl) { color: var(--fg); }
   #hero-h1 :global(.glow) { color: var(--fg); text-shadow: none; }
   .hero.play #hero-h1 :global(.hl) { animation: hlFlash 1.8s cubic-bezier(.4, 0, .2, 1) .95s both; }
   .hero.play #hero-h1 :global(.glow) { animation: hlLock .55s cubic-bezier(.4, 0, .2, 1) 2.1s both; }
   @media (prefers-reduced-motion: reduce) {
-    #hero-h1 :global(.glow) { color: var(--acc-txt); text-shadow: var(--glow-txt); }
+    #hero-h1 :global(.glow) { color: var(--acc); text-shadow: var(--glow-txt); }
   }
 
   @media (max-width: 760px) {
@@ -374,14 +357,14 @@ const schema = [
   /* Held dim only when scripting is on: without JS nothing lights the words
      up, so they must read at full contrast from the start. */
   :global(.js) .w { color: var(--fg-off); transition: color .3s ease; }
-  .w.hot { color: var(--acc-txt); }
+  .w.hot { color: var(--acc); }
   .w.on { color: var(--fg); }
-  .w.hot.on { color: var(--acc-txt); text-shadow: 0 0 24px rgba(255, 90, 31, .35); }
+  .w.hot.on { color: var(--acc); text-shadow: 0 0 24px rgba(255, 90, 31, .35); }
   /* Without the reveal running, every word reads normally. Matched to the
      dim rule's specificity so it wins on source order. */
   @media (prefers-reduced-motion: reduce) {
     :global(.js) .w { color: var(--fg); }
-    :global(.js) .w.hot { color: var(--acc-txt); }
+    :global(.js) .w.hot { color: var(--acc); }
   }
 
   /* ---- Proof ---- */
@@ -398,7 +381,7 @@ const schema = [
     display: flex; align-items: flex-end;
     min-height: clamp(50px, 4.6vw, 78px);
     font-weight: 850; font-stretch: 104%;
-    font-size: clamp(50px, 4.6vw, 78px); line-height: 1; color: var(--acc-txt);
+    font-size: clamp(50px, 4.6vw, 78px); line-height: 1; color: var(--acc);
     text-shadow: 0 0 28px var(--acc-40);
   }
   /* The figures are sized from the viewport, but the cells stop growing at
@@ -419,7 +402,7 @@ const schema = [
   .stackp {
     position: sticky; top: 0; min-height: min(100svh, 860px);
     display: flex; align-items: flex-end; padding: 40px; overflow: clip;
-    border-radius: 26px 26px 0 0; border-top: 1px solid rgba(var(--fg-rgb), .14);
+    border-radius: 26px 26px 0 0; border-top: 1px solid rgba(236, 234, 227, .14);
     background: var(--ink-2); box-shadow: 0 -40px 80px -40px rgba(0, 0, 0, .9);
   }
   .stackp :global(img.bg) {
@@ -438,7 +421,7 @@ const schema = [
   }
   .stackp .n {
     font-weight: 850; font-stretch: 104%; font-size: clamp(80px, 8vw, 150px);
-    line-height: .85; color: var(--acc-txt); text-shadow: 0 0 44px var(--acc-60);
+    line-height: .85; color: var(--acc); text-shadow: 0 0 44px var(--acc-60);
   }
   .stackp .idx {
     position: absolute; top: 34px; right: 40px; z-index: 2; font-size: 12px;
@@ -456,7 +439,7 @@ const schema = [
   .srow .gn {
     position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
     font-weight: 850; font-stretch: 104%; font-size: clamp(70px, 7.4vw, 124px);
-    line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(var(--fg-rgb), .12);
+    line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(236, 234, 227, .12);
     transition: color .35s, -webkit-text-stroke .35s; pointer-events: none;
   }
   .srow:hover .gn { color: var(--acc-14); -webkit-text-stroke: 1px var(--acc-40); }
@@ -465,7 +448,7 @@ const schema = [
     font-size: clamp(28px, 3.6vw, 56px); letter-spacing: -.015em; line-height: 1;
     transition: text-shadow .3s, color .3s;
   }
-  .srow:hover .nm { color: var(--acc-txt); text-shadow: 0 0 30px var(--acc-40); }
+  .srow:hover .nm { color: var(--acc); text-shadow: 0 0 30px var(--acc-40); }
   .srow .ds {
     position: relative; z-index: 2; font-size: 14px; color: var(--fg-4); font-weight: 500;
     max-width: 330px; text-align: right; opacity: 0; transform: translateX(-10px);
@@ -478,7 +461,7 @@ const schema = [
   .tl { position: relative; padding-left: 56px; }
   .tl::before {
     content: ''; position: absolute; left: 10px; top: 8px; bottom: 8px;
-    width: 1px; background: rgba(var(--fg-rgb), .12);
+    width: 1px; background: rgba(236, 234, 227, .12);
   }
   .tl .line {
     position: absolute; left: 10px; top: 8px; bottom: 8px; width: 1px;
@@ -505,7 +488,7 @@ const schema = [
     border-radius: 12px; filter: brightness(.88) saturate(.92);
   }
   .tlrow h3 { font-weight: 800; font-stretch: 104%; text-transform: uppercase; font-size: clamp(19px, 1.8vw, 25px); }
-  .tlrow h3 i { font-style: normal; color: var(--acc-txt); font-size: 13px; letter-spacing: .16em; display: block; margin-bottom: 7px; }
+  .tlrow h3 i { font-style: normal; color: var(--acc); font-size: 13px; letter-spacing: .16em; display: block; margin-bottom: 7px; }
   .tlrow p { font-size: 14.5px; line-height: 1.6; color: var(--fg-4); font-weight: 500; }
   @media (max-width: 760px) {
     .tl { padding-left: 34px; }
@@ -560,7 +543,7 @@ const schema = [
     gap: 30px; align-items: baseline; padding: 30px 0; border-top: 1px solid var(--line);
   }
   .fitrow:last-child { border-bottom: 1px solid var(--line); }
-  .fitrow .fn { font-weight: 850; font-stretch: 104%; font-size: 30px; color: var(--acc-txt); }
+  .fitrow .fn { font-weight: 850; font-stretch: 104%; font-size: 30px; color: var(--acc); }
   .fitrow h3 { font-weight: 800; font-stretch: 104%; text-transform: uppercase; font-size: clamp(20px, 2vw, 28px); }
   .fitrow p { font-size: 15px; line-height: 1.65; color: var(--fg-4); font-weight: 500; }
   @media (max-width: 760px) {

@@ -1,0 +1,96 @@
+---
+/**
+ * Aggregate rating strip for the hero. Both profiles, because two
+ * independent platforms saying the same thing is worth more than one
+ * saying it twice, and Trustpilot is the one a cautious buyer checks.
+ *
+ * The figures are hardcoded from src/data/reviews.ts and will drift as
+ * reviews come in — reviewTotals carries the date they were pulled.
+ * Both marks link out so the claim is checkable in one click; an
+ * unverifiable rating badge is worth less than no badge.
+ *
+ * Deliberately no aggregateRating schema anywhere on the site: Google
+ * disallows self-serving review markup for an organisation on its own
+ * pages, and it risks a manual action.
+ */
+import { reviewTotals } from '../data/reviews';
+
+interface Props { class?: string }
+const { class: cls } = Astro.props as Props;
+
+const items = [
+  {
+    key: 'google',
+    label: 'Google reviews',
+    star: '#FBBC04',
+    ...reviewTotals.google,
+  },
+  {
+    key: 'trustpilot',
+    label: 'Trustpilot reviews',
+    star: '#00B67A',
+    ...reviewTotals.trustpilot,
+  },
+] as const;
+---
+
+<div class:list={['rrate', cls]}>
+  {items.map((x) => (
+    <a class="rrate-i" href={x.url} target="_blank" rel="noopener nofollow">
+      {x.key === 'google' ? (
+        <svg class="rrate-m" viewBox="0 0 48 48" aria-hidden="true">
+          <path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11.8c-.5 2.7-2.1 5-4.4 6.6v5.5h7.1c4.2-3.8 6.6-9.5 6.6-16.1Z"/>
+          <path fill="#34A853" d="M24 46c6 0 11-2 14.6-5.4l-7.1-5.5c-2 1.3-4.5 2.1-7.5 2.1-5.8 0-10.6-3.9-12.4-9.1H4.3v5.7C7.9 41 15.4 46 24 46Z"/>
+          <path fill="#FBBC04" d="M11.6 28.1c-.5-1.3-.7-2.7-.7-4.1s.3-2.8.7-4.1V14H4.3A21.9 21.9 0 0 0 2 24c0 3.6.9 6.9 2.3 10l7.3-5.9Z"/>
+          <path fill="#EA4335" d="M24 10.8c3.3 0 6.2 1.1 8.5 3.3l6.3-6.3C35 4.2 30 2 24 2 15.4 2 7.9 7 4.3 14l7.3 5.9c1.8-5.2 6.6-9.1 12.4-9.1Z"/>
+        </svg>
+      ) : (
+        <svg class="rrate-m" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#00B67A" d="M12 0l2.9 8.9H24l-7.4 5.4 2.8 8.9L12 17.8 4.6 23.2l2.8-8.9L0 8.9h9.1L12 0Z"/>
+        </svg>
+      )}
+      <span class="rrate-s" style={`--s:${x.star}`} aria-hidden="true">★★★★★</span>
+      <b class="rrate-v">{x.rating.toFixed(1)}</b>
+      <span class="rrate-c">from {x.count} {x.label}</span>
+    </a>
+  ))}
+</div>
+
+<style>
+  .rrate {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 22px;
+  }
+  .rrate-i {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--fg-3);
+    font-size: 13px;
+    line-height: 1;
+    padding: 7px 13px 7px 11px;
+    border: 1px solid var(--line-3);
+    border-radius: var(--r-pill);
+    /* Opaque, not --wash: in the hero this sits directly over the city
+       skyline, and a 5% tint lets the buildings read straight through
+       the stars and the count. */
+    background: rgba(8, 8, 10, .72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: border-color .2s var(--ease), color .2s var(--ease), background .2s var(--ease);
+  }
+  .rrate-i:hover { border-color: var(--line-5); color: var(--fg-2); background: rgba(8, 8, 10, .85); }
+  .rrate-i:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+  .rrate-m { width: 14px; height: 14px; flex: none; }
+  .rrate-s { color: var(--s); letter-spacing: .5px; font-size: 12px; }
+  .rrate-v { font-weight: 800; color: var(--fg); font-size: 13.5px; }
+  .rrate-c { white-space: nowrap; }
+
+  @media (max-width: 560px) {
+    .rrate { gap: 8px 12px; }
+    .rrate-i { font-size: 12px; padding: 6px 11px 6px 9px; }
+  }
+</style>

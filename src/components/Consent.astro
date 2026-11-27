@@ -33,7 +33,7 @@ const directGa4 = gtm ? '' : ga4;
     <div class="consent" id="consent" role="dialog" aria-label="Cookies" aria-live="polite" hidden>
       <div class="consent-in">
         <div>
-          <p class="lbl" style="color: var(--acc-txt)">Cookies</p>
+          <p class="lbl" style="color:var(--acc)">Cookies</p>
           <p class="consent-tx">
             We'd like to set analytics cookies to see which pages and campaigns bring
             enquiries. Nothing is set unless you agree, and we never sell your data.
@@ -198,7 +198,7 @@ const directGa4 = gtm ? '' : ga4;
     <style>
       .consent {
         position: fixed; left: 14px; right: 14px; bottom: 14px; z-index: 90;
-        border-radius: var(--r-md); border: 1px solid rgba(var(--fg-rgb), .14);
+        border-radius: var(--r-md); border: 1px solid rgba(236, 234, 227, .14);
         background: rgba(11, 11, 14, .96); backdrop-filter: blur(18px) saturate(1.6);
         box-shadow: 0 34px 80px -24px rgba(0, 0, 0, .95);
         animation: fadeup .4s var(--ease) both;
@@ -213,7 +213,7 @@ const directGa4 = gtm ? '' : ga4;
         margin-top: 8px; max-width: 620px; font-size: 14.5px; line-height: 1.6;
         font-weight: 450; color: var(--fg-3);
       }
-      .consent-tx a { color: var(--acc-txt); text-decoration: underline; text-underline-offset: 3px; }
+      .consent-tx a { color: var(--acc); text-decoration: underline; text-underline-offset: 3px; }
       .consent-btns { display: flex; gap: 10px; flex-wrap: wrap; }
       .consent-btns .cbtn { min-height: 48px; padding: 0 24px; font-size: 13.5px; }
       @media (max-width: 620px) {
