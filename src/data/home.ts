@@ -133,7 +133,7 @@ export const diagnosisOurs = {
   cost:
     'Landing pages, paid search and tracking built as one system, in accounts that stay in your name. Every enquiry is yours alone, and you have total control of the spend, lead flow and survey types.',
   gain:
-    'Built in four weeks, and it is still yours the day you stop paying us.',
+    'Built in four weeks, and it is yours forever. No hostage contracts or ongoing retainers if you don\u2019t want them.',
 } as const;
 
 export const process = [
