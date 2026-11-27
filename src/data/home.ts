@@ -33,12 +33,6 @@ export const sectorRows = [
  * copy claiming the wrong number. Falls back to the digits past the range
  * the list will realistically ever reach.
  */
-const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven',
-  'eight', 'nine', 'ten', 'eleven', 'twelve'] as const;
-
-export const sectorCountWord =
-  WORDS[sectorRows.length] ?? String(sectorRows.length);
-
 /**
  * The proof row. `Sectors served` counts sectorRows rather than restating
  * its length, which is why that list is defined above this one — it went
@@ -127,10 +121,9 @@ export const diagnosis = [
  * above because it renders differently — the argument only lands if the
  * five are put straight first and ours is clearly marked as ours.
  *
- * It carries a real cost for the same reason every row above does. A
- * comparison in which only the seller's option has no downside is the
- * kind a buyer discounts on sight, and the honest version is the more
- * persuasive one anyway.
+ * Both lines here are upside. The five rows above each carry what they
+ * cost you; this row is the answer to them, and the row a reader has
+ * just reached the end of a list to find is not the place to hedge.
  */
 export const diagnosisOurs = {
   no: '06',
@@ -138,9 +131,9 @@ export const diagnosisOurs = {
   name: 'A pipeline you own',
   how: 'Built, tracked, handed over',
   cost:
-    'Landing pages, paid search and tracking built as one system, in accounts that stay in your name. Every enquiry is yours alone and nobody can switch it off.',
-  catch:
-    'It costs more up front than a month of shared leads, and there is a four-week build before it earns anything.',
+    'Landing pages, paid search and tracking built as one system, in accounts that stay in your name. Every enquiry is yours alone, and you have total control of the spend, lead flow and survey types.',
+  gain:
+    'Built in four weeks, and it is still yours the day you stop paying us.',
 } as const;
 
 export const process = [
