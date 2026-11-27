@@ -129,7 +129,7 @@ const schema = [
     <article class="read prose" style="padding-bottom:20px">
       {d.takeaways.length > 0 && (
         <div class="kt" data-rise style="margin-top:20px">
-          <p class="lbl" style="color:var(--acc)">Key takeaways</p>
+          <p class="lbl" style="color: var(--acc-txt)">Key takeaways</p>
           <ul>
             {d.takeaways.map((t, i) => <li><i>{i + 1}</i>{t}</li>)}
           </ul>
@@ -209,7 +209,7 @@ const schema = [
   }
   .relcard .go {
     display: block; margin-top: 14px; font-size: 11px; font-weight: 800;
-    letter-spacing: .12em; text-transform: uppercase; color: var(--acc);
+    letter-spacing: .12em; text-transform: uppercase; color: var(--acc-txt);
   }
 
   .endcta { position: relative; padding: 120px 24px 110px; text-align: center; overflow: clip; margin-top: 40px; }

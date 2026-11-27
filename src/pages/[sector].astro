@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Guarantees from '../components/Guarantees.astro';
+import ReviewCard from '../components/ReviewCard.astro';
 import { site } from '../data/site';
 import { sectors, anchorFor, type Sector } from '../data/sectors';
 import { img } from '../lib/images';
@@ -78,6 +79,8 @@ const schema = [
   <Nav />
 
   <main id="main">
+    <!-- HERO, trust band and disciplines — night. -->
+    <div class="band">
     <!-- 01 · HERO -->
     <section class="hero" id="hero">
       <div class="stars" aria-hidden="true"></div>
@@ -135,13 +138,17 @@ const schema = [
             <div class="dcell"><p class="lbl">Who buys it</p><p>{d.who}</p></div>
             <div class="dcell"><p class="lbl">What triggers it</p><p>{d.trigger}</p></div>
             <div class="dcell play">
-              <p class="lbl" style="color:var(--acc)">How we play it</p><p>{d.play}</p>
+              <p class="lbl" style="color: var(--acc-txt)">How we play it</p><p>{d.play}</p>
             </div>
           </div>
         ))}
       </section>
     )}
 
+    </div>
+    <!-- MATHS, ADVRTISE, PROCESS and STACK — day. The explaining half of
+         the page; it was the stretch readers were skimming. -->
+    <div class="band band--day">
     <!-- 04 · MATHS -->
     <section id="maths" class="wrap" style={s.disciplines ? 'padding-top:120px' : 'padding-top:100px'}>
       <p class="lbl"><span class="dot" aria-hidden="true"></span>The maths</p>
@@ -278,7 +285,7 @@ const schema = [
           aria-labelledby={`tab-t${i}`} hidden={i !== 0}
         >
           <div>
-            <p class="lbl" style="color:var(--acc)">{t.tag}</p>
+            <p class="lbl" style="color: var(--acc-txt)">{t.tag}</p>
             <h3 class="disp h3">{t.head}</h3>
             <p class="lede" style="margin-top:14px;font-size:16px">{t.body}</p>
           </div>
@@ -310,7 +317,7 @@ const schema = [
             class="stbody" role="tabpanel" id={`stg-p${i}`}
             aria-labelledby={`stg-t${i}`} hidden={i !== 0}
           >
-            <p class="lbl" style="color:var(--acc)">Stage {st.no} · {st.name}</p>
+            <p class="lbl" style="color: var(--acc-txt)">Stage {st.no} · {st.name}</p>
             <p class="lede" style="margin-top:14px;max-width:820px">{st.desc}</p>
           </div>
         ))}
@@ -337,7 +344,7 @@ const schema = [
         </div>
         <div class="smap" aria-live="polite">
           <div class="ssrc">
-            <span class="lbl" style="color:var(--acc)">ADVRTISE</span>
+            <span class="lbl" style="color: var(--acc-txt)">ADVRTISE</span>
             <span class="disp" style="display:block;font-size:19px;margin-top:8px">Qualified enquiry</span>
           </div>
           <div class="sline" aria-hidden="true"></div>
@@ -351,6 +358,10 @@ const schema = [
       </div>
     </section>
 
+      <ReviewCard id="tim-martin" align="right" />
+    </div>
+    <!-- LAB, CASE and RESULTS — night. Screenshots and the lab sit on dark. -->
+    <div class="band">
     <!-- 08 · LAB -->
     <section class="wrap" style="padding-top:120px">
       <p class="lbl"><span class="dot" aria-hidden="true"></span>Our own lab</p>
@@ -460,6 +471,9 @@ const schema = [
       </section>
     )}
 
+    </div>
+    <!-- TESTIMONIAL, guarantees and FAQ — day. -->
+    <div class="band band--day">
     <!-- 09c · TESTIMONIAL -->
     {s.testimonial && (
       <section class="wrap" style="padding-top:110px">
@@ -513,6 +527,10 @@ const schema = [
       </div>
     </section>
 
+      <ReviewCard id="adam-smith" align="left" />
+    </div>
+    <!-- OTHER SECTORS — night. -->
+    <div class="band">
     <!-- 11 · OTHER SECTORS -->
     <section class="wrap" style="padding-top:120px">
       <p class="lbl"><span class="dot" aria-hidden="true"></span>Other sectors we build for</p>
@@ -531,6 +549,9 @@ const schema = [
       </div>
     </section>
 
+    </div>
+    <!-- CTA — full-bleed accent. -->
+    <div class="band band--acc">
     <!-- 12 · CTA -->
     <section class="endcta">
       <span aria-hidden="true" class="ctaglow"></span>
@@ -544,6 +565,7 @@ const schema = [
         </div>
       </div>
     </section>
+    </div>
   </main>
 
   <Footer />
@@ -592,7 +614,7 @@ const schema = [
     gap: 4px 16px; flex-wrap: wrap;
   }
   .crow .bign { min-width: 0; }
-  .csplit { margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(236, 234, 227, .12); }
+  .csplit { margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(var(--fg-rgb), .12); }
   .calc-out .resn { margin-top: 12px; }
   .cnote {
     margin-top: 16px; font-size: 15.5px; font-weight: 500;
@@ -670,7 +692,7 @@ const schema = [
   }
   .rd {
     font-weight: 850; font-stretch: 104%; font-size: clamp(30px, 3.2vw, 42px);
-    line-height: 1; color: var(--acc); text-shadow: var(--glow-txt);
+    line-height: 1; color: var(--acc-txt); text-shadow: var(--glow-txt);
   }
   .resnote { margin-top: 14px; font-size: 13.5px; line-height: 1.55; color: var(--fg-4); }
 
@@ -695,7 +717,7 @@ const schema = [
     display: grid; grid-template-columns: 17px minmax(0, 1fr); gap: 11px;
     align-items: start; font-size: 14.5px; line-height: 1.55; color: var(--fg-3);
   }
-  .resdid svg { width: 13px; height: 13px; margin-top: 5px; color: var(--acc); }
+  .resdid svg { width: 13px; height: 13px; margin-top: 5px; color: var(--acc-txt); }
   .resout {
     margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line-3);
     font-size: 15px; line-height: 1.6; font-weight: 500; color: var(--fg-2);
@@ -718,7 +740,7 @@ const schema = [
     transition: border-color .25s, transform .25s, background .25s;
   }
   .othero:hover { border-color: rgba(255, 90, 31, .45); transform: translateY(-3px); }
-  .othero .no { font-size: 11px; font-weight: 850; letter-spacing: .14em; color: var(--acc); }
+  .othero .no { font-size: 11px; font-weight: 850; letter-spacing: .14em; color: var(--acc-txt); }
   .othero .nm {
     display: block; margin-top: 8px; font-weight: 800; font-stretch: 104%;
     text-transform: uppercase; font-size: 19px; line-height: 1.1;
@@ -731,7 +753,7 @@ const schema = [
      with the page's own title. */
   .othero .goph {
     display: block; margin-top: 12px; font-size: 11px; font-weight: 800;
-    letter-spacing: .1em; text-transform: uppercase; color: var(--acc);
+    letter-spacing: .1em; text-transform: uppercase; color: var(--acc-txt);
   }
 
   /* ---- CTA ---- */
@@ -769,7 +791,7 @@ const schema = [
   .tmface img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
   .tmbody { min-width: 0; }
-  .tmmark { width: 34px; height: 25px; color: var(--acc); opacity: .85; }
+  .tmmark { width: 34px; height: 25px; color: var(--acc-txt); opacity: .85; }
   .tmq {
     margin: 14px 0 0; font-size: clamp(16.5px, 1.7vw, 20px); line-height: 1.6;
     color: var(--fg-2); max-width: 62ch;
@@ -782,7 +804,7 @@ const schema = [
   /* No text-transform here: MRICS is uppercase but MSc and BSc (Hons) are
      not, and uppercasing a surveyor's post-nominals gets them wrong. */
   .tmcreds {
-    font-size: 12px; font-weight: 800; letter-spacing: .06em; color: var(--acc);
+    font-size: 12px; font-weight: 800; letter-spacing: .06em; color: var(--acc-txt);
   }
   .tmrole { font-size: 13.5px; font-weight: 600; color: var(--fg-5); }
 </style>
