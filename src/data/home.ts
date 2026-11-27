@@ -122,6 +122,27 @@ export const diagnosis = [
   },
 ] as const;
 
+/**
+ * The sixth route, and the one we sell. Held separately from the five
+ * above because it renders differently — the argument only lands if the
+ * five are put straight first and ours is clearly marked as ours.
+ *
+ * It carries a real cost for the same reason every row above does. A
+ * comparison in which only the seller's option has no downside is the
+ * kind a buyer discounts on sight, and the honest version is the more
+ * persuasive one anyway.
+ */
+export const diagnosisOurs = {
+  no: '06',
+  badge: 'What we build',
+  name: 'A pipeline you own',
+  how: 'Built, tracked, handed over',
+  cost:
+    'Landing pages, paid search and tracking built as one system, in accounts that stay in your name. Every enquiry is yours alone and nobody can switch it off.',
+  catch:
+    'It costs more up front than a month of shared leads, and there is a four-week build before it earns anything.',
+} as const;
+
 export const process = [
   {
     no: '01', img: 'process-1-survey', alt: 'Pre-spend audit', name: 'Pre-spend audit',
